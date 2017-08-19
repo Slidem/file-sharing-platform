@@ -15,5 +15,6 @@
   	<module>file-sharing-auth-client</module>
   	<module>file-sharing-front-core</module>
   	<module>file-sharing-front-webapp</module>
+  	<module>file-sharing-auth-webapp</module>
   </modules>
 </project>

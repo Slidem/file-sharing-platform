@@ -1,0 +1,13 @@
+/file-sharing/file-sharing-auth-client/.settings/*.prefs
+/file-sharing/file-sharing-auth-core/.settings/*.prefs
+/file-sharing/file-sharing-auth-rest/.settings/*.prefs
+/file-sharing/file-sharing-auth-webapp/*.classpath
+/file-sharing/file-sharing-auth-webapp/*.project
+/file-sharing/file-sharing-auth-webapp/.settings/*.prefs
+/file-sharing/file-sharing-back-client/.settings/*.prefs
+/file-sharing/file-sharing-back-core/.settings/*.prefs
+/file-sharing/file-sharing-back-rest/.settings/*.prefs
+/file-sharing/file-sharing-back-webapp/.settings/*.prefs
+/file-sharing/file-sharing-common/.settings/*.prefs
+/file-sharing/file-sharing-front-core/.settings/*.prefs
+/file-sharing/file-sharing-front-webapp/.settings/*.prefs
