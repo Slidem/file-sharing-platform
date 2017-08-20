@@ -5,5 +5,5 @@
     <artifactId>file-sharing</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>file-sharing-back-webapp</artifactId>
+  <artifactId>file-sharing-back-app</artifactId>
 </project>

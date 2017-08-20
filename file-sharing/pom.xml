@@ -15,7 +15,7 @@
 	<modules>
 		<module>file-sharing-back-core</module>
 		<module>file-sharing-back-rest</module>
-		<module>file-sharing-back-webapp</module>
+		<module>file-sharing-back-app</module>
 		<module>file-sharing-back-client</module>
 		<module>file-sharing-common</module>
 		<module>file-sharing-auth-core</module>
@@ -23,7 +23,7 @@
 		<module>file-sharing-auth-client</module>
 		<module>file-sharing-front-core</module>
 		<module>file-sharing-front-webapp</module>
-		<module>file-sharing-auth-webapp</module>
+		<module>file-sharing-auth-app</module>
 	</modules>
 
 	<properties>
