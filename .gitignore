@@ -11,3 +11,6 @@
 /file-sharing/file-sharing-common/.settings/*.prefs
 /file-sharing/file-sharing-front-core/.settings/*.prefs
 /file-sharing/file-sharing-front-webapp/.settings/*.prefs
+*.classpath
+*.project
+*.prefs

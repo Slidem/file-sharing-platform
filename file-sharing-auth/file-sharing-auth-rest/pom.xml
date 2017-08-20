@@ -2,8 +2,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.file.sharing</groupId>
-		<artifactId>file-sharing</artifactId>
+		<groupId>com.file.sharing.auth</groupId>
+		<artifactId>file-sharing-auth</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>file-sharing-auth-rest</artifactId>
@@ -12,7 +12,7 @@
 		
 		<!-- internal -->
 		<dependency>
-			<groupId>com.file.sharing</groupId>
+			<groupId>com.file.sharing.auth</groupId>
 			<artifactId>file-sharing-auth-core</artifactId>
 		</dependency>
 		
