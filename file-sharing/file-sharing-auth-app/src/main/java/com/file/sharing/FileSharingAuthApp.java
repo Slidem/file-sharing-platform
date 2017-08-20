@@ -26,7 +26,7 @@ public class FileSharingAuthApp {
 		String defaultPropertiesPath = "classpath:config/dev.properties";
 
 		if ( System.getProperty(SPRING_ACTIVE_PROFILE) == null) {
-			throw new RuntimeException("Spring profile must be specified as a VM argument (dev or prod)!");
+			throw new RuntimeException("Spring profile must be specified as a VM argument (dev or prod).");
 		}
 
 		String springProfile = System.getProperty(SPRING_ACTIVE_PROFILE);
