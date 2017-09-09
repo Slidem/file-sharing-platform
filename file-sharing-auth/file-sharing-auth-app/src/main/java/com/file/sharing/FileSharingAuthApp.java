@@ -8,6 +8,7 @@ import static java.lang.System.getProperty;
 import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.file.sharing.config.FileSharingAuthPropertiesConfig;
@@ -16,16 +17,17 @@ import com.file.sharing.config.FileSharingAuthPropertiesConfig;
  * @author Alexandru
  *
  */
-@SpringBootApplication( scanBasePackageClasses = { FileSharingAuthPropertiesConfig.class } )
+@SpringBootApplication(scanBasePackageClasses = { FileSharingAuthPropertiesConfig.class })
+@EnableAutoConfiguration
 public class FileSharingAuthApp {
 
-	public static void main ( String[] args) {
+	public static void main(String[] args) {
 
 		SpringApplication app = new SpringApplication(FileSharingAuthApp.class);
 
 		String defaultPropertiesPath = "classpath:config/dev.properties";
 
-		if ( System.getProperty(SPRING_ACTIVE_PROFILE) == null) {
+		if (System.getProperty(SPRING_ACTIVE_PROFILE) == null) {
 			throw new RuntimeException("Spring profile must be specified as a VM argument (dev or prod).");
 		}
 
@@ -35,7 +37,7 @@ public class FileSharingAuthApp {
 		app.run(args);
 	}
 
-	private static void setAppConfig ( SpringApplication app, String path) {
+	private static void setAppConfig(SpringApplication app, String path) {
 		Properties properties = new Properties();
 		properties.setProperty("app.config.file", path);
 		app.setDefaultProperties(properties);

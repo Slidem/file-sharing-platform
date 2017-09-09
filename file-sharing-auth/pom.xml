@@ -14,26 +14,40 @@
 
 	<modules>
 		<module>file-sharing-auth-core</module>
-		<module>file-sharing-auth-rest</module>
-		<module>file-sharing-auth-client</module>
 		<module>file-sharing-auth-app</module>
 	</modules>
 
 	<properties>
 		<java.version>1.8</java.version>
+		<jquery.version>3.2.1</jquery.version>
+		<bootstrap.version>4.0.0-beta</bootstrap.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
+		    <!-- jquery & boostrap -->
+		    <dependency>
+			    <groupId>org.webjars</groupId>
+			    <artifactId>jquery</artifactId>
+			    <version>${jquery.version}</version>
+		    </dependency>
+		    <dependency>
+			    <groupId>org.webjars</groupId>
+				<artifactId>bootstrap</artifactId>
+			    <version>${bootstrap.version}</version>
+			</dependency>
+			<!-- spring -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Brixton.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 			<!-- internal -->
 			<dependency>
 				<groupId>com.file.sharing.auth</groupId>
 				<artifactId>file-sharing-auth-core</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.file.sharing.auth</groupId>
-				<artifactId>file-sharing-auth-rest</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

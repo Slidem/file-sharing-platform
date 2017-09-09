@@ -14,3 +14,10 @@
 *.classpath
 *.project
 *.prefs
+/file-sharing-auth/file-sharing-auth-app/.settings/*.jsdtscope
+/file-sharing-auth/file-sharing-auth-app/.settings/*.component
+/file-sharing-auth/file-sharing-auth-app/.settings/*.xml
+/file-sharing-auth/file-sharing-auth-app/.settings/*.container
+/file-sharing-auth/file-sharing-auth-app/.settings/*.name
+/file-sharing-auth/file-sharing-auth-core/.settings/*.component
+/file-sharing-auth/file-sharing-auth-core/.settings/*.xml

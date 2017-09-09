@@ -6,23 +6,27 @@
 		<artifactId>file-sharing-auth</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<artifactId>file-sharing-auth-app</artifactId>
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+		</dependency>
 		<!-- Internal -->
 		<dependency>
 			<groupId>com.file.sharing.auth</groupId>
-			<artifactId>file-sharing-auth-rest</artifactId>
+			<artifactId>file-sharing-auth-core</artifactId>
 		</dependency>
-		
-		<!-- SPRING -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-		
 	</dependencies>
 
 	<build>
