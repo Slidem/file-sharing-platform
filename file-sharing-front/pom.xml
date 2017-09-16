@@ -17,6 +17,21 @@
 		<module>file-sharing-front-webapp</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>4.0.0-beta</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.2.1</version>
+		</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

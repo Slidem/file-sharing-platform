@@ -14,3 +14,9 @@
 *.classpath
 *.project
 *.prefs
+/.metadata/
+/file-sharing-front/file-sharing-front-webapp/.settings/*.jsdtscope
+/file-sharing-front/file-sharing-front-webapp/.settings/*.component
+/file-sharing-front/file-sharing-front-webapp/.settings/*.xml
+/file-sharing-front/file-sharing-front-webapp/.settings/*.container
+/file-sharing-front/file-sharing-front-webapp/.settings/*.name
