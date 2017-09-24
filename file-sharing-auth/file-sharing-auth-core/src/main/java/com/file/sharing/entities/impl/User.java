@@ -18,7 +18,7 @@ public final class User extends BaseUser {
 
 	private final byte[] picture;
 
-	private User(ClientBuilder builder) {
+	private User(UserBuilder builder) {
 		super(builder);
 		this.name = builder.name;
 		this.surname = builder.surname;
@@ -42,7 +42,7 @@ public final class User extends BaseUser {
 		return this.picture;
 	}
 
-	public static final class ClientBuilder extends AbstractBaseClientBuilder<User, ClientBuilder> {
+	public static final class UserBuilder extends AbstractBaseClientBuilder<User, UserBuilder> {
 
 		private String name;
 
@@ -52,22 +52,22 @@ public final class User extends BaseUser {
 
 		private byte[] picture;
 
-		public ClientBuilder setName(String name) {
+		public UserBuilder setName(String name) {
 			this.name = name;
 			return getThis();
 		}
 
-		public ClientBuilder setSurname(String surname) {
+		public UserBuilder setSurname(String surname) {
 			this.surname = surname;
 			return getThis();
 		}
 
-		public ClientBuilder setAccountInfo(AccountInfo accountInfo) {
+		public UserBuilder setAccountInfo(AccountInfo accountInfo) {
 			this.accountInfo = accountInfo;
 			return getThis();
 		}
 
-		public ClientBuilder setPicture(byte[] picture) {
+		public UserBuilder setPicture(byte[] picture) {
 			this.picture = Arrays.clone(picture);
 			return getThis();
 		}

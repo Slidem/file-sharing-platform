@@ -3,7 +3,6 @@ package com.file.sharing.dao.impl;
 import static com.file.sharing.dao.DbConstants.UserTable.ACCOUNT_STATUS_COLUMN;
 import static com.file.sharing.dao.DbConstants.UserTable.COLUMN_USER_MAP;
 import static com.file.sharing.dao.DbConstants.UserTable.EMAIL_COLUMN;
-import static com.file.sharing.dao.DbConstants.UserTable.ID_COLUMN;
 import static com.file.sharing.dao.DbConstants.UserTable.NAME;
 import static com.file.sharing.dao.DbConstants.UserTable.NAME_COLUMN;
 import static com.file.sharing.dao.DbConstants.UserTable.PASSWORD_COLUMN;
@@ -33,7 +32,7 @@ public class UserDaoImpl implements UserDAO {
 
 	static {
 		SELECT_BASE_USER_SQL_FORMAT = "SELECT u.id, u.email, u.id_role, u.password from %s as u WHERE u.%s = ?";
-		INSERT_USER_SQL = "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?, ?, ?)";
+		INSERT_USER_SQL = "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)";
 	}
 
 	private final JdbcTemplate jdbcTemplate;
@@ -57,19 +56,33 @@ public class UserDaoImpl implements UserDAO {
 	}
 
 	@Override
-	public User createUser(User client) {
-		Object[] params = { COLUMN_USER_MAP.get(ID_COLUMN).apply(client),
-				COLUMN_USER_MAP.get(NAME_COLUMN).apply(client), COLUMN_USER_MAP.get(SURNAME_COLUMN).apply(client),
-				COLUMN_USER_MAP.get(PASSWORD_COLUMN).apply(client), COLUMN_USER_MAP.get(ROLE_COLUMN).apply(client),
-				COLUMN_USER_MAP.get(ACCOUNT_STATUS_COLUMN).apply(client),
-				COLUMN_USER_MAP.get(PICTURE_COLUMN).apply(client), COLUMN_USER_MAP.get(EMAIL_COLUMN).apply(client) };
+	public User createUser(User user) {
+		//@formatter:off
+		Object[] params = { COLUMN_USER_MAP.get(NAME_COLUMN).apply(user), 
+							COLUMN_USER_MAP.get(SURNAME_COLUMN).apply(user),
+							COLUMN_USER_MAP.get(PASSWORD_COLUMN).apply(user), 
+							COLUMN_USER_MAP.get(ROLE_COLUMN).apply(user),
+							COLUMN_USER_MAP.get(ACCOUNT_STATUS_COLUMN).apply(user),
+							COLUMN_USER_MAP.get(PICTURE_COLUMN).apply(user), 
+							COLUMN_USER_MAP.get(EMAIL_COLUMN).apply(user) 
+						};
+		String insertSql = String.format(INSERT_USER_SQL, 
+										 NAME, 
+										 NAME_COLUMN, 
+										 SURNAME_COLUMN, 
+										 PASSWORD_COLUMN,
+										 ROLE_COLUMN, 
+										 ACCOUNT_STATUS_COLUMN, 
+										 PICTURE_COLUMN, 
+										 EMAIL_COLUMN);
+		//@formatter:on
 
-		String insertSql = String.format(INSERT_USER_SQL, NAME, ID_COLUMN, NAME_COLUMN, SURNAME_COLUMN, PASSWORD_COLUMN,
-				ROLE_COLUMN, ACCOUNT_STATUS_COLUMN, PICTURE_COLUMN, EMAIL_COLUMN);
-		jdbcTemplate.update(INSERT_USER_SQL, insertSql, params);
+		jdbcTemplate.update(insertSql, params);
 
-		return client;
+		return user;
 	}
+
+	// ---------------------------------------------------------------------------
 
 	private Optional<BaseUser> getBaseUserByCriteria(String column, Object value) {
 		String query = String.format(SELECT_BASE_USER_SQL_FORMAT, NAME, column);

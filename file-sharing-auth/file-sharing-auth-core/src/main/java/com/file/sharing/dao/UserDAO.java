@@ -29,9 +29,9 @@ public interface UserDAO {
 	/**
 	 * Inserts a new user into the db.
 	 * 
-	 * @param client
+	 * @param user
 	 * @return
 	 */
-	User createUser(User client);
+	User createUser(User user);
 
 }

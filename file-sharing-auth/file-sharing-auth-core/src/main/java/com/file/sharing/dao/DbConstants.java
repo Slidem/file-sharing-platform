@@ -8,9 +8,26 @@ import com.file.sharing.entities.impl.User;
 
 public final class DbConstants {
 
+	public static final String SCHEMA_NAME = "public";
+
+	public static final class AccountInfoTable {
+
+		public static final String NAME = SCHEMA_NAME + ".acc_stats";
+
+		public static final String ID_COLUMN = "id";
+
+		public static final String TYPE_COLUMN = "type";
+
+		public static final String STATUS_COLUMN = "status";
+
+		private AccountInfoTable() {
+		}
+
+	}
+
 	public static final class UserTable {
 
-		public static final String NAME = "public.user";
+		public static final String NAME = SCHEMA_NAME + ".user";
 
 		public static final String ID_COLUMN = "id";
 
@@ -37,7 +54,7 @@ public final class DbConstants {
 			COLUMN_USER_MAP.put(NAME_COLUMN, u -> u.getName());
 			COLUMN_USER_MAP.put(SURNAME_COLUMN, u -> u.getSurname());
 			COLUMN_USER_MAP.put(ACCOUNT_STATUS_COLUMN, u -> u.getAccountInfo().getId());
-			COLUMN_USER_MAP.put(PASSWORD_COLUMN, u -> u.getId());
+			COLUMN_USER_MAP.put(PASSWORD_COLUMN, u -> u.getPassword());
 			COLUMN_USER_MAP.put(PICTURE_COLUMN, u -> u.getPicture());
 		}
 

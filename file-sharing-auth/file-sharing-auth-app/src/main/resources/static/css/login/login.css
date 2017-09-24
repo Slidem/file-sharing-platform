@@ -1,0 +1,11 @@
+.perfect-centering {
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%);
+}
+
+.logo-container{
+	padding:1em;
+	background-color: #001a33;
+}
+
