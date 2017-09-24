@@ -20,21 +20,22 @@
 	<properties>
 		<java.version>1.8</java.version>
 		<jquery.version>3.2.1</jquery.version>
-		<bootstrap.version>4.0.0-beta</bootstrap.version>
+		<bootstrap.version>3.3.7</bootstrap.version>
+		<nekoHTML.version>1.9.22</nekoHTML.version>
 	</properties>
 
 	<dependencyManagement>
 		<dependencies>
-		    <!-- jquery & boostrap -->
-		    <dependency>
-			    <groupId>org.webjars</groupId>
-			    <artifactId>jquery</artifactId>
-			    <version>${jquery.version}</version>
-		    </dependency>
-		    <dependency>
-			    <groupId>org.webjars</groupId>
+			<!-- jquery & boostrap -->
+			<dependency>
+				<groupId>org.webjars</groupId>
+				<artifactId>jquery</artifactId>
+				<version>${jquery.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.webjars</groupId>
 				<artifactId>bootstrap</artifactId>
-			    <version>${bootstrap.version}</version>
+				<version>${bootstrap.version}</version>
 			</dependency>
 			<!-- spring -->
 			<dependency>
@@ -43,6 +44,11 @@
 				<version>Brixton.RELEASE</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>net.sourceforge.nekohtml</groupId>
+				<artifactId>nekohtml</artifactId>
+				<version>${nekoHTML.version}</version>
 			</dependency>
 			<!-- internal -->
 			<dependency>

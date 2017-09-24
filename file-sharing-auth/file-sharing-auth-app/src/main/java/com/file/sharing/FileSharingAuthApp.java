@@ -12,12 +12,13 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.file.sharing.config.FileSharingAuthPropertiesConfig;
+import com.file.sharing.controllers.ControllerPackageScan;
 
 /**
  * @author Alexandru
  *
  */
-@SpringBootApplication(scanBasePackageClasses = { FileSharingAuthPropertiesConfig.class })
+@SpringBootApplication(scanBasePackageClasses = { FileSharingAuthPropertiesConfig.class, ControllerPackageScan.class })
 @EnableAutoConfiguration
 public class FileSharingAuthApp {
 
