@@ -1,0 +1,52 @@
+package com.file.sharing.dao;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import com.file.sharing.entities.impl.User;
+
+public final class DbConstants {
+
+	public static final class UserTable {
+
+		public static final String NAME = "public.user";
+
+		public static final String ID_COLUMN = "id";
+
+		public static final String EMAIL_COLUMN = "email";
+
+		public static final String ROLE_COLUMN = "id_role";
+
+		public static final String NAME_COLUMN = "name";
+
+		public static final String SURNAME_COLUMN = "surname";
+
+		public static final String ACCOUNT_STATUS_COLUMN = "id_accstats";
+
+		public static final String PASSWORD_COLUMN = "password";
+
+		public static final String PICTURE_COLUMN = "picture";
+
+		public static final Map<String, Function<User, ?>> COLUMN_USER_MAP = new LinkedHashMap<>();
+
+		static {
+			COLUMN_USER_MAP.put(ID_COLUMN, u -> u.getId());
+			COLUMN_USER_MAP.put(EMAIL_COLUMN, u -> u.getEmail());
+			COLUMN_USER_MAP.put(ROLE_COLUMN, u -> u.getRole().getId());
+			COLUMN_USER_MAP.put(NAME_COLUMN, u -> u.getName());
+			COLUMN_USER_MAP.put(SURNAME_COLUMN, u -> u.getSurname());
+			COLUMN_USER_MAP.put(ACCOUNT_STATUS_COLUMN, u -> u.getAccountInfo().getId());
+			COLUMN_USER_MAP.put(PASSWORD_COLUMN, u -> u.getId());
+			COLUMN_USER_MAP.put(PICTURE_COLUMN, u -> u.getPicture());
+		}
+
+		private UserTable() {
+		}
+
+	}
+
+	private DbConstants() {
+	}
+
+}
