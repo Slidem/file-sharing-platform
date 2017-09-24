@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<changeSet id="01" author="andrei">
+	<createTable tableName="books" remarks="A table to contain all books">
+		<column name="id" type="int">
+			<constraints nullable="false" unique="true" primaryKey="true" />
+		</column>
+		<column name="name" type="varchar(255)">
+			<constraints nullable="false" unique="true" />
+		</column>
+		<column name="author" type="int">
+			<constraints nullable="false" />
+		</column>
+	</createTable>
+
+	<createTable tableName="authors" remarks="A table to contain all the authors">
+		<column name="id" type="int">
+			<constraints nullable="false" primaryKey="true" />
+		</column>
+		<column name="name" type="varchar(100)">
+			<constraints nullable="false" />
+		</column>
+	</createTable>
+
+	<addForeignKeyConstraint baseTableName="books"
+		baseColumnNames="author" constraintName="author_fk"
+		referencedTableName="authors" referencedColumnNames="id" />
+
+	<!-- USER table-->
+	<createTable tableName="user">
+		<column name="id" type="int" autoincrement="true">
+			<constraints nullable="false" primary-key="true"
+				primaryKeyName="id" />
+		</column>
+		<column name="email" type="varchar(255)">
+			<constraints nullable="false" />
+		</column>
+		<column name="name" type="varchar(255)">
+			<constraints nullable="false" autoincrement="true" />
+		</column>
+		<column name="picture" type="binary">
+			<constraints nullable="true" />
+		</column>
+		<column name="surname" type="varchar(255)">
+			<constraints nullable="false" />
+		</column>
+		<column name="id_accstats" type="int">
+			<constraints nullable="false" />
+		</column>
+		<column name="password" type="varchar(100)">
+			<constraints nullable="false" />
+		</column>
+		<column name="id_role" type="int">
+			<constraints nullable="false" />
+		</column>
+	</createTable>
+	
+	<!-- ROLE table -->
+	<createTable tableName="role">
+		<column name="id" type="int">
+			<constraints nullable="false" primary-key="true"/>
+		</column>
+		<column name="role" type="varchar(50)">
+			<constraints nullable="false"/>
+		</column>
+	</createTable>
+	
+	<!-- ACCSTATS table -->
+	<createTable tableName="acc_stats">
+		<column name="id" type="int">
+			<constraints nullable="false"/>
+		</column>
+		<column name="type" type="varchar(255)">
+			<constraints nullable="false"/>
+		</column>
+		<column name="status" type="varchar(255)">
+			<constraints nullable="false"/>
+		</column>
+	</createTable>
+	
+	<!-- ADMIN table -->
+	<createTable tableName="admin">
+		<column name="id" type="int">
+			<constraints nullable="false"/>
+		</column>
+		<column name="username" type="varchar(35)">
+			<constraints nullable="false"/>
+		</column>
+		<column name="fullname" type="varchar(80)">
+			<constraints nullable="false"/>
+		</column>
+		<column name="password" type="varchar(100)">
+			<constraints nullable="false"/>
+		</column>
+	</createTable>
+	
+	
+	
+		<!-- default table -->
+	<createTable tableName="">
+		<column name="" type="">
+			<constraints nullable="false"/>
+		</column>
+	</createTable>
+</changeSet>
+
+
+<!--
+CREATE TABLE admin (
+    id integer DEFAULT nextval('admin_seq'::regclass) NOT NULL,
+    username character varying(35)[] NOT NULL,
+    fullname character varying(80) NOT NULL,
+    password character varying NOT NULL
+);
+);
+); -->
