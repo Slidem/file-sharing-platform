@@ -1,0 +1,366 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+	<changeSet id="create_tables" author="andrei">
+		<!-- ACCSTATS table -->
+		<createTable tableName="acc_stats">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="type" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="status" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<!-- ADMIN table -->
+		<createTable tableName="admin">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="username" type="varchar(35)">
+				<constraints nullable="false" />
+			</column>
+			<column name="fullname" type="varchar(80)">
+				<constraints nullable="false" />
+			</column>
+			<column name="password" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<!-- DIRECTORY table -->
+		<createTable tableName="directory">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="parent_id" type="integer">
+			</column>
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="path" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!--FILE table -->
+		<createTable tableName="file">
+			<column name="id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="parent_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="category_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="upload_time" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="path" type="longvarchar">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- FILE_CATEGORY table -->
+		<createTable tableName="file_category">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="extension" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="category_name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- FILE_VERSION table -->
+		<createTable tableName="file_version">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="file_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="parent_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="category_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="upload_time" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="version" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="path" type="longvarchar">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- ITEM_ACTION table -->
+		<createTable tableName="item_action">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="action_type" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="action_time" type="timestamp">
+				<constraints nullable="false" />
+			</column>
+			<column name="directory_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="file_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- NEWS table -->
+		<createTable tableName="news">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="message" type="longvarchar">
+			</column>
+			<column name="title" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="picture" type="bytea">
+				<constraints nullable="false" />
+			</column>
+			<column name="admin_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- OAUTH_CLIENT_DETAILS table -->
+		<createTable tableName="oauth_client_details">
+			<column name="client_id" type="text">
+				<constraints nullable="false" />
+			</column>
+			<column name="resource_ids" type="text">
+			</column>
+			<column name="client_secret" type="text">
+			</column>
+			<column name="scope" type="text">
+			</column>
+			<column name="authorized_grant_types" type="text">
+			</column>
+			<column name="web_server_redirect_uri" type="text">
+			</column>
+			<column name="authorities" type="text">
+			</column>
+			<column name="access_token_validity" type="text">
+			</column>
+			<column name="refresh_token_validity" type="text">
+			</column>
+			<column name="additional_information" type="text">
+			</column>
+			<column name="autoaprove" type="text">
+			</column>
+		</createTable>
+
+
+		<!-- ROLES table -->
+		<createTable tableName="roles">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="role" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<!-- SHARE table -->
+		<createTable tableName="share">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="message" type="varchar(255)">
+			</column>
+			<column name="file_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- USER table -->
+		<createTable tableName="user">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" primaryKeyName="id" />
+			</column>
+			<column name="email" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="name" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="picture" type="binary">
+				<constraints nullable="true" />
+			</column>
+			<column name="surname" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+			<column name="accstats_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="password" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="role_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+
+		<!-- USER_SHARE table -->
+		<createTable tableName="user_share">
+			<column name="id" type="int" autoIncrement="true" startWith="100">
+				<constraints nullable="false" />
+			</column>
+			<column name="user_id" type="int">
+				<constraints nullable="false" />
+			</column>
+			<column name="share_id" type="int">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+
+		<!-- CONSTRAINTS -->
+		<!-- Primary keys -->
+		<addPrimaryKey columnNames="id" constraintName="pk_item_action"
+			schemaName="public" tableName="item_action" />
+		<addPrimaryKey columnNames="id" constraintName="pk_file_version"
+			schemaName="public" tableName="file_version" />
+		<addPrimaryKey columnNames="id" constraintName="pk_file"
+			schemaName="public" tableName="file" />
+		<addPrimaryKey columnNames="id" constraintName="pk_acc_stats"
+			schemaName="public" tableName="acc_stats" />
+		<addPrimaryKey columnNames="id" constraintName="pk_admin"
+			schemaName="public" tableName="admin" />
+		<addPrimaryKey columnNames="id" constraintName="pk_directory"
+			schemaName="public" tableName="directory" />
+		<addPrimaryKey columnNames="id" constraintName="pk_news"
+			schemaName="public" tableName="news" />
+		<addPrimaryKey columnNames="client_id" constraintName="pk_oauth_client_details"
+			schemaName="public" tableName="oauth_client_details" />
+		<addPrimaryKey columnNames="id" constraintName="pk_roles"
+			schemaName="public" tableName="roles" />
+		<addPrimaryKey columnNames="id" constraintName="pk_share"
+			schemaName="public" tableName="share" />
+		<addPrimaryKey columnNames="id" constraintName="pk_user"
+			schemaName="public" tableName="user" />
+		<addPrimaryKey columnNames="id" constraintName="pk_user_share"
+			schemaName="public" tableName="user_share" />
+		<addPrimaryKey columnNames="id" constraintName="pk_file_category"
+			schemaName="public" tableName="file_category" />
+
+		<!-- Unique constraints -->
+		<addUniqueConstraint columnNames="category_name"
+			constraintName="_idx_unique" deferrable="true" initiallyDeferred="true"
+			schemaName="public" tableName="file_category" />
+		<addUniqueConstraint columnNames="email"
+			constraintName="user_email_idx_unique" deferrable="true"
+			initiallyDeferred="true" schemaName="public" tableName="user" />
+
+		<!-- Foreign Keys -->
+		<addForeignKeyConstraint baseColumnNames="user_id"
+			baseTableName="directory" constraintName="fk_directory_user"
+			deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="user" />
+
+		<addForeignKeyConstraint baseColumnNames="parent_id"
+			baseTableName="file" constraintName="fk_file_parent" deferrable="true"
+			initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
+			referencedColumnNames="id" referencedTableName="directory" />
+
+		<addForeignKeyConstraint baseColumnNames="category_id"
+			baseTableName="file" constraintName="fk_file_category" deferrable="true"
+			initiallyDeferred="true" onDelete="SET NULL" onUpdate="RESTRICT"
+			referencedColumnNames="id" referencedTableName="file_category" />
+
+		<addForeignKeyConstraint baseColumnNames="user_id"
+			baseTableName="file" constraintName="fk_file_user" deferrable="true"
+			onUpdate="CASCADE" initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="user" />
+
+		<addForeignKeyConstraint baseColumnNames="file_id"
+			baseTableName="file_version" constraintName="fk_file_version_file"
+			deferrable="true" initiallyDeferred="true" onDelete="RESTRICT"
+			onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="file" />
+
+		<addForeignKeyConstraint baseColumnNames="directory_id"
+			baseTableName="item_action" constraintName="fk_item_action_dir"
+			deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="directory" />
+
+		<addForeignKeyConstraint baseColumnNames="file_id"
+			baseTableName="item_action" constraintName="fk_item_action_file"
+			deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="file" />
+
+		<addForeignKeyConstraint baseColumnNames="admin_id"
+			baseTableName="news" constraintName="fk_news_admin" deferrable="true"
+			onDelete="CASCADE" onUpdate="CASCADE" initiallyDeferred="true"
+			referencedColumnNames="id" referencedTableName="admin" />
+
+		<addForeignKeyConstraint baseColumnNames="file_id"
+			baseTableName="share" constraintName="fk_file_share" deferrable="true"
+			initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
+			referencedColumnNames="id" referencedTableName="file" />
+
+		<addForeignKeyConstraint baseColumnNames="role_id"
+			baseTableName="user" constraintName="fk_user_role" deferrable="true"
+			initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="admin" />
+
+		<addForeignKeyConstraint baseColumnNames="accstats_id"
+			baseTableName="user" constraintName="fk_user_accstats" deferrable="true"
+			onDelete="RESTRICT" onUpdate="CASCADE" initiallyDeferred="true"
+			referencedColumnNames="id" referencedTableName="acc_stats" />
+
+		<addForeignKeyConstraint baseColumnNames="share_id"
+			baseTableName="user_share" constraintName="fk_user_share_share"
+			deferrable="true" onDelete="RESTRICT" onUpdate="CASCADE"
+			initiallyDeferred="true" referencedColumnNames="id"
+			referencedTableName="share" />
+
+		<addForeignKeyConstraint baseColumnNames="user_id"
+			baseTableName="user_share" constraintName="fk_" deferrable="true"
+			onDelete="RESTRICT" onUpdate="CASCADE" initiallyDeferred="true"
+			referencedColumnNames="id" referencedTableName="user" />
+	</changeSet>
+
+	<changeSet id="tag-1.0" author="andrei">
+		<tagDatabase tag="1.0" />
+	</changeSet>
+</databaseChangeLog>

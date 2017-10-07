@@ -104,7 +104,7 @@ ALTER TABLE directory_seq OWNER TO postgres;
 CREATE TABLE directory (
     id integer DEFAULT nextval('directory_seq'::regclass) NOT NULL,
     name character varying NOT NULL,
-    parent integer,
+    parent_id integer,
     user_id integer NOT NULL,
     path character varying NOT NULL
 );
@@ -135,8 +135,8 @@ ALTER TABLE file_seq OWNER TO postgres;
 CREATE TABLE file (
     id integer DEFAULT nextval('file_seq'::regclass) NOT NULL,
     name character varying NOT NULL,
-    parent integer NOT NULL,
-    category integer NOT NULL,
+    parent_id integer NOT NULL,
+    category_id integer NOT NULL,
     upload_time timestamp with time zone DEFAULT ('now'::text)::date NOT NULL,
     user_id integer NOT NULL,
     version integer NOT NULL,
@@ -199,8 +199,8 @@ CREATE TABLE file_version (
     id integer DEFAULT nextval('file_ver_seq'::regclass) NOT NULL,
     id_file integer NOT NULL,
     name character varying NOT NULL,
-    parent integer NOT NULL,
-    category integer NOT NULL,
+    parent_id integer NOT NULL,
+    category_id integer NOT NULL,
     upload_time timestamp without time zone NOT NULL,
     version integer NOT NULL,
     user_id integer NOT NULL
@@ -229,7 +229,7 @@ ALTER TABLE itemaction_seq OWNER TO postgres;
 -- Name: itemaction; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE itemaction (
+CREATE TABLE item_action (
     id integer DEFAULT nextval('itemaction_seq'::regclass) NOT NULL,
     action_type character varying NOT NULL,
     action_time timestamp with time zone DEFAULT ('now'::text)::date NOT NULL,

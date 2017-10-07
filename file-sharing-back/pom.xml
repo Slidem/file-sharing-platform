@@ -17,6 +17,7 @@
 		<module>file-sharing-back-rest</module>
 		<module>file-sharing-back-app</module>
 		<module>file-sharing-back-client</module>
+		<module>file-sharing-back-db</module>
 	</modules>
 
 	<dependencyManagement>
@@ -78,9 +79,9 @@
 				<version>5.2.6.Final</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.postgresql</groupId>
-			    <artifactId>postgresql</artifactId>
-			    <version>9.4.1212</version>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>9.4.1212</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -148,7 +149,13 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+	</build>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>

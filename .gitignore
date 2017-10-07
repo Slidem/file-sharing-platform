@@ -20,3 +20,14 @@
 /file-sharing-front/file-sharing-front-webapp/.settings/*.xml
 /file-sharing-front/file-sharing-front-webapp/.settings/*.container
 /file-sharing-front/file-sharing-front-webapp/.settings/*.name
+/.recommenders/
+/file-sharing-auth/file-sharing-auth-app/.settings/org.eclipse.wst.common.component
+/file-sharing-auth/file-sharing-auth-app/.settings/org.eclipse.wst.common.project.facet.core.xml
+/file-sharing-auth/file-sharing-auth-core/.settings/org.eclipse.wst.common.component
+/file-sharing-auth/file-sharing-auth-core/.settings/org.eclipse.wst.common.project.facet.core.xml
+/file-sharing-back/file-sharing-back-app/.settings/org.eclipse.wst.common.component
+/file-sharing-back/file-sharing-back-app/.settings/org.eclipse.wst.common.project.facet.core.xml
+/file-sharing-back/file-sharing-back-core/.settings/org.eclipse.wst.common.component
+/file-sharing-back/file-sharing-back-core/.settings/org.eclipse.wst.common.project.facet.core.xml
+/file-sharing-common/.settings/org.eclipse.wst.common.component
+/file-sharing-common/.settings/org.eclipse.wst.common.project.facet.core.xml
