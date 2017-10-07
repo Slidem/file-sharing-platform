@@ -16,8 +16,6 @@ import com.file.sharing.common.user.AccountType;
 @JsonInclude(Include.NON_NULL)
 public class UserDTO {
 
-	private static final long serialVersionUID = 8678456917242793969L;
-
 	private Integer id;
 
 	private String name;
@@ -74,8 +72,7 @@ public class UserDTO {
 		return password;
 	}
 
-	// ------------------------------- BUILDER
-	// ---------------------------------------
+	// ------------------------------- BUILDER ---------------------
 
 	/**
 	 * @author Alexandru

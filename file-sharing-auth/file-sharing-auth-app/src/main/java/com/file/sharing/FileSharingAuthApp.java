@@ -8,7 +8,6 @@ import static java.lang.System.getProperty;
 import java.util.Properties;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.file.sharing.config.FileSharingAuthPropertiesConfig;
@@ -19,7 +18,6 @@ import com.file.sharing.controllers.ControllerPackageScan;
  *
  */
 @SpringBootApplication(scanBasePackageClasses = { FileSharingAuthPropertiesConfig.class, ControllerPackageScan.class })
-@EnableAutoConfiguration
 public class FileSharingAuthApp {
 
 	public static void main(String[] args) {
@@ -35,7 +33,7 @@ public class FileSharingAuthApp {
 		String springProfile = System.getProperty(SPRING_ACTIVE_PROFILE);
 		setAppConfig(app, PROFILE_PROD.equals(springProfile) ? getProperty(SPRING_CONFIG_FILE) : defaultPropertiesPath);
 
-		app.run(args);
+ 		app.run(args);
 	}
 
 	private static void setAppConfig(SpringApplication app, String path) {

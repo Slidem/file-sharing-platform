@@ -47,8 +47,17 @@ function submitFailureHandler(data){
 	$('#signUpErrorModal').modal('show');	
 }
 
+function setUpLoginRedirectLink(){
+	var url = windows.location.href;
+	var urlParts = url.split('/');
+	var signUpPath = urlParts[urlParts.length-1];
+	var loginUrl = url.replace(signUpPath, 'login');
+	$('#login_link').prop('href', loginUrl);
+}
+
 //ON DOCUMENT READY
 $(function(){
+	// validator setup
 	$('#signUpForm').validator();
 	$("#signUpForm").validator().on('submit', function(e){
 		if(e.isDefaultPrevented()){
@@ -57,7 +66,9 @@ $(function(){
 			submitForm(e);
 		}
 	});
+	//login and login link setup
 	setUpLoginButton('login_button');
+	setUpLoginRedirectLink();
 });
 
 

@@ -6,7 +6,7 @@ package com.file.sharing.constants;
  */
 public final class FileSharingAuthConstants {
 
-	public static final String SPRING_ACTIVE_PROFILE = "spring.active.profile";
+	public static final String SPRING_ACTIVE_PROFILE = "spring.profiles.active";
 
 	public static final String SPRING_CONFIG_FILE = "config.file";
 
@@ -17,7 +17,7 @@ public final class FileSharingAuthConstants {
 	/**
 	 * Private constructor. This is a constant class
 	 */
-	private FileSharingAuthConstants () {
+	private FileSharingAuthConstants() {
 	}
 
 }

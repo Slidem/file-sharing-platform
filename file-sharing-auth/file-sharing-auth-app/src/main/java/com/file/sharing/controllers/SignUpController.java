@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ import com.file.sharing.service.FileSharingUserService;
 @RestController
 @RequestMapping("/register")
 public class SignUpController {
+
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private UserDtoFactory userDtoFactory;
@@ -56,11 +60,14 @@ public class SignUpController {
 
 	@ExceptionHandler({ Exception.class })
 	public ResponseEntity<ErrorDTO> handleException(Exception e) {
+		logger.info(e.getMessage(), e);
 		return new ResponseEntity<>(getErrorDTO(e), INTERNAL_SERVER_ERROR);
 	}
 
 	private ErrorDTO getErrorDTO(UserEmailAlreadyInUseException e) {
-		return new ErrorDTO(FORBIDDEN.value(), "User email " + e.getEmail() + " already exists.");
+		String message = "User email " + e.getEmail() + " already exists.";
+		logger.debug(message, e);
+		return new ErrorDTO(FORBIDDEN.value(), message);
 	}
 
 	private ErrorDTO getErrorDTO(Exception e) {
