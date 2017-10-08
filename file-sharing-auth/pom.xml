@@ -22,6 +22,7 @@
 		<jquery.version>3.2.1</jquery.version>
 		<bootstrap.version>3.3.7</bootstrap.version>
 		<nekoHTML.version>1.9.22</nekoHTML.version>
+		
 	</properties>
 
 	<dependencyManagement>
