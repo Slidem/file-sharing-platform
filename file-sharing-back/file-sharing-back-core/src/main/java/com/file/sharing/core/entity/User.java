@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -38,15 +39,17 @@ public class User {
 
 	@Column(unique = true)
 	private String email;
-
+	
+	@Lob
+	@Column(columnDefinition="bytea")
 	private byte[] picture;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_accstats")
+	@JoinColumn(name = "accstats_id")
 	private AccStats accStats;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_role")
+	@JoinColumn(name = "role_id")
 	private Role role;
 
 	public User() {

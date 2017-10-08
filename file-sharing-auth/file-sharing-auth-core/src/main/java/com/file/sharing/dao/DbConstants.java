@@ -33,13 +33,13 @@ public final class DbConstants {
 
 		public static final String EMAIL_COLUMN = "email";
 
-		public static final String ROLE_COLUMN = "id_role";
+		public static final String ROLE_COLUMN = "role_id";
 
 		public static final String NAME_COLUMN = "name";
 
 		public static final String SURNAME_COLUMN = "surname";
 
-		public static final String ACCOUNT_STATUS_COLUMN = "id_accstats";
+		public static final String ACCOUNT_STATUS_COLUMN = "accstats_id";
 
 		public static final String PASSWORD_COLUMN = "password";
 

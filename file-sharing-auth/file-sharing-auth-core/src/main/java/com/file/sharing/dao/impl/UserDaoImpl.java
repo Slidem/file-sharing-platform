@@ -31,7 +31,7 @@ public class UserDaoImpl implements UserDAO {
 	private static final String INSERT_USER_SQL;
 
 	static {
-		SELECT_BASE_USER_SQL_FORMAT = "SELECT u.id, u.email, u.id_role, u.password from %s as u WHERE u.%s = ?";
+		SELECT_BASE_USER_SQL_FORMAT = "SELECT u.id, u.email, u.role_id, u.password from %s as u WHERE u.%s = ?";
 		INSERT_USER_SQL = "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)";
 	}
 
