@@ -5,7 +5,7 @@
 	<changeSet id="create_tables" author="andrei">
 		<!-- ACCSTATS table -->
 		<createTable tableName="acc_stats">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_acc_stats.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="type" type="varchar(255)">
@@ -18,7 +18,7 @@
 
 		<!-- ADMIN table -->
 		<createTable tableName="admin">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_admin.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="username" type="varchar(35)">
@@ -34,7 +34,7 @@
 
 		<!-- DIRECTORY table -->
 		<createTable tableName="directory">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_directory.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="name" type="varchar(255)">
@@ -53,7 +53,7 @@
 
 		<!--FILE table -->
 		<createTable tableName="file">
-			<column name="id" type="int">
+			<column name="id" type="int" valueComputed="seq_id_file.NEXTVAL">
 				<constraints nullable="false" />
 			</column>
 			<column name="name" type="varchar(255)">
@@ -82,7 +82,7 @@
 
 		<!-- FILE_CATEGORY table -->
 		<createTable tableName="file_category">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_file_category.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="extension" type="varchar(20)">
@@ -96,7 +96,7 @@
 
 		<!-- FILE_VERSION table -->
 		<createTable tableName="file_version">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_file_version.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="file_id" type="int">
@@ -125,7 +125,7 @@
 
 		<!-- ITEM_ACTION table -->
 		<createTable tableName="item_action">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_item_action.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="action_type" type="varchar(50)">
@@ -145,7 +145,7 @@
 
 		<!-- NEWS table -->
 		<createTable tableName="news">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_news.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="message" type="longvarchar">
@@ -191,8 +191,8 @@
 
 
 		<!-- ROLES table -->
-		<createTable tableName="roles">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+		<createTable tableName="roles" valueComputed="seq_id_roles.NEXTVAL">
+			<column name="id" type="int" valueComputed="seq_id_.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="role" type="varchar(50)">
@@ -202,7 +202,7 @@
 
 		<!-- SHARE table -->
 		<createTable tableName="share">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_share.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="message" type="varchar(255)">
@@ -215,7 +215,7 @@
 
 		<!-- USER table -->
 		<createTable tableName="user">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_user.NEXTVAL" startWith="100">
 				<constraints nullable="false" primaryKeyName="id" />
 			</column>
 			<column name="email" type="varchar(255)">
@@ -244,7 +244,7 @@
 
 		<!-- USER_SHARE table -->
 		<createTable tableName="user_share">
-			<column name="id" type="int" autoIncrement="true" startWith="100">
+			<column name="id" type="int" valueComputed="seq_id_user_share.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="user_id" type="int">
@@ -254,6 +254,47 @@
 				<constraints nullable="false" />
 			</column>
 		</createTable>
+
+		<!-- Sequences -->
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_acc_stats"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_admin"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_directory"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_file"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_file_category"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_file_version"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_item_action"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_news"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_oauth_client_details"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_roles"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_share"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_id_user"
+			startValue="100" />
+		<createSequence cycle="true" incrementBy="1" minValue="10"
+			ordered="true" schemaName="public" sequenceName="seq_user_share"
+			startValue="100" />
 
 		<!-- CONSTRAINTS -->
 		<!-- Primary keys -->
