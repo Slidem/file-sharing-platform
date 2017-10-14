@@ -3,20 +3,16 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-
-	<changeSet id="insert_user_roles" author="Alexandru Mihai">
-		<comment>Insert user roles in table roles</comment>
-		<insert tableName="roles" schemaName="public">
-			<column name="id" value="1" />
-			<column name="role" value="GUEST" />
-		</insert>
-		<insert tableName="roles" schemaName="public">
-			<column name="id" value="2" />
-			<column name="role" value="USER" />
-		</insert>
-		<insert tableName="roles" schemaName="public">
-			<column name="id" value="3" />
-			<column name="role" value="ADMIN" />
+	<changeSet id="insert_default_oauth_client" author="Alexandru Mihai">
+		<comment>Insert default oauth client</comment>
+		<insert tableName="oauth_client_details" schemaName="public">
+			<column name="client_id" value="CL1" />
+			<column name="client_secret" value="trustedClientCL1" />
+			<column name="scope" value="filesharing" />
+			<column name="authorized_grant_types" value="authorization_code,refresh_token,password,client_credentials" />
+			<column name="access_token_validity" value="36000" />
+			<column name="refresh_token_validity" value="36000" />
+			<column name="autoapprove" value="true" />
 		</insert>
 	</changeSet>
 </databaseChangeLog>

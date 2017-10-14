@@ -1,5 +1,6 @@
 package com.file.sharing.back.app.config;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -23,7 +24,7 @@ public class OAuthResourceServerConfig extends ResourceServerConfigurerAdapter {
 		 .and()
 		 .authorizeRequests()
 		 .anyRequest()
-		 .access("#oauth2.hasScope('read, write')");
+		 .access("#oauth2.hasScope('filesharing')");
 	}
 
 	@Primary
@@ -34,6 +35,12 @@ public class OAuthResourceServerConfig extends ResourceServerConfigurerAdapter {
 		tokenService.setClientId(oauthProperties.getClientId());
 		tokenService.setClientSecret(oauthProperties.getClientSecret());
 		return tokenService;
+	}
+	
+	@Bean
+	@ConfigurationProperties(prefix="oauth")
+	public OauthProperties oauthProperties() {
+		return new OauthProperties();
 	}
 
 }

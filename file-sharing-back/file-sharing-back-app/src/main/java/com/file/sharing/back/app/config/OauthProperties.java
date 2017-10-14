@@ -1,14 +1,9 @@
 package com.file.sharing.back.app.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Repository;
-
 /**
  * @author slidem
  *
  */
-@Repository
-@ConfigurationProperties(prefix = "oauth")
 public class OauthProperties {
 
 	private String checkTokenUrl;
@@ -28,5 +23,21 @@ public class OauthProperties {
 	public String getClientSecret() {
 		return clientSecret;
 	}
+
+	public void setCheckTokenUrl(String checkTokenUrl) {
+		this.checkTokenUrl = checkTokenUrl;
+	}
+
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
+	}
+
+	public void setClientSecret(String clientSecret) {
+		this.clientSecret = clientSecret;
+	}
+	
+	
+	
+	
 
 }
