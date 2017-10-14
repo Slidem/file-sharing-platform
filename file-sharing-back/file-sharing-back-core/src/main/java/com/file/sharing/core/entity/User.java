@@ -27,8 +27,7 @@ import org.springframework.context.annotation.Lazy;
 public class User {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
-	@SequenceGenerator(name = "user_gen", sequenceName = "seq_id_user", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	private String name;

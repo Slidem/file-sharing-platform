@@ -20,12 +20,11 @@ import com.file.sharing.common.user.AccountType;
  *
  */
 @Entity
-@Table(name = "acc_stats")
+@Table(name = "acc_stats", schema="public")
 public class AccStats {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acc_sts")
-	@SequenceGenerator(name = "seq_acc_sts", sequenceName = "seq_id_acc_stats", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@Column(name = "type")

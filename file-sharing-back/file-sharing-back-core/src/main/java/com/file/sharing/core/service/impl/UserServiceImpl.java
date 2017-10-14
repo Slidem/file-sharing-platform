@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.file.sharing.core.business.UserBusiness;
@@ -16,6 +17,12 @@ import com.file.sharing.core.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private UserBusiness userBusiness;
+	
+	
+	@Autowired
+	public UserServiceImpl(UserBusiness userBusiness) {
+		this.userBusiness = userBusiness;
+	}
 
 	@Override
 	public UserInfo getUserInfoByEmail(String email) {
