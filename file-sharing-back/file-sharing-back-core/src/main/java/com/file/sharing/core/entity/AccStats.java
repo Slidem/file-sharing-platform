@@ -24,8 +24,8 @@ import com.file.sharing.common.user.AccountType;
 public class AccStats {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "acc_sts_gen")
-	@SequenceGenerator(name = "acc_sts_gen", sequenceName = "acc_sts_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_acc_sts")
+	@SequenceGenerator(name = "seq_acc_sts", sequenceName = "seq_id_acc_stats", allocationSize = 1)
 	private Integer id;
 
 	@Column(name = "type")
@@ -73,4 +73,10 @@ public class AccStats {
 		return id;
 	}
 
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
+	
 }

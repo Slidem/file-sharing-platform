@@ -22,7 +22,6 @@
 
 	<build>
 		<plugins>
-			<!-- Use Java 1.7 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

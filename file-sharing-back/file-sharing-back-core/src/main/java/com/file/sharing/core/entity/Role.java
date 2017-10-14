@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import com.file.sharing.common.security.Roles;
 
 @Entity
-@Table(name = "roles", schema = "public")
+@Table(name = "roles")
 public class Role {
 
 	@Id

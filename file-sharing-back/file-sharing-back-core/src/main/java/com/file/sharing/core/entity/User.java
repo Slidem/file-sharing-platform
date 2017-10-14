@@ -21,14 +21,14 @@ import org.springframework.context.annotation.Lazy;
  *
  */
 @Entity
-@Table(name = "user", schema = "public") // TODO Add default schema and remove prefix (or schema declaration)
+@Table(name = "user") // TODO Add default schema and remove prefix (or schema declaration)
 @Lazy(value = false) // Because there is a 1:1 relation, there will not be a significant stress for
 // the DB even in get all users scenario
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_gen")
-	@SequenceGenerator(name = "user_gen", sequenceName = "public.user_seq", allocationSize = 1)
+	@SequenceGenerator(name = "user_gen", sequenceName = "seq_id_user", allocationSize = 1)
 	private Integer id;
 
 	private String name;
