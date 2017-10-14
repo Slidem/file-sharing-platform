@@ -191,7 +191,7 @@
 
 
 		<!-- ROLES table -->
-		<createTable tableName="roles" valueComputed="seq_id_roles.NEXTVAL">
+		<createTable tableName="roles">
 			<column name="id" type="int" valueComputed="seq_id_.NEXTVAL" startWith="100">
 				<constraints nullable="false" />
 			</column>
@@ -256,44 +256,44 @@
 		</createTable>
 
 		<!-- Sequences -->
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_acc_stats"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_acc_stats"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_admin"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_admin"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_directory"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_directory"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_file"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_file"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_file_category"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_file_category"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_file_version"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_file_version"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_item_action"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_item_action"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_news"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_news"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_oauth_client_details"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_oauth_client_details"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_roles"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_roles"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_share"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_share"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_id_user"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_id_user"
 			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="10"
-			ordered="true" schemaName="public" sequenceName="seq_user_share"
+		<createSequence cycle="true" incrementBy="1" minValue="100"
+			 schemaName="public" sequenceName="seq_user_share"
 			startValue="100" />
 
 		<!-- CONSTRAINTS -->
