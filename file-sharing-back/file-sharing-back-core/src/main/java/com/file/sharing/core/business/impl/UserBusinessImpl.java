@@ -35,13 +35,18 @@ public class UserBusinessImpl implements UserBusiness {
 	public Optional<UserInfo> getUserInfoByUserId(Integer userId) {
 		return getUserInfo(() -> usersDao.find(Objects.requireNonNull(userId)));
 	}
-	
+
 	private Optional<UserInfo> getUserInfo(Supplier<Optional<User>> userEntitySupplier) {
 		Optional<User> user = userEntitySupplier.get();
 		if (user.isPresent()) {
 			return Optional.of(userInfoFactory.fromEntity(user.get()));
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	public void saveUser(User user) {
+		usersDao.save(user);
 	}
 
 }

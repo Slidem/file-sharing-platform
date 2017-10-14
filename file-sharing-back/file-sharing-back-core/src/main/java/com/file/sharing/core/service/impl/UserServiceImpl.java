@@ -7,7 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.file.sharing.common.security.Roles;
 import com.file.sharing.core.business.UserBusiness;
+import com.file.sharing.core.entity.User;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.UserService;
@@ -17,8 +19,7 @@ import com.file.sharing.core.service.UserService;
 public class UserServiceImpl implements UserService {
 
 	private UserBusiness userBusiness;
-	
-	
+
 	@Autowired
 	public UserServiceImpl(UserBusiness userBusiness) {
 		this.userBusiness = userBusiness;
@@ -42,5 +43,13 @@ public class UserServiceImpl implements UserService {
 		return userInfo.get();
 	}
 
+	@Override
+	public void saveUser(User user) {
+		userBusiness.saveUser(user);
+	}
+
+	public Role getRole(Roles role) {
+
+	}
 
 }

@@ -384,7 +384,7 @@
 		<addForeignKeyConstraint baseColumnNames="role_id"
 			baseTableName="user" constraintName="fk_user_role" deferrable="true"
 			initiallyDeferred="true" referencedColumnNames="id"
-			referencedTableName="admin" />
+			referencedTableName="roles" />
 
 		<addForeignKeyConstraint baseColumnNames="accstats_id"
 			baseTableName="user" constraintName="fk_user_accstats" deferrable="true"
