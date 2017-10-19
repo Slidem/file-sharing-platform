@@ -10,6 +10,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import com.file.sharing.business.FileSharingPassEncoder;
 
+/**
+ * @author Alexandru Mihai
+ * @created Oct 15, 2017
+ */
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -26,20 +30,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/signUp", "/register", "/static/**/*.*", "/bootstrap/**", "/jquery/**");
+		web.ignoring().antMatchers("/signUp", 
+				"/register/login",
+				"/register/login*",
+				"/register/login/**",
+				"/register/login**",
+				"/register", 
+				"/static/**/*.*",
+				"/bootstrap/**", 
+				"/jquery/**");
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		//@formatter:off
         http
-                .formLogin().loginPage("/login").permitAll()
+				.formLogin().loginPage("/login").permitAll()
                 .and()
                 .requestMatchers()
-                .antMatchers("/", "/login", "/oauth/authorize", "/oauth/confirm_access")
+				.antMatchers("/", "/login", "/oauth/authorize", "/oauth/confirm_access")
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
-        //@formatter:on
 	}
 }

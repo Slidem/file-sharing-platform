@@ -9,6 +9,8 @@
 <script src="jquery/3.2.1/jquery.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="css/login/login.css" />
+<script src="js/login/login.js"></script>
+
 </head>
 <body class="container-fluid">
 
@@ -35,11 +37,13 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="/file-sharing-auth/signUp"> Don't have an user? Sign up!</a>
+						<a id="register_link" href="#"> Don't have an user? Sign up!</a>
 					</div>
 				</div>
 				<button type="submit" class="btn btn-primary col-md-12"
 					id="submit_button">Login</button>
+			</form>
+			<form id="register_form" method="get" action="signUp">
 			</form>
 		</div>
 	</div>
