@@ -1,6 +1,7 @@
 package com.file.sharing.jms.commons.object;
 
 import java.io.Serializable;
+import java.time.Instant;
 
 /**
  * @author Alexandru Mihai
@@ -17,10 +18,12 @@ public class JmsUserInfo implements Serializable {
 
 	private String email;
 
-	public JmsUserInfo(Integer id, String email) {
-		super();
+	private Instant creationTime;
+
+	public JmsUserInfo(Integer id, String email, Instant creationTime) {
 		this.id = id;
 		this.email = email;
+		this.creationTime = creationTime;
 	}
 
 	public Integer getId() {
@@ -37,6 +40,14 @@ public class JmsUserInfo implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public Instant getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Instant creationTime) {
+		this.creationTime = creationTime;
 	}
 
 }

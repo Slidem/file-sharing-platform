@@ -25,10 +25,10 @@ public class JmsSender {
 	}
 
 	/**
-	 * @param destination
-	 * @param message
+	 * @param destination topic/queue where the message will be puplished
+	 * @param message the published message
 	 */
-	public void send(Destination destination, Object message) {
+	public void send(Destination destination, String message) {
 		logger.info("Sending message {} to destination: {}", message, destination);
 		jmsTemplate.convertAndSend(destination, message);
 	}
