@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.file.sharing.common.dto.UserDTO;
-import com.file.sharing.common.security.Roles;
 import com.file.sharing.common.user.AccountStatus;
 import com.file.sharing.common.user.AccountType;
 import com.file.sharing.core.entity.AccStats;
-import com.file.sharing.core.entity.Role;
 import com.file.sharing.core.entity.User;
 import com.file.sharing.core.exception.FileSharingException;
 import com.file.sharing.core.objects.UserInfo;
@@ -64,7 +62,7 @@ public class UserRestController {
 		user.setSurname("DummySurname");
 		user.setAccStats(new AccStats(AccountType.REGULAR, AccountStatus.ACTIVE));
 		user.setPassword("parola");
-		user.setRole(new Role(1, Roles.ROLE_USER));
+		user.setRole();
 		userService.saveUser(user);
 	}
 

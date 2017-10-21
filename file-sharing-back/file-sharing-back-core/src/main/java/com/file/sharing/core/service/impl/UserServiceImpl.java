@@ -7,7 +7,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.file.sharing.common.security.Roles;
 import com.file.sharing.core.business.UserBusiness;
 import com.file.sharing.core.entity.User;
 import com.file.sharing.core.exception.UserNotFoundException;
@@ -48,8 +47,8 @@ public class UserServiceImpl implements UserService {
 		userBusiness.saveUser(user);
 	}
 
-	public Role getRole(Roles role) {
-
-	}
+	// public Role getRole(Roles role) {
+	// return
+	// }
 
 }
