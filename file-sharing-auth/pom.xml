@@ -22,7 +22,7 @@
 		<jquery.version>3.2.1</jquery.version>
 		<bootstrap.version>3.3.7</bootstrap.version>
 		<nekoHTML.version>1.9.22</nekoHTML.version>
-		
+		<postgresql.version>42.1.4</postgresql.version>
 	</properties>
 
 	<dependencyManagement>
@@ -51,12 +51,21 @@
 				<artifactId>nekohtml</artifactId>
 				<version>${nekoHTML.version}</version>
 			</dependency>
+			
+			<!-- DB -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${postgresql.version}</version>
+			</dependency>
+			
 			<!-- internal -->
 			<dependency>
 				<groupId>com.file.sharing.auth</groupId>
 				<artifactId>file-sharing-auth-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			
 		</dependencies>
 	</dependencyManagement>
 </project>
