@@ -21,10 +21,7 @@ function setUpLoginButton(buttonId){
 	var button  = $('#' + buttonId);
 	button.click(function(){
 		$('#email_parameter').val($('#email').val());
-		var form = $('#loginForm');
-		form.attr("method", "get");
-		form.attr("action", "login");
-		form.submit();	
+		$('#loginForm').submit();	
 	});
 }
 
@@ -48,11 +45,10 @@ function submitFailureHandler(data){
 }
 
 function setUpLoginRedirectLink(){
-	var url = windows.location.href;
-	var urlParts = url.split('/');
-	var signUpPath = urlParts[urlParts.length-1];
-	var loginUrl = url.replace(signUpPath, 'login');
-	$('#login_link').prop('href', loginUrl);
+	$("#login_link").click(function(){
+		$('#loginForm').submit();
+	});
+
 }
 
 //ON DOCUMENT READY

@@ -14,6 +14,8 @@ public final class FileSharingAuthConstants {
 
 	public static final String PROFILE_PROD = "prod";
 
+	public static final String AUTH_INFO_ATTR_NAME = "authorizationInfo";
+
 	/**
 	 * Private constructor. This is a constant class
 	 */
