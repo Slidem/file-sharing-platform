@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.context.annotation.Lazy;
@@ -21,7 +20,7 @@ import org.springframework.context.annotation.Lazy;
  *
  */
 @Entity
-@Table(name = "user") // TODO Add default schema and remove prefix (or schema declaration)
+@Table(name = "user", schema = "public") // TODO Add default schema and remove prefix (or schema declaration)
 @Lazy(value = false) // Because there is a 1:1 relation, there will not be a significant stress for
 // the DB even in get all users scenario
 public class User {

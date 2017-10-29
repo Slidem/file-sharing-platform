@@ -38,12 +38,13 @@ public final class AuthorizationInfo implements Serializable {
 
 	private String queryParams;
 
+
 	public AuthorizationInfo(final Map<String, String[]> requestParameters) {
-		this.redirectUri = requestParameters.get(REDIRECT_URI_PARAM)[0];
-		this.clientId = requestParameters.get(CLIENT_ID_PARAM)[0];
-		this.responseType = requestParameters.get(RESPONSE_TYPE_PARAM)[0];
-		this.scope = requestParameters.get(SCOPE_PARAM)[0];
-		this.state = requestParameters.get(STATE_PARAM)[0];
+		this.redirectUri = getIfPresent(requestParameters.get(REDIRECT_URI_PARAM));
+		this.clientId = getIfPresent(requestParameters.get(CLIENT_ID_PARAM));
+		this.responseType = getIfPresent(requestParameters.get(RESPONSE_TYPE_PARAM));
+		this.scope = getIfPresent(requestParameters.get(SCOPE_PARAM));
+		this.state = getIfPresent(requestParameters.get(STATE_PARAM));
 		this.queryParams = getAsQueryParamString();
 	}
 
@@ -73,6 +74,10 @@ public final class AuthorizationInfo implements Serializable {
 
 	public void setQueryParams(String queryParams) {
 		this.queryParams = queryParams;
+	}
+
+	private String getIfPresent(String[] parts) {
+		return parts == null ? "" : parts[0];
 	}
 
 	private String getAsQueryParamString() {
