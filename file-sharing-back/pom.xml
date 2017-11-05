@@ -25,6 +25,7 @@
 		<javax.validation.api.version>2.0.0.Final</javax.validation.api.version>
 		<postgresql.version>9.4.1212</postgresql.version>
 		<liquibase.version>3.5.3</liquibase.version>
+		<commons-transaction.version>1.2</commons-transaction.version>
 		<postgresql.version>42.1.4</postgresql.version>
 		<java.version>1.8</java.version>
 	</properties>
@@ -70,6 +71,11 @@
 				<groupId>org.liquibase</groupId>
 				<artifactId>liquibase-core</artifactId>
 				<version>${liquibase.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-transaction</groupId>
+				<artifactId>commons-transaction</artifactId>
+				<version>${commons-transaction.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -1,28 +1,27 @@
 package com.file.sharing.core.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.springframework.context.annotation.Lazy;
-
-/******
- * 
- * @author Alexandru
- *
+/**
+ * @author Alexandru Mihai
+ * @created Nov 4, 2017
  */
 @Entity
-@Table(name = "user", schema = "public") // TODO Add default schema and remove prefix (or schema declaration)
-@Lazy(value = false) // Because there is a 1:1 relation, there will not be a significant stress for
-// the DB even in get all users scenario
+@Table(name = "user", schema = "public")
 public class User {
 
 	@Id
@@ -42,28 +41,19 @@ public class User {
 	@Column(columnDefinition="bytea")
 	private byte[] picture;
 
-	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "accstats_id")
+	@OneToOne(fetch = FetchType.EAGER)
 	private AccStats accStats;
 
-	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "role_id")
+	@ManyToOne(fetch = FetchType.EAGER)
 	private Role role;
 
-	public User() {
-	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<DirectoryItem> directories;
 
-	public User(Integer id, String name, String surname, String password, String email, byte[] picture,
-			AccStats accStats, Role role) {
-		this.id = id;
-		this.name = name;
-		this.surname = surname;
-		this.password = password;
-		this.email = email;
-		this.picture = picture;
-		this.accStats = accStats;
-		this.role = role;
-	}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<FileItem> fileItems;
 
 	public Integer getId() {
 		return id;
@@ -129,25 +119,38 @@ public class User {
 		this.id = id;
 	}
 
+	// HashCode and Equals based on user's id and email
+
 	@Override
 	public int hashCode() {
-		return email.hashCode();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-
-		if (obj == null) {
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		}
-
-		if (!(obj instanceof User)) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		User user = (User) obj;
-		return this.email.equals(user.getEmail());
-
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
+
 
 }

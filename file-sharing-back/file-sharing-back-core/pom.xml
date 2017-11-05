@@ -28,6 +28,12 @@
 			<artifactId>file-sharing-common</artifactId>
 		</dependency>
 
+		<!-- file transaction api -->
+		<dependency>
+			<groupId>commons-transaction</groupId>
+			<artifactId>commons-transaction</artifactId>
+		</dependency>
+
 		<!-- hibernate -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

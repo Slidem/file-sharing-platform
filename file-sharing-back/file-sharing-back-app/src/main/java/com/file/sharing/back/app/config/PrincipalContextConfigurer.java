@@ -36,7 +36,6 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		builder.setUserAccountType(userInfo.getAccStatsInfo().getType());
 
 		// TODO: Set also user storage here.
-
 	}
 
 }

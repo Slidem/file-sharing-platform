@@ -21,7 +21,7 @@ public class UserInfoFactoryImpl implements UserInfoFactory {
 				.setUserId(user.getId())
 				.setName(user.getName())
 				.setSurname(user.getSurname())
-				.setRole(user.getRole().getRole())
+				.setRole(user.getRole().getRoleType())
 				.setPicture(user.getPicture())
 				.setAccStatsInfo(getAccountStatusInfo(user.getAccStats()))
 				.setEmail(user.getEmail())
