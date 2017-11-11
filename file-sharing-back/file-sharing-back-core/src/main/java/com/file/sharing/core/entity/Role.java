@@ -10,6 +10,10 @@ import javax.validation.constraints.NotNull;
 
 import com.file.sharing.common.security.Roles;
 
+/**
+ * @author Alexandru Mihai
+ * @created Nov 4, 2017
+ */
 @Entity
 @Table(name = "roles", schema = "public")
 public class Role {
@@ -20,14 +24,14 @@ public class Role {
 	@Column(name = "role", length = 50)
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Roles role;
+	private Roles roleType;
 
 	public Role() {
 	}
 
 	public Role(Integer id, Roles role) {
 		this.id = id;
-		this.role = role;
+		this.roleType = role;
 	}
 
 	public Integer getId() {
@@ -38,12 +42,13 @@ public class Role {
 		this.id = id;
 	}
 
-	public Roles getRole() {
-		return role;
+	public Roles getRoleType() {
+		return roleType;
 	}
 
-	public void setRole(Roles role) {
-		this.role = role;
+	public void setRoleType(Roles roleType) {
+		this.roleType = roleType;
 	}
+
 
 }

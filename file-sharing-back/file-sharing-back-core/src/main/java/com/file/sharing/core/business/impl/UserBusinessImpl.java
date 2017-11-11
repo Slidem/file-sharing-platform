@@ -1,6 +1,7 @@
 package com.file.sharing.core.business.impl;
 
-import java.util.Objects;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -28,12 +29,12 @@ public class UserBusinessImpl implements UserBusiness {
 
 	@Override
 	public Optional<UserInfo> getUserInfoByEmail(String email) {
-		return getUserInfo(() -> usersDao.findByEmail(Objects.requireNonNull(email)));
+		return getUserInfo(() -> usersDao.findByEmail(requireNonNull(email)));
 	}
 
 	@Override
 	public Optional<UserInfo> getUserInfoByUserId(Integer userId) {
-		return getUserInfo(() -> usersDao.find(Objects.requireNonNull(userId)));
+		return getUserInfo(() -> usersDao.find(requireNonNull(userId)));
 	}
 
 	private Optional<UserInfo> getUserInfo(Supplier<Optional<User>> userEntitySupplier) {

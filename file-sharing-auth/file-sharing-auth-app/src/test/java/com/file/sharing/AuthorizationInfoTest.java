@@ -18,7 +18,7 @@ import com.file.sharing.objects.AuthorizationInfo;
 @RunWith(MockitoJUnitRunner.class)
 public class AuthorizationInfoTest {
 
-	private static final String EXPECTED_QUERY_STRING = "client_id=CL1&redirect_uri=http://localhost:8084/file-sharing/login&response_type=code&scope=filesharing&state=5ljONP";
+	private static final String EXPECTED_QUERY_STRING = "?client_id=CL1&redirect_uri=http://localhost:8084/file-sharing/login&response_type=code&scope=filesharing&state=5ljONP";
 
 	private static final Map<String, String[]> DUMMY_PARAMETERS = new HashMap<>();
 

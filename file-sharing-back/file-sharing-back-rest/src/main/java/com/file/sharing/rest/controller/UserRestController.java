@@ -3,15 +3,13 @@ package com.file.sharing.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.file.sharing.common.dto.UserDTO;
-import com.file.sharing.core.exception.FileSharingException;
+import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.factory.UserDtoFactory;
-import com.file.sharing.rest.validators.RequestValidator;
 
 /***
  * 
@@ -22,30 +20,27 @@ import com.file.sharing.rest.validators.RequestValidator;
 @RequestMapping("/users")
 public class UserRestController {
 
+	@Autowired
 	private UserService userService;
 
-	private RequestValidator requestValidator;
-
-	private UserDtoFactory userDtoFactory;
+	@Autowired
+	private UserDtoFactory userFactory;
 
 	@Autowired
-	public UserRestController(UserService userService, RequestValidator requestValidator,
-			UserDtoFactory userDtoFactory) {
-		this.userService = userService;
-		this.requestValidator = requestValidator;
-		this.userDtoFactory = userDtoFactory;
-	}
+	private Context context;
+
 
 	/**
 	 * @param email
 	 * @return
 	 */
-	@GetMapping
-	public UserDTO getUserByEmail(@RequestParam(value = "email", required = true) String email) {
-		if (!requestValidator.isValidEmail(email)) {
-			throw new FileSharingException();
-		}
+	@GetMapping("/me")
+	public UserDTO getUser() {
+		String email = context.getUserEmail();
 		UserInfo userInfo = userService.getUserInfoByEmail(email);
-		return userDtoFactory.fromUserInfo(userInfo);
+		return userFactory.fromUserInfo(userInfo);
 	}
+	
+	
+
 }

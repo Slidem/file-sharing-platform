@@ -13,10 +13,9 @@ import javax.validation.constraints.NotNull;
 import com.file.sharing.common.user.AccountStatus;
 import com.file.sharing.common.user.AccountType;
 
-/****
- * 
- * @author Alexandru
- *
+/**
+ * @author Alexandru Mihai
+ * @created Nov 4, 2017
  */
 @Entity
 @Table(name = "acc_stats", schema = "public")

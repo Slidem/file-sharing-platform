@@ -21,11 +21,11 @@ public class UsersDaoImpl extends AbstractDaoImpl<User> implements UsersDao {
 
 	@Override
 	public Optional<User> findByEmail(String email) {
-		TypedQuery<User> query = entityManager.createQuery("from User u where u.email=:email", User.class)
-				.setParameter("email", email);
+		TypedQuery<User> query = entityManager.createQuery("from User u where u.email=:email", User.class);
+		query.setParameter("email", email);
 		User user = null;
 		try {
-			user = (User) query.getSingleResult();
+			user = query.getSingleResult();
 		} catch (NoResultException e) {
 			return Optional.empty();
 		} catch (NonUniqueResultException e) {

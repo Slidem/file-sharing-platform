@@ -46,7 +46,6 @@ public class DataSourceConfig {
 		dataSource.setUrl(dbProperties.getUrl());
 		dataSource.setUsername(dbProperties.getUsername());
 		dataSource.setPassword(dbProperties.getPassword());
-		dataSource.setSchema("public");
 		return dataSource;
 	}
 
