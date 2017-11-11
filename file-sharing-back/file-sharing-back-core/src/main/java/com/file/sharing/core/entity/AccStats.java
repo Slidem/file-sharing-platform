@@ -7,7 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +19,7 @@ import com.file.sharing.common.user.AccountType;
  *
  */
 @Entity
-@Table(name = "acc_stats", schema="public")
+@Table(name = "acc_stats", schema = "public")
 public class AccStats {
 
 	@Id
@@ -52,6 +51,14 @@ public class AccStats {
 		this.status = status;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	public AccountType getType() {
 		return type;
 	}
@@ -68,14 +75,4 @@ public class AccStats {
 		this.status = status;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	
-	
-	
 }
