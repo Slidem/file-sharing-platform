@@ -12,16 +12,10 @@
 			 schemaName="public" sequenceName="seq_id_admin"
 			startValue="100" />
 		<createSequence cycle="true" incrementBy="1" minValue="100"
-			 schemaName="public" sequenceName="seq_id_directory"
-			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="100"
-			 schemaName="public" sequenceName="seq_id_file"
+			 schemaName="public" sequenceName="seq_id_item"
 			startValue="100" />
 		<createSequence cycle="true" incrementBy="1" minValue="100"
 			 schemaName="public" sequenceName="seq_id_file_category"
-			startValue="100" />
-		<createSequence cycle="true" incrementBy="1" minValue="100"
-			 schemaName="public" sequenceName="seq_id_file_version"
 			startValue="100" />
 		<createSequence cycle="true" incrementBy="1" minValue="100"
 			 schemaName="public" sequenceName="seq_id_item_action"
@@ -76,13 +70,14 @@
 
 		<!-- DIRECTORY table -->
 		<createTable tableName="directory">
-			<column name="id" type="int" defaultValueSequenceNext="seq_id_directory" startWith="100">
+			<column name="id" type="int" defaultValueSequenceNext="seq_id_item" startWith="100">
 				<constraints nullable="false" />
 			</column>
 			<column name="name" type="varchar(255)">
 				<constraints nullable="false" />
 			</column>
 			<column name="parent_id" type="integer">
+				<constraints nullable="true" />
 			</column>
 			<column name="user_id" type="int">
 				<constraints nullable="false" />
@@ -95,7 +90,7 @@
 
 		<!--FILE table -->
 		<createTable tableName="file">
-			<column name="id" type="int" defaultValueSequenceNext="seq_id_file">
+			<column name="id" type="int" defaultValueSequenceNext="seq_id_item">
 				<constraints nullable="false" />
 			</column>
 			<column name="name" type="varchar(255)">
@@ -135,36 +130,6 @@
 			</column>
 		</createTable>
 
-
-		<!-- FILE_VERSION table -->
-		<createTable tableName="file_version">
-			<column name="id" type="int" defaultValueSequenceNext="seq_id_file_version" startWith="100">
-				<constraints nullable="false" />
-			</column>
-			<column name="file_id" type="int">
-				<constraints nullable="false" />
-			</column>
-			<column name="name" type="varchar(255)">
-				<constraints nullable="false" />
-			</column>
-			<column name="parent_id" type="int">
-				<constraints nullable="false" />
-			</column>
-			<column name="category_id" type="int">
-				<constraints nullable="false" />
-			</column>
-			<column name="upload_time" type="timestamp">
-				<constraints nullable="false" />
-			</column>
-			<column name="version" type="int">
-				<constraints nullable="false" />
-			</column>
-			<column name="path" type="longvarchar">
-				<constraints nullable="false" />
-			</column>
-		</createTable>
-
-
 		<!-- ITEM_ACTION table -->
 		<createTable tableName="item_action">
 			<column name="id" type="int" defaultValueSequenceNext="seq_id_item_action" startWith="100">
@@ -176,10 +141,7 @@
 			<column name="action_time" type="timestamp">
 				<constraints nullable="false" />
 			</column>
-			<column name="directory_id" type="int">
-				<constraints nullable="false" />
-			</column>
-			<column name="file_id" type="int">
+			<column name="item_id" type="int">
 				<constraints nullable="false" />
 			</column>
 		</createTable>
@@ -302,8 +264,6 @@
 		<!-- Primary keys -->
 		<addPrimaryKey columnNames="id" constraintName="pk_item_action"
 			schemaName="public" tableName="item_action" />
-		<addPrimaryKey columnNames="id" constraintName="pk_file_version"
-			schemaName="public" tableName="file_version" />
 		<addPrimaryKey columnNames="id" constraintName="pk_file"
 			schemaName="public" tableName="file" />
 		<addPrimaryKey columnNames="id" constraintName="pk_acc_stats"
@@ -345,6 +305,11 @@
 			baseTableName="file" constraintName="fk_file_parent" deferrable="true"
 			initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
 			referencedColumnNames="id" referencedTableName="directory" />
+			
+		<addForeignKeyConstraint baseColumnNames="parent_id"
+			baseTableName="directory" constraintName="fk_directory_parent" deferrable="true"
+			initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
+			referencedColumnNames="id" referencedTableName="directory" />
 
 		<addForeignKeyConstraint baseColumnNames="category_id"
 			baseTableName="file" constraintName="fk_file_category" deferrable="true"
@@ -355,21 +320,6 @@
 			baseTableName="file" constraintName="fk_file_user" deferrable="true"
 			onUpdate="CASCADE" initiallyDeferred="true" referencedColumnNames="id"
 			referencedTableName="user" />
-
-		<addForeignKeyConstraint baseColumnNames="file_id"
-			baseTableName="file_version" constraintName="fk_file_version_file"
-			deferrable="true" initiallyDeferred="true" onDelete="RESTRICT"
-			onUpdate="CASCADE" referencedColumnNames="id" referencedTableName="file" />
-
-		<addForeignKeyConstraint baseColumnNames="directory_id"
-			baseTableName="item_action" constraintName="fk_item_action_dir"
-			deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
-			referencedTableName="directory" />
-
-		<addForeignKeyConstraint baseColumnNames="file_id"
-			baseTableName="item_action" constraintName="fk_item_action_file"
-			deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
-			referencedTableName="file" />
 
 		<addForeignKeyConstraint baseColumnNames="admin_id"
 			baseTableName="news" constraintName="fk_news_admin" deferrable="true"

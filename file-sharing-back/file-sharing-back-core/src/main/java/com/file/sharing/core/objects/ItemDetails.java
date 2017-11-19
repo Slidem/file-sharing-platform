@@ -13,9 +13,9 @@ public abstract class ItemDetails {
 
 	private final Integer parent;
 
-	private final String fullPath;
+	private final String path;
 
-	private final Long size;
+	private final Integer size;
 
 	private final Instant lastModified;
 
@@ -25,7 +25,7 @@ public abstract class ItemDetails {
 	protected ItemDetails(ItemBuilder<?, ?> builder) {
 		this.name = Objects.requireNonNull(builder.name);
 		this.parent = Objects.requireNonNull(builder.parent);
-		this.fullPath = Objects.requireNonNull(builder.fullPath);
+		this.path = Objects.requireNonNull(builder.path);
 		this.size = Objects.requireNonNull(builder.size);
 		this.lastModified = Objects.requireNonNull(builder.lastModified);
 	}
@@ -38,11 +38,11 @@ public abstract class ItemDetails {
 		return parent;
 	}
 
-	public String getFullPath() {
-		return fullPath;
+	public String getPath() {
+		return path;
 	}
 
-	public Long getSize() {
+	public Integer getSize() {
 		return size;
 	}
 	
@@ -60,28 +60,28 @@ public abstract class ItemDetails {
 
 		private Integer parent;
 
-		private String fullPath;
+		private String path;
 
-		private Long size;
+		private Integer size;
 
 		private Instant lastModified;
 
-		public B setName(String name) {
+		public B withName(String name) {
 			this.name = name;
 			return getThis();
 		}
 
-		public B setParent(Integer parent) {
+		public B withParent(Integer parent) {
 			this.parent = parent;
 			return getThis();
 		}
 
-		public B setFullPath(String fullPath) {
-			this.fullPath = fullPath;
+		public B withPath(String path) {
+			this.path = path;
 			return getThis();
 		}
 
-		public B setSize(Long size) {
+		public B withSize(Integer size) {
 			this.size = size;
 			return getThis();
 		}

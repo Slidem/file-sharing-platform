@@ -6,12 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.file.sharing.core.objects.ActionType;
@@ -23,11 +20,11 @@ import com.file.sharing.core.objects.ActionType;
 @Entity
 @Table(name = "item_action", schema = "public")
 public class ItemAction {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	@Column(name = "action_type")
 	@Enumerated(EnumType.STRING)
 	private ActionType actionType;
@@ -35,13 +32,8 @@ public class ItemAction {
 	@Column(name = "action_time")
 	private Timestamp actionTime;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "directory_id")
-	private DirectoryItem directory;
-
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "file_id")
-	private FileItem fileItem;
+	@Column(name = "item_id", nullable = false)
+	private Integer itemId;
 
 	public Integer getId() {
 		return id;
@@ -67,20 +59,12 @@ public class ItemAction {
 		this.actionTime = actionTime;
 	}
 
-	public DirectoryItem getDirectory() {
-		return directory;
+	public Integer getItemId() {
+		return itemId;
 	}
 
-	public void setDirectory(DirectoryItem directory) {
-		this.directory = directory;
-	}
-
-	public FileItem getFileItem() {
-		return fileItem;
-	}
-
-	public void setFileItem(FileItem fileItem) {
-		this.fileItem = fileItem;
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
 	}
 
 	@Override

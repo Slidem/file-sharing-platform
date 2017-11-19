@@ -21,4 +21,6 @@ public interface AbstractDao<T> {
 
 	List<T> getAll();
 
+	void flush();
+
 }

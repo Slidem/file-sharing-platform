@@ -48,22 +48,22 @@ public class FileDetails extends ItemDetails {
 
 		private Integer version;
 
-		public FileDetailsBuilder setCategory(FileCategories category) {
+		public FileDetailsBuilder withCategory(FileCategories category) {
 			this.category = category;
 			return getThis();
 		}
 
-		public FileDetailsBuilder setExtension(String extension) {
+		public FileDetailsBuilder withExtension(String extension) {
 			this.extension = extension;
 			return getThis();
 		}
 
-		public FileDetailsBuilder setUploadTime(Instant uploadTime) {
+		public FileDetailsBuilder withUploadTime(Instant uploadTime) {
 			this.uploadTime = uploadTime;
 			return getThis();
 		}
 
-		public FileDetailsBuilder setVersion(Integer version) {
+		public FileDetailsBuilder withVersion(Integer version) {
 			this.version = version;
 			return getThis();
 		}

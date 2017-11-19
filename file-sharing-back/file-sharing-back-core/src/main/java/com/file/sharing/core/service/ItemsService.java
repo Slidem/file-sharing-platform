@@ -32,6 +32,13 @@ public interface ItemsService {
 	 * @param directoryId
 	 * @param newName
 	 */
-	void renameDirectory(Integer directoryId, String newName);
+	void renameDirectory(Integer directoryId, Integer userId, String newName);
+
+	/**
+	 * @param parentId
+	 * @param directoryId
+	 * @param userId
+	 */
+	void moveDirectory(Integer parentId, Integer directoryId, Integer userId);
 
 }

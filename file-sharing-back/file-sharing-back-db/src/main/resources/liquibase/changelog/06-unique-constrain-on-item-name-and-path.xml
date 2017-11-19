@@ -1,0 +1,21 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="item_unique_constrain_name_path" author="Alexandru Mihai">
+		<comment>Unique constrain for items: file and directory. Item name and the path should be unique</comment>
+		<addUniqueConstraint 
+		    columnNames="name, path"
+            constraintName="idx_directory_name_path"
+            deferrable="true"
+            schemaName="public"
+            tableName="directory"/>
+       <addUniqueConstraint 
+		    columnNames="name, path"
+            constraintName="idx_file_name_path"
+            deferrable="true"
+            schemaName="public"
+            tableName="file"/>
+	</changeSet>
+</databaseChangeLog>

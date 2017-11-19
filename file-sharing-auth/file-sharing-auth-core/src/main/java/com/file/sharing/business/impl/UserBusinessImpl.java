@@ -28,19 +28,17 @@ public class UserBusinessImpl implements UserBusiness {
 	}
 
 	@Override
-	public User createUser(User user) {
+	public Integer createUser(User user) {
 		String email = Objects.requireNonNull(user).getEmail();
 		Optional<BaseUser> baseUser = userDao.getBaseUserByMail(email);
-		User newUser;
 		if (baseUser.isPresent()) {
 			throw new UserEmailAlreadyInUseException(email);
 		}
 		try {
-			newUser = userDao.createUser(user);
+			return userDao.createUser(user);
 		} catch (DataIntegrityViolationException e) {
 			logger.info(e.getMessage());
 			throw new UserEmailAlreadyInUseException(email);
 		}
-		return newUser;
 	}
 }

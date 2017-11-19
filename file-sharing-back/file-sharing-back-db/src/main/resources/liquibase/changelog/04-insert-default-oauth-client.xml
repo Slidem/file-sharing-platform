@@ -14,7 +14,15 @@
 			<column name="refresh_token_validity" value="36000" />
 			<column name="autoapprove" value="true" />
 		</insert>
+		<insert tableName="oauth_client_details" schemaName="public">
+			<column name="client_id" value="postman" />
+			<column name="client_secret" value="postman_secret" />
+			<column name="scope" value="filesharing" />
+			<column name="authorized_grant_types" value="authorization_code,refresh_token,password,client_credentials" />
+			<column name="access_token_validity" value="36000" />
+			<column name="refresh_token_validity" value="36000" />
+			<column name="autoapprove" value="true" />
+		</insert>
 	</changeSet>
 </databaseChangeLog>
-                        
                         

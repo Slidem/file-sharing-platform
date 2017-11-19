@@ -1,7 +1,5 @@
 package com.file.sharing.core.service;
 
-import java.nio.file.Path;
-
 /**
  * @author Alexandru Mihai
  * @created Nov 4, 2017
@@ -17,6 +15,6 @@ public interface StorageService {
 	 * @throws NullPointerException
 	 *             if the userId is null.
 	 */
-	public Path getStoragePath(Integer userId);
+	public String getStoragePath(Integer userId);
 
 }

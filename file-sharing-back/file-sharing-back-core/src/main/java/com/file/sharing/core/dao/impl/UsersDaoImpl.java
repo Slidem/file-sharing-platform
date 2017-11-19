@@ -14,6 +14,10 @@ import com.file.sharing.core.dao.AbstractDaoImpl;
 import com.file.sharing.core.dao.UsersDao;
 import com.file.sharing.core.entity.User;
 
+/**
+ * @author Alexandru Mihai
+ * @created Nov 11, 2017
+ */
 @Repository
 public class UsersDaoImpl extends AbstractDaoImpl<User> implements UsersDao {
 
@@ -30,7 +34,7 @@ public class UsersDaoImpl extends AbstractDaoImpl<User> implements UsersDao {
 			return Optional.empty();
 		} catch (NonUniqueResultException e) {
 			logger.warn("More than one user found for email: " + email, e);
-			return Optional.empty();
+			throw e;
 		}
 		return Optional.of(user);
 	}
