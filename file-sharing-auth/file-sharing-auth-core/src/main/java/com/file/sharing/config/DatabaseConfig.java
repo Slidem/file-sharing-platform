@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -31,8 +31,8 @@ public class DatabaseConfig {
 	}
 
 	@Bean
-	public JdbcTemplate jdbcTemplate(@Qualifier(PG_DATA_SOURCE_NAME) DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
+	public NamedParameterJdbcTemplate namedJdbcTemplate(@Qualifier(PG_DATA_SOURCE_NAME) DataSource dataSource) {
+		return new NamedParameterJdbcTemplate(dataSource);
 	}
 
 	@Bean(name = PG_DATA_SOURCE_NAME)

@@ -26,6 +26,7 @@
 		<postgresql.version>9.4.1212</postgresql.version>
 		<liquibase.version>3.5.3</liquibase.version>
 		<commons-transaction.version>1.2</commons-transaction.version>
+		<file-sharing-jms-common.version>0.0.1-SNAPSHOT</file-sharing-jms-common.version>
 		<postgresql.version>42.1.4</postgresql.version>
 		<java.version>1.8</java.version>
 		<file-sharing-jms-common.version>0.0.1-SNAPSHOT</file-sharing-jms-common.version>
@@ -85,4 +86,15 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
+	<dependencies>
+		<!-- test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
 </project>

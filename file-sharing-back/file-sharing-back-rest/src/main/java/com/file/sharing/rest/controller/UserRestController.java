@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.file.sharing.common.dto.UserDTO;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.UserInfo;
+import com.file.sharing.core.service.ItemsService;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.factory.UserDtoFactory;
 
@@ -29,6 +30,9 @@ public class UserRestController {
 	@Autowired
 	private Context context;
 
+	@Autowired
+	private ItemsService itemService;
+
 
 	/**
 	 * @param email
@@ -41,6 +45,14 @@ public class UserRestController {
 		return userFactory.fromUserInfo(userInfo);
 	}
 	
+	@GetMapping("/test")
+	public String test() {
+
+		itemService.createDirectory(101, "justSomeTest", context.getGetUserId());
+
+		return "ok";
+
+	}
 	
 
 }

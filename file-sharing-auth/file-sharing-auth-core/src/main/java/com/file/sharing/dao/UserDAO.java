@@ -30,8 +30,8 @@ public interface UserDAO {
 	 * Inserts a new user into the db.
 	 * 
 	 * @param user
-	 * @return
+	 * @return the id of the inserted user;
 	 */
-	User createUser(User user);
+	Integer createUser(User user);
 
 }

@@ -12,6 +12,10 @@ import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.UserService;
 
+/**
+ * @author Alexandru Mihai
+ * @created Nov 11, 2017
+ */
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {

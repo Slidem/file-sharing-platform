@@ -45,4 +45,9 @@ public class AbstractDaoImpl<T> implements AbstractDao<T> {
 		return q.getResultList();
 	}
 
+	@Override
+	public void flush() {
+		entityManager.flush();
+	}
+
 }

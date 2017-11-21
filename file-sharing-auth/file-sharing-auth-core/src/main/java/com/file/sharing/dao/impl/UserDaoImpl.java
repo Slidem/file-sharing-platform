@@ -1,7 +1,6 @@
 package com.file.sharing.dao.impl;
 
 import static com.file.sharing.dao.DbConstants.UserTable.ACCOUNT_STATUS_COLUMN;
-import static com.file.sharing.dao.DbConstants.UserTable.COLUMN_USER_MAP;
 import static com.file.sharing.dao.DbConstants.UserTable.EMAIL_COLUMN;
 import static com.file.sharing.dao.DbConstants.UserTable.NAME;
 import static com.file.sharing.dao.DbConstants.UserTable.NAME_COLUMN;
@@ -14,7 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import com.file.sharing.dao.DbConstants;
@@ -23,6 +24,10 @@ import com.file.sharing.dao.mapper.BaseUserMapper;
 import com.file.sharing.entities.impl.BaseUser;
 import com.file.sharing.entities.impl.User;
 
+/**
+ * @author Alexandru Mihai
+ * @created Nov 17, 2017
+ */
 @Repository
 public class UserDaoImpl implements UserDAO {
 
@@ -31,17 +36,17 @@ public class UserDaoImpl implements UserDAO {
 	private static final String INSERT_USER_SQL;
 
 	static {
-		SELECT_BASE_USER_SQL_FORMAT = "SELECT u.id, u.email, u.role_id, u.password from %s as u WHERE u.%s = ?";
-		INSERT_USER_SQL = "INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s) values (?, ?, ?, ?, ?, ?, ?)";
+		SELECT_BASE_USER_SQL_FORMAT = "SELECT u.id, u.email, u.role_id, u.password from %s as u WHERE u.%s = :%s";
+		INSERT_USER_SQL = "INSERT INTO %1$s (%2$s, %3$s, %4$s, %5$s, %6$s, %7$s, %8$s) values (:%2$s, :%3$s, :%4$s, :%5$s, :%6$s, :%7$s, :%8$s)";
 	}
 
-	private final JdbcTemplate jdbcTemplate;
+	private final NamedParameterJdbcTemplate namedJdbcTemplate;
 
 	private final BaseUserMapper baseClientMapper;
 
 	@Autowired
-	public UserDaoImpl(JdbcTemplate jdbcTemplate, BaseUserMapper baseClientMapper) {
-		this.jdbcTemplate = jdbcTemplate;
+	public UserDaoImpl(NamedParameterJdbcTemplate namedJdbcTemplate, BaseUserMapper baseClientMapper) {
+		this.namedJdbcTemplate = namedJdbcTemplate;
 		this.baseClientMapper = baseClientMapper;
 	}
 
@@ -56,37 +61,40 @@ public class UserDaoImpl implements UserDAO {
 	}
 
 	@Override
-	public User createUser(User user) {
-		//@formatter:off
-		Object[] params = { COLUMN_USER_MAP.get(NAME_COLUMN).apply(user), 
-							COLUMN_USER_MAP.get(SURNAME_COLUMN).apply(user),
-							COLUMN_USER_MAP.get(PASSWORD_COLUMN).apply(user), 
-							COLUMN_USER_MAP.get(ROLE_COLUMN).apply(user),
-							COLUMN_USER_MAP.get(ACCOUNT_STATUS_COLUMN).apply(user),
-							COLUMN_USER_MAP.get(PICTURE_COLUMN).apply(user), 
-							COLUMN_USER_MAP.get(EMAIL_COLUMN).apply(user) 
-						};
-		String insertSql = String.format(INSERT_USER_SQL, 
-										 NAME, 
-										 NAME_COLUMN, 
-										 SURNAME_COLUMN, 
-										 PASSWORD_COLUMN,
-										 ROLE_COLUMN, 
-										 ACCOUNT_STATUS_COLUMN, 
-										 PICTURE_COLUMN, 
-										 EMAIL_COLUMN);
-		//@formatter:on
+	public Integer createUser(User user) {
 
-		jdbcTemplate.update(insertSql, params);
+		MapSqlParameterSource paramSource = new MapSqlParameterSource();
 
-		return user;
+		paramSource.addValue(NAME_COLUMN, user.getName());
+		paramSource.addValue(SURNAME_COLUMN, user.getSurname());
+		paramSource.addValue(PASSWORD_COLUMN, user.getPassword());
+		paramSource.addValue(ROLE_COLUMN, user.getRole().getId());
+		paramSource.addValue(ACCOUNT_STATUS_COLUMN, user.getAccountInfo().getId());
+		paramSource.addValue(PICTURE_COLUMN, user.getPicture());
+		paramSource.addValue(EMAIL_COLUMN, user.getEmail());
+
+		String insertSql = String.format(INSERT_USER_SQL, NAME, NAME_COLUMN, SURNAME_COLUMN, PASSWORD_COLUMN,
+				ROLE_COLUMN, ACCOUNT_STATUS_COLUMN, PICTURE_COLUMN, EMAIL_COLUMN);
+		// @formatter:on
+
+		GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
+		namedJdbcTemplate.update(insertSql, paramSource, keyHolder);
+
+		return (Integer) keyHolder.getKeys().get("id");
 	}
 
 	// ---------------------------------------------------------------------------
 
+
 	private Optional<BaseUser> getBaseUserByCriteria(String column, Object value) {
-		String query = String.format(SELECT_BASE_USER_SQL_FORMAT, NAME, column);
-		List<BaseUser> result = jdbcTemplate.query(query, baseClientMapper, value);
+		String query = String.format(SELECT_BASE_USER_SQL_FORMAT, NAME, column, column);
+
+		MapSqlParameterSource paramSource = new MapSqlParameterSource();
+
+		paramSource.addValue(column, value);
+
+		List<BaseUser> result = namedJdbcTemplate.query(query, paramSource, baseClientMapper);
 		if (result.isEmpty()) {
 			return Optional.empty();
 		}

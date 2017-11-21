@@ -1,8 +1,5 @@
 package com.file.sharing.core.entity;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -48,12 +44,6 @@ public class User {
 	@JoinColumn(name = "role_id")
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Role role;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<DirectoryItem> directories;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<FileItem> fileItems;
 
 	public Integer getId() {
 		return id;
@@ -150,6 +140,11 @@ public class User {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + "]";
 	}
 
 

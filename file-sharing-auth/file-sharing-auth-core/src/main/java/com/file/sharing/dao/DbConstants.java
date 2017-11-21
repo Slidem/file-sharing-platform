@@ -45,7 +45,7 @@ public final class DbConstants {
 
 		public static final String PICTURE_COLUMN = "picture";
 
-		public static final Map<String, Function<User, ?>> COLUMN_USER_MAP = new LinkedHashMap<>();
+		public static final Map<String, Function<User, Object>> COLUMN_USER_MAP = new LinkedHashMap<>();
 
 		static {
 			COLUMN_USER_MAP.put(ID_COLUMN, u -> u.getId());

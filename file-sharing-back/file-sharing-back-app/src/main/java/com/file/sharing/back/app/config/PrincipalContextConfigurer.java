@@ -2,6 +2,7 @@ package com.file.sharing.back.app.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,11 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private UserService userService;
+
+	@Autowired
+	public PrincipalContextConfigurer(UserService userService) {
+		this.userService = userService;
+	}
 
 	@Override
 	public void configure(ContextBuidler builder) {

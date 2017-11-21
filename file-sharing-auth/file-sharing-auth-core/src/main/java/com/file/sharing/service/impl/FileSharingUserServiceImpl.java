@@ -34,14 +34,12 @@ public class FileSharingUserServiceImpl implements FileSharingUserService {
 
 
 	@Override
-	public User createUser(User user) {
-		User u = userBusiness.createUser(user);
+	public void createUser(User user) {
+		Integer userId = userBusiness.createUser(user);
 
-		JmsUserInfo jmsUserInfo = new JmsUserInfo(u.getId(), u.getEmail(), Instant.now());
+		JmsUserInfo jmsUserInfo = new JmsUserInfo(userId, user.getEmail(), Instant.now());
 
 		eventPublisher.publishEvent(new UserCreatedEvent(jmsUserInfo));
-
-		return u;
 	}
 
 
