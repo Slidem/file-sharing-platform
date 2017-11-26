@@ -1,6 +1,6 @@
 package com.file.sharing.core.service.impl;
 
-import static com.file.sharing.core.objects.file.FileActionType.CREATE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.CREATE_DIRECTORY;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,13 +9,12 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
+import com.file.sharing.core.actions.directory.MoveDirectoryAction;
+import com.file.sharing.core.actions.directory.RenameDirectoryAction;
 import com.file.sharing.core.business.ItemsActionBusiness;
-import com.file.sharing.core.dao.UsersDao;
 import com.file.sharing.core.entity.DirectoryItem;
-import com.file.sharing.core.entity.User;
-import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.jms.ItemActionJmsSender;
-import com.file.sharing.core.objects.file.FileActionType;
+import com.file.sharing.core.objects.file.ItemActionType;
 import com.file.sharing.core.service.ItemActionEventSynchronization;
 import com.file.sharing.core.service.ItemsActionEventService;
 
@@ -27,16 +26,15 @@ import com.file.sharing.core.service.ItemsActionEventService;
 @Transactional(readOnly = false)
 public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 
-	private UsersDao usersDao;
 
-	private ItemsActionBusiness itemsActionBusiness;
+	private final ItemsActionBusiness itemsActionBusiness;
 
-	private ItemActionJmsSender itemActionJmsSender;
+	private final ItemActionJmsSender itemActionJmsSender;
+
 
 	@Autowired
-	public ItemsActionEventServiceImpl(UsersDao usersDao, ItemsActionBusiness itemsActionBusiness,
+	public ItemsActionEventServiceImpl(ItemsActionBusiness itemsActionBusiness,
 			ItemActionJmsSender itemActionJmsSender) {
-		this.usersDao = usersDao;
 		this.itemsActionBusiness = itemsActionBusiness;
 		this.itemActionJmsSender = itemActionJmsSender;
 	}
@@ -45,28 +43,43 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryCreated(CreateDirectoryAction action) {
-
-		Integer userId = action.getUserId();
-
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(userId,
-				action.getItemName(), FileActionType.CREATE_DIRECTORY, itemActionJmsSender));
-
-		User user = usersDao.find(userId).orElse(null);
-
-		if (user == null) {
-			throw new UserNotFoundException(userId);
-		}
-
-		DirectoryItem directoryItem = itemsActionBusiness.saveDirectoryItem(action, user);
-		itemsActionBusiness.saveFileItemAction(directoryItem, CREATE_DIRECTORY);
+		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+				action.getItemName(), ItemActionType.CREATE_DIRECTORY, itemActionJmsSender));
 
 
+		DirectoryItem directoryItem = itemsActionBusiness.saveDirectoryItem(action);
+		itemsActionBusiness.saveFileItemAction(directoryItem.getId(), CREATE_DIRECTORY);
 	}
 
 
 	@Override
+	@Transactional(readOnly = false)
 	public void directoryDeleted(DeleteDirectoryAction action) {
-		// TODO to be implemented
+		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+				action.getItemName(), ItemActionType.DELETE_DIRECTORY, itemActionJmsSender));
+		
+		itemsActionBusiness.deleteItem(action.getItemId());
+		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.DELETE_DIRECTORY);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void directoryRanamed(RenameDirectoryAction action) {
+		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+				action.getItemName(), ItemActionType.RENAME_DIRECTORY, itemActionJmsSender));
+
+		itemsActionBusiness.renameItem(action.getItemId(), action.getNewItemName());
+		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.RENAME_DIRECTORY);
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void directoryMoved(MoveDirectoryAction action) {
+		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+				action.getItemName(), ItemActionType.MOVE_DIRECTORY, itemActionJmsSender));
+
+		itemsActionBusiness.moveItem(action.getItemId(), action.getNewParentId());
+		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.MOVE_DIRECTORY);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.file.sharing.core.service;
 
+import java.io.IOException;
+
 import com.file.sharing.core.objects.directory.DirectoryDetails;
 import com.file.sharing.core.objects.file.FileDetails;
 
@@ -21,12 +23,12 @@ public interface ItemDetailsService {
 	 * @param directoryId
 	 * @return
 	 */
-	DirectoryDetails getDirectoryDetails(int directoryId);
+	DirectoryDetails getDirectoryDetails(int directoryId) throws IOException;
 
 	/**
 	 * @param fileId
 	 * @return
 	 */
-	FileDetails getFileDetails(int fileId);
+	FileDetails getFileDetails(int fileId) throws IOException;
 
 }

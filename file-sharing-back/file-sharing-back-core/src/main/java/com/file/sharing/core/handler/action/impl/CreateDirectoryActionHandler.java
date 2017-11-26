@@ -1,6 +1,6 @@
 package com.file.sharing.core.handler.action.impl;
 
-import static com.file.sharing.core.objects.file.FileActionStatus.SUCCESS;
+import static com.file.sharing.core.objects.file.ItemActionStatus.SUCCESS;
 
 import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.handler.action.AbstractItemActionHandler;
-import com.file.sharing.core.objects.file.FileActionStatus;
+import com.file.sharing.core.objects.file.ItemActionStatus;
 import com.file.sharing.core.service.ItemDetailsService;
 import com.file.sharing.core.service.StorageService;
 
@@ -41,17 +41,17 @@ public class CreateDirectoryActionHandler extends AbstractItemActionHandler<Crea
 	}
 
 	@Override
-	protected FileActionStatus handleAction(CreateDirectoryAction itemAction) {
+	protected ItemActionStatus handleAction(CreateDirectoryAction itemAction) {
 
 		try {
 			Path fullPath = getFullPath(itemAction.getPath(), itemAction.getItemName());
 			Files.createDirectory(fullPath);
 		} catch (FileAlreadyExistsException e) {
 			logger.info(e.getMessage(), e);
-			return FileActionStatus.FILE_ALREADY_EXISTS;
+			return ItemActionStatus.FILE_ALREADY_EXISTS;
 		} catch (Exception e) {
 			logger.warn(e.getMessage(), e);
-			return FileActionStatus.FAILURE;
+			return ItemActionStatus.FAILURE;
 		}
 
 		return SUCCESS;

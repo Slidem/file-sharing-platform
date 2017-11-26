@@ -12,6 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import com.file.sharing.core.objects.file.ItemType;
 
 /**
@@ -23,11 +26,15 @@ import com.file.sharing.core.objects.file.ItemType;
 public class DirectoryItem extends Item {
 
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "parent_id")
 	private DirectoryItem parent;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = ALL, orphanRemoval = true)
 	private List<FileItem> files;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent", cascade = ALL, orphanRemoval = true)
+	private List<DirectoryItem> directories;
 
 	public List<FileItem> getFiles() {
 		return files;
@@ -37,17 +44,27 @@ public class DirectoryItem extends Item {
 		this.files = files;
 	}
 
-	public DirectoryItem getParent() {
-		return parent;
+	public List<DirectoryItem> getDirectories() {
+		return directories;
 	}
 
-	public void setParent(DirectoryItem parent) {
-		this.parent = parent;
+	public void setDirectories(List<DirectoryItem> directories) {
+		this.directories = directories;
 	}
 
 	@Override
 	public ItemType getItemType() {
 		return ItemType.DIRECTORY;
+	}
+
+	@Override
+	public DirectoryItem getParent() {
+		return parent;
+	}
+
+	@Override
+	public void setParent(DirectoryItem parent) {
+		this.parent = parent;
 	}
 
 }

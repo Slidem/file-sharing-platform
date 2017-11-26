@@ -27,16 +27,14 @@ public class UsersDaoImpl extends AbstractDaoImpl<User> implements UsersDao {
 	public Optional<User> findByEmail(String email) {
 		TypedQuery<User> query = entityManager.createQuery("from User u where u.email=:email", User.class);
 		query.setParameter("email", email);
-		User user = null;
 		try {
-			user = query.getSingleResult();
+			return Optional.of(query.getSingleResult());
 		} catch (NoResultException e) {
 			return Optional.empty();
 		} catch (NonUniqueResultException e) {
 			logger.warn("More than one user found for email: " + email, e);
 			throw e;
 		}
-		return Optional.of(user);
 	}
 
 }

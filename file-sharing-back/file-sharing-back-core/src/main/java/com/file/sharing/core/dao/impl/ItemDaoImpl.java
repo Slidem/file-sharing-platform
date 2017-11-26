@@ -13,4 +13,5 @@ import com.file.sharing.core.entity.Item;
 @Repository
 public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
 
+
 }

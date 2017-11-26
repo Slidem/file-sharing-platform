@@ -38,15 +38,6 @@ public class FileItem extends Item {
 	private FileItemCategory category;
 
 
-
-	public DirectoryItem getParent() {
-		return parent;
-	}
-
-	public void setParent(DirectoryItem directory) {
-		this.parent = directory;
-	}
-
 	public FileItemCategory getCategory() {
 		return category;
 	}
@@ -66,6 +57,16 @@ public class FileItem extends Item {
 	@Override
 	public ItemType getItemType() {
 		return ItemType.FILE;
+	}
+
+	@Override
+	public DirectoryItem getParent() {
+		return parent;
+	}
+
+	@Override
+	public void setParent(DirectoryItem directory) {
+		this.parent = directory;
 	}
 
 }

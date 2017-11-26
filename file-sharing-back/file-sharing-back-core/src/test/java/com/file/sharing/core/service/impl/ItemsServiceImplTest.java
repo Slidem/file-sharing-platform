@@ -11,6 +11,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.handler.action.ItemActionHandlerRegistry;
 import com.file.sharing.core.handler.action.impl.CreateDirectoryActionHandler;
+import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.service.ItemDetailsService;
 import com.file.sharing.core.service.StorageService;
 
@@ -34,27 +35,31 @@ public class ItemsServiceImplTest {
 	@Mock
 	private ItemDetailsService itemDetailsService;
 
+	@Mock
+	private Context context;
+
 	@InjectMocks
 	private ItemsServiceImpl unit;
 
 	@Mock
 	private CreateDirectoryActionHandler handler;
 
+
 	@Before
 	public void preapre() {
 		Mockito.when(eventHandlerRegistry.getHandler(CreateDirectoryAction.class)).thenReturn(handler);
+		Mockito.when(context.getGetUserId()).thenReturn(DUMMY_USER_ID);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateDirectoryThrowsExceptionWhenDirectoryNameIsEmpty() {
-		unit.createDirectory(null, DUMMY_PARENT_ID);
-
+		unit.createDirectory(null);
 	}
 
 	@Test
 	public void testCreateDirectoryCreatesUnderRootWhenParentIdIsNull() {
 
-		unit.createDirectory(null, "dummy", DUMMY_USER_ID);
+		unit.createDirectory(null, "dummy");
 
 		Mockito.verify(storageService).getStoragePath(DUMMY_USER_ID);
 
@@ -67,7 +72,7 @@ public class ItemsServiceImplTest {
 	@Test
 	public void testCreateDirectoryCreatesUnderParentDirWhenParentIdNotNull() {
 
-		unit.createDirectory(DUMMY_PARENT_ID, "dummy", DUMMY_USER_ID);
+		unit.createDirectory(DUMMY_PARENT_ID, "dummy");
 
 		Mockito.verify(storageService, Mockito.never()).getStoragePath(DUMMY_USER_ID);
 

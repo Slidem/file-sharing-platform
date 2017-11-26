@@ -3,7 +3,7 @@ package com.file.sharing.core.events;
 import org.springframework.core.ResolvableTypeProvider;
 
 import com.file.sharing.core.actions.ItemAction;
-import com.file.sharing.core.objects.file.FileActionStatus;
+import com.file.sharing.core.objects.file.ItemActionStatus;
 
 /**
  * 
@@ -27,6 +27,6 @@ public interface ItemActionEvent<T extends ItemAction> extends ResolvableTypePro
 	/**
 	 * @return the status of the transaction: SUCCESS, FAILED
 	 */
-	FileActionStatus status();
+	ItemActionStatus status();
 
 }

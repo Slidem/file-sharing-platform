@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.handler.action.AbstractItemActionHandler;
-import com.file.sharing.core.objects.file.FileActionStatus;
+import com.file.sharing.core.objects.file.ItemActionStatus;
 import com.file.sharing.core.service.ItemDetailsService;
 
 /**
@@ -44,13 +44,12 @@ public class DeleteDirectoryActionHandler extends AbstractItemActionHandler<Dele
 	}
 
 	@Override
-	protected FileActionStatus handleAction(DeleteDirectoryAction itemActionEvent) {
+	protected ItemActionStatus handleAction(DeleteDirectoryAction itemActionEvent) {
 		String path = itemActionEvent.getPath();
 		String name = itemActionEvent.getItemName();
 
-		Path fullPath = Paths.get(path, name);
-
 		try {
+			Path fullPath = Paths.get(path, name);
 			Files.walkFileTree(fullPath, new SimpleFileVisitor<Path>() {
 				@Override
 				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
@@ -66,13 +65,13 @@ public class DeleteDirectoryActionHandler extends AbstractItemActionHandler<Dele
 			});
 		} catch (IOException e) {
 			logger.info(e.getMessage(), e);
-			return FileActionStatus.FAILURE;
+			return ItemActionStatus.FAILURE;
 		} catch (Exception e) {
 			logger.warn(e.getMessage(), e);
-			return FileActionStatus.FAILURE;
+			return ItemActionStatus.FAILURE;
 		}
 
-		return FileActionStatus.SUCCESS;
+		return ItemActionStatus.SUCCESS;
 	}
 
 }

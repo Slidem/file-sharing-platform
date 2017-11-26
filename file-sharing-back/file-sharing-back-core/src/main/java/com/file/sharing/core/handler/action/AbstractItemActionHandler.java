@@ -1,13 +1,16 @@
 package com.file.sharing.core.handler.action;
 
+import static com.file.sharing.core.objects.Constants.ITEMS_EXECUTOR;
+
 import java.time.Instant;
 
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 
 import com.file.sharing.core.actions.ItemAction;
 import com.file.sharing.core.events.ItemActionEvent;
 import com.file.sharing.core.events.impl.ItemActionEventImpl;
-import com.file.sharing.core.objects.file.FileActionStatus;
+import com.file.sharing.core.objects.file.ItemActionStatus;
 
 /**
  * @author Alexandru Mihai
@@ -22,11 +25,12 @@ public abstract class AbstractItemActionHandler<T extends ItemAction> implements
 	}
 
 	@Override
+	@Async(value = ITEMS_EXECUTOR)
 	public void handle(final T action) {
 
 		final long start = Instant.now().getNano();
 
-		FileActionStatus status = handleAction(action);
+		ItemActionStatus status = handleAction(action);
 
 		final long finish = Instant.now().getNano();
 
@@ -35,7 +39,7 @@ public abstract class AbstractItemActionHandler<T extends ItemAction> implements
 		applicationEventPublisher.publishEvent(itemActionEvent);
 	}
 
-	private ItemActionEvent<T> getItemActionEvent(T action, FileActionStatus status, long duration) {
+	private ItemActionEvent<T> getItemActionEvent(T action, ItemActionStatus status, long duration) {
 		return new ItemActionEventImpl.Builder<T>()
 				.withDuration(duration)
 				.withFileActionStatus(status)
@@ -44,7 +48,7 @@ public abstract class AbstractItemActionHandler<T extends ItemAction> implements
 		
 	}
 
-	protected abstract FileActionStatus handleAction(T action);
+	protected abstract ItemActionStatus handleAction(T action);
 
 
 }

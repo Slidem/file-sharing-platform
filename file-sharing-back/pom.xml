@@ -29,6 +29,7 @@
 		<file-sharing-jms-common.version>0.0.1-SNAPSHOT</file-sharing-jms-common.version>
 		<postgresql.version>42.1.4</postgresql.version>
 		<java.version>1.8</java.version>
+		<commons-io.version>2.6</commons-io.version>
 	</properties>
 
 	<dependencyManagement>
@@ -82,6 +83,11 @@
 				<groupId>com.file.sharing.jms.commons</groupId>
 				<artifactId>file-sharing-jms-common</artifactId>
 				<version>${file-sharing-jms-common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
