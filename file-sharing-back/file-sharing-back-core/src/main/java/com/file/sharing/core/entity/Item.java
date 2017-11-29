@@ -68,6 +68,10 @@ public abstract class Item {
 
 	public abstract ItemType getItemType();
 
+	public abstract DirectoryItem getParent();
+
+	public abstract void setParent(DirectoryItem parent);
+
 	@Override
 	public String toString() {
 		return "Item [id=" + id + ", name=" + name + ", user=" + user + "]";

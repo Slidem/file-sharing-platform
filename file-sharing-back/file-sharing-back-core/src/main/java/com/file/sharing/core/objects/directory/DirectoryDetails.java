@@ -9,7 +9,7 @@ import com.file.sharing.core.objects.ItemDetails;
  * @author Alexandru Mihai
  * @created Nov 4, 2017
  */
-public class DirectoryDetails extends ItemDetails {
+public final class DirectoryDetails extends ItemDetails {
 
 	private final Instant creationTime;
 
@@ -30,13 +30,13 @@ public class DirectoryDetails extends ItemDetails {
 
 		private Instant creationTime;
 
-		public DirectoryBuilder setCreationTime(Instant creationTime) {
+		public DirectoryBuilder withCreationTime(Instant creationTime) {
 			this.creationTime = creationTime;
 			return getThis();
 		}
 
 		@Override
-		protected DirectoryDetails build() {
+		public DirectoryDetails build() {
 			return new DirectoryDetails(this);
 		}
 

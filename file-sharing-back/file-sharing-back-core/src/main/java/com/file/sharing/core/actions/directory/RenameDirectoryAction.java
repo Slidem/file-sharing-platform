@@ -1,5 +1,7 @@
 package com.file.sharing.core.actions.directory;
 
+import static java.util.Objects.requireNonNull;
+
 import com.file.sharing.core.actions.AbstractItemAction;
 
 /**
@@ -8,13 +10,48 @@ import com.file.sharing.core.actions.AbstractItemAction;
  */
 public class RenameDirectoryAction extends AbstractItemAction {
 
-	protected RenameDirectoryAction(Builder builder) {
+	private final String newItemName;
+
+	private final Integer itemId;
+
+	protected RenameDirectoryAction(RenameDirectoryActionBuilder builder) {
 		super(builder);
+		this.newItemName = requireNonNull(builder.newItemName);
+		this.itemId = requireNonNull(builder.itemId);
 	}
 
-	public static class Builder extends AbstractBuilder<RenameDirectoryAction, Builder> {
+	public String getNewItemName() {
+		return newItemName;
+	}
+
+
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	/**
+	 * @author Alexandru Mihai
+	 * @created Nov 26, 2017
+	 */
+	public static class RenameDirectoryActionBuilder
+			extends AbstractBuilder<RenameDirectoryAction, RenameDirectoryActionBuilder> {
+
+		private String newItemName;
+
+		private Integer itemId;
+
+		public RenameDirectoryActionBuilder withNewItemName(String newItemName) {
+			this.newItemName = newItemName;
+			return getThis();
+		}
+
+		public RenameDirectoryActionBuilder withItemId(Integer itemId) {
+			this.itemId = itemId;
+			return getThis();
+		}
+
 		@Override
-		protected RenameDirectoryAction build() {
+		public RenameDirectoryAction build() {
 			return new RenameDirectoryAction(this);
 		}
 	}

@@ -1,13 +1,13 @@
 package com.file.sharing.core.service;
 
-import static com.file.sharing.core.objects.file.FileActionStatus.FAILURE;
-import static com.file.sharing.core.objects.file.FileActionStatus.SUCCESS;
+import static com.file.sharing.core.objects.file.ItemActionStatus.FAILURE;
+import static com.file.sharing.core.objects.file.ItemActionStatus.SUCCESS;
 
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 
 import com.file.sharing.core.jms.ItemActionJmsSender;
-import com.file.sharing.core.objects.file.FileActionStatus;
-import com.file.sharing.core.objects.file.FileActionType;
+import com.file.sharing.core.objects.file.ItemActionStatus;
+import com.file.sharing.core.objects.file.ItemActionType;
 import com.file.sharing.jms.commons.object.JmsItemActionInfo;
 
 /**
@@ -22,9 +22,9 @@ public class ItemActionEventSynchronization extends TransactionSynchronizationAd
 
 	private final ItemActionJmsSender jmsSender;
 
-	private final FileActionType actionType;
+	private final ItemActionType actionType;
 
-	public ItemActionEventSynchronization(int userId, String itemName, FileActionType actionType, ItemActionJmsSender jmsSender) {
+	public ItemActionEventSynchronization(int userId, String itemName, ItemActionType actionType, ItemActionJmsSender jmsSender) {
 		this.userId = userId;
 		this.itemName = itemName;
 		this.jmsSender = jmsSender;
@@ -43,11 +43,11 @@ public class ItemActionEventSynchronization extends TransactionSynchronizationAd
 		}
 	}
 
-	private void sendMessage(FileActionStatus status) {
+	private void sendMessage(ItemActionStatus status) {
 		jmsSender.sendItemActionMessage(getActionInfo(status));
 	}
 
-	private JmsItemActionInfo getActionInfo(FileActionStatus status) {
+	private JmsItemActionInfo getActionInfo(ItemActionStatus status) {
 		
 		return new JmsItemActionInfo.Builder()
 				.withUserId(userId)

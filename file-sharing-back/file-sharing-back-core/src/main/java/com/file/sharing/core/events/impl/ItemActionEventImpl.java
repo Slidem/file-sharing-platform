@@ -4,7 +4,7 @@ import org.springframework.core.ResolvableType;
 
 import com.file.sharing.core.actions.ItemAction;
 import com.file.sharing.core.events.ItemActionEvent;
-import com.file.sharing.core.objects.file.FileActionStatus;
+import com.file.sharing.core.objects.file.ItemActionStatus;
 
 /**
  * @author Alexandru Mihai
@@ -16,7 +16,7 @@ public class ItemActionEventImpl<T extends ItemAction> implements ItemActionEven
 	
 	private final T itemAction;
 
-	private final FileActionStatus fileActionStatus;
+	private final ItemActionStatus fileActionStatus;
 
 	private ItemActionEventImpl(Builder<T> builder) {
 		this.duration = builder.duration;
@@ -36,7 +36,7 @@ public class ItemActionEventImpl<T extends ItemAction> implements ItemActionEven
 
 
 	@Override
-	public FileActionStatus status() {
+	public ItemActionStatus status() {
 		return fileActionStatus;
 	}
 
@@ -50,7 +50,7 @@ public class ItemActionEventImpl<T extends ItemAction> implements ItemActionEven
 
 		private T itemAction;
 		
-		private FileActionStatus fileActionStatus;
+		private ItemActionStatus fileActionStatus;
 
 		public Builder<T> withDuration(long duration) {
 			this.duration = duration;
@@ -62,7 +62,7 @@ public class ItemActionEventImpl<T extends ItemAction> implements ItemActionEven
 			return this;
 		}
 
-		public Builder<T> withFileActionStatus(FileActionStatus fileActionStatus) {
+		public Builder<T> withFileActionStatus(ItemActionStatus fileActionStatus) {
 			this.fileActionStatus = fileActionStatus;
 			return this;
 		}

@@ -303,7 +303,7 @@
 
 		<addForeignKeyConstraint baseColumnNames="parent_id"
 			baseTableName="file" constraintName="fk_file_parent" deferrable="true"
-			initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
+			initiallyDeferred="true" onDelete="CASCADE" onUpdate="CASCADE"
 			referencedColumnNames="id" referencedTableName="directory" />
 			
 		<addForeignKeyConstraint baseColumnNames="parent_id"

@@ -2,6 +2,8 @@ package com.file.sharing.core.service;
 
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
+import com.file.sharing.core.actions.directory.MoveDirectoryAction;
+import com.file.sharing.core.actions.directory.RenameDirectoryAction;
 
 /**
  * @author Alexandru Mihai
@@ -18,5 +20,15 @@ public interface ItemsActionEventService {
 	 * 
 	 */
 	public void directoryDeleted(DeleteDirectoryAction action);
+
+	/**
+	 * @param action
+	 */
+	public void directoryRanamed(RenameDirectoryAction action);
+
+	/**
+	 * @param action
+	 */
+	public void directoryMoved(MoveDirectoryAction action);
 
 }

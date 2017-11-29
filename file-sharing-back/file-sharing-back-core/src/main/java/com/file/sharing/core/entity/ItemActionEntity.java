@@ -11,7 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.file.sharing.core.objects.ActionType;
+import com.file.sharing.core.objects.file.ItemActionType;
 
 /**
  * @author Alexandru Mihai
@@ -19,7 +19,7 @@ import com.file.sharing.core.objects.ActionType;
  */
 @Entity
 @Table(name = "item_action", schema = "public")
-public class ItemAction {
+public class ItemActionEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class ItemAction {
 
 	@Column(name = "action_type")
 	@Enumerated(EnumType.STRING)
-	private ActionType actionType;
+	private ItemActionType actionType;
 
 	@Column(name = "action_time")
 	private Timestamp actionTime;
@@ -43,11 +43,11 @@ public class ItemAction {
 		this.id = id;
 	}
 
-	public ActionType getActionType() {
+	public ItemActionType getActionType() {
 		return actionType;
 	}
 
-	public void setActionType(ActionType actionType) {
+	public void setActionType(ItemActionType actionType) {
 		this.actionType = actionType;
 	}
 
@@ -83,7 +83,7 @@ public class ItemAction {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ItemAction other = (ItemAction) obj;
+		ItemActionEntity other = (ItemActionEntity) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

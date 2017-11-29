@@ -9,13 +9,15 @@ import java.util.Objects;
  */
 public abstract class ItemDetails {
 
+	private final Integer id;
+
 	private final String name;
 
 	private final Integer parent;
 
 	private final String path;
 
-	private final Integer size;
+	private final Long size;
 
 	private final Instant lastModified;
 
@@ -23,11 +25,16 @@ public abstract class ItemDetails {
 	 * @param builder
 	 */
 	protected ItemDetails(ItemBuilder<?, ?> builder) {
+		this.id = Objects.requireNonNull(builder.id);
 		this.name = Objects.requireNonNull(builder.name);
-		this.parent = Objects.requireNonNull(builder.parent);
+		this.parent = builder.parent;
 		this.path = Objects.requireNonNull(builder.path);
 		this.size = Objects.requireNonNull(builder.size);
 		this.lastModified = Objects.requireNonNull(builder.lastModified);
+	}
+
+	public Integer getId() {
+		return id;
 	}
 
 	public String getName() {
@@ -42,7 +49,7 @@ public abstract class ItemDetails {
 		return path;
 	}
 
-	public Integer getSize() {
+	public Long getSize() {
 		return size;
 	}
 	
@@ -56,15 +63,22 @@ public abstract class ItemDetails {
 	 */
 	public abstract static class ItemBuilder<T extends ItemDetails, B extends ItemBuilder<?, ?>> {
 		
+		private Integer id;
+
 		private String name;
 
 		private Integer parent;
 
 		private String path;
 
-		private Integer size;
+		private Long size;
 
 		private Instant lastModified;
+
+		public B withId(Integer id) {
+			this.id = id;
+			return getThis();
+		}
 
 		public B withName(String name) {
 			this.name = name;
@@ -81,7 +95,7 @@ public abstract class ItemDetails {
 			return getThis();
 		}
 
-		public B withSize(Integer size) {
+		public B withSize(Long size) {
 			this.size = size;
 			return getThis();
 		}
