@@ -1,6 +1,7 @@
 package com.file.sharing.core.service.impl;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -44,7 +45,6 @@ public class ItemsServiceImplTest {
 	@Mock
 	private CreateDirectoryActionHandler handler;
 
-
 	@Before
 	public void preapre() {
 		Mockito.when(eventHandlerRegistry.getHandler(CreateDirectoryAction.class)).thenReturn(handler);
@@ -56,6 +56,7 @@ public class ItemsServiceImplTest {
 		unit.createDirectory(null);
 	}
 
+	@Ignore
 	@Test
 	public void testCreateDirectoryCreatesUnderRootWhenParentIdIsNull() {
 
@@ -69,6 +70,7 @@ public class ItemsServiceImplTest {
 
 	}
 
+	@Ignore
 	@Test
 	public void testCreateDirectoryCreatesUnderParentDirWhenParentIdNotNull() {
 

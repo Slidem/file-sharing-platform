@@ -26,13 +26,12 @@ import com.file.sharing.core.service.StorageService;
 public class ItemsServiceImpl implements ItemsService {
 
 	private ItemActionHandlerRegistry eventHandlerRegistry;
-	
+
 	private StorageService storageService;
-	
+
 	private ItemDetailsService itemDetailsService;
 
 	private Context context;
-
 
 	@Autowired
 	public ItemsServiceImpl(ItemActionHandlerRegistry eventHandlerRegistry, StorageService storageService,
@@ -54,7 +53,7 @@ public class ItemsServiceImpl implements ItemsService {
 		if (directoryName == null || directoryName.isEmpty()) {
 			throw new IllegalArgumentException("Directory name cannot be null or empty");
 		}
-		
+
 		String directoryPath = parentId == null ? storageService.getStoragePath(context.getGetUserId())
 				: itemDetailsService.getItemFullPath(parentId);
 
@@ -62,8 +61,7 @@ public class ItemsServiceImpl implements ItemsService {
 				.withParentId(parentId)
 				.withItemName(directoryName)
 				.withPath(directoryPath)
-                .withUserId(context.getGetUserId())
-                .build();
+				.withUserId(context.getGetUserId()).build();
 
 		eventHandlerRegistry.getHandler(CreateDirectoryAction.class).handle(createDirEvent);
 	}
@@ -73,15 +71,12 @@ public class ItemsServiceImpl implements ItemsService {
 		if (directoryId == null) {
 			throw new IllegalArgumentException("Directory id cannot be null");
 		}
-		
+
 		DirectoryDetails directoryDetails = getDirectoryDetails(directoryId);
 
 		DeleteDirectoryAction deleteDirEvent = new DeleteDirectoryAction.DeleteDirectoryActionBuilder()
-				.withItemId(directoryDetails.getId())
-				.withItemName(directoryDetails.getName())
-				.withPath(directoryDetails.getPath())
-				.withUserId(context.getGetUserId())
-				.build();
+				.withItemId(directoryDetails.getId()).withItemName(directoryDetails.getName())
+				.withPath(directoryDetails.getPath()).withUserId(context.getGetUserId()).build();
 
 		eventHandlerRegistry.getHandler(DeleteDirectoryAction.class).handle(deleteDirEvent);
 	}
@@ -100,11 +95,8 @@ public class ItemsServiceImpl implements ItemsService {
 		}
 
 		RenameDirectoryAction renameDirAction = new RenameDirectoryAction.RenameDirectoryActionBuilder()
-				.withItemId(directoryDetails.getId())
-				.withItemName(directoryDetails.getName())
-				.withNewItemName(newName)
-				.withPath(directoryDetails.getPath())
-				.withUserId(context.getGetUserId()).build();
+				.withItemId(directoryDetails.getId()).withItemName(directoryDetails.getName()).withNewItemName(newName)
+				.withPath(directoryDetails.getPath()).withUserId(context.getGetUserId()).build();
 
 		eventHandlerRegistry.getHandler(RenameDirectoryAction.class).handle(renameDirAction);
 	}
@@ -120,32 +112,24 @@ public class ItemsServiceImpl implements ItemsService {
 		if (dirDetails.getParent() != null && dirDetails.getParent().equals(newParentId)) {
 			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
 		}
-		
+
 		String newDirectoryPath = newParentId == null ? storageService.getStoragePath(context.getGetUserId())
 				: itemDetailsService.getItemFullPath(newParentId);
 
-		MoveDirectoryAction moveDirAction = new MoveDirectoryAction.MoveDirectoryActionBuilder()
-				.withItemId(directoryId)
-				.withItemName(dirDetails.getName())
-				.withNewPath(newDirectoryPath)
-				.withNewParentId(newParentId)
-				.withPath(dirDetails.getPath())
-				.withUserId(context.getGetUserId())
-				.build();
-				
+		MoveDirectoryAction moveDirAction = new MoveDirectoryAction.MoveDirectoryActionBuilder().withItemId(directoryId)
+				.withItemName(dirDetails.getName()).withNewPath(newDirectoryPath).withNewParentId(newParentId)
+				.withPath(dirDetails.getPath()).withUserId(context.getGetUserId()).build();
+
 		eventHandlerRegistry.getHandler(MoveDirectoryAction.class).handle(moveDirAction);
 	}
-
 
 	private DirectoryDetails getDirectoryDetails(Integer directoryId) {
 		try {
 			return itemDetailsService.getDirectoryDetails(directoryId);
 		} catch (IOException e) {
-			throw new FileSharingException(
-					"Could not retrieve item details for item id: " + directoryId + " userId: " + context.getGetUserId(), e);
+			throw new FileSharingException("Could not retrieve item details for item id: " + directoryId + " userId: "
+					+ context.getGetUserId(), e);
 		}
 	}
-
-
 
 }
