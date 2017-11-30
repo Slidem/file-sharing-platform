@@ -132,6 +132,10 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		FileCategories category = FileCategoryUtil.getCategoryBasedOnExtension(ext);
 
 		FileItemCategory fileItemCategory = new FileItemCategory();
+
+		// todo : fill it up :)
+
+		return fileItemCategory;
 	}
 
 
