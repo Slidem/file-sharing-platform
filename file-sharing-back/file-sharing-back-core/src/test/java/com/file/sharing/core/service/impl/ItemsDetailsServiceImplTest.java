@@ -1,5 +1,6 @@
 package com.file.sharing.core.service.impl;
 
+import java.io.File;
 import java.util.Optional;
 
 import org.junit.Assert;
@@ -48,10 +49,11 @@ public class ItemsDetailsServiceImplTest {
 
 		Mockito.when(itemDao.find(VALID_ITEM_ID)).thenReturn(Optional.of(item));
 		Mockito.when(item.getPath()).thenReturn("dummyPath");
+		Mockito.when(item.getName()).thenReturn("dummyFileName");
 
 		String result = unit.getItemFullPath(VALID_ITEM_ID);
 
-		Assert.assertEquals("dummyPath", result);
+		Assert.assertEquals("dummyPath" + File.separator + "dummyFileName", result);
 	}
 
 }

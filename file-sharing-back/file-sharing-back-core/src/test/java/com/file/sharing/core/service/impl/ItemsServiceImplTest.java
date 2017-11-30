@@ -26,6 +26,8 @@ public class ItemsServiceImplTest {
 	private static final int DUMMY_PARENT_ID = 1;
 
 	private static final int DUMMY_USER_ID = 1;
+	
+	private static final String DUMMY_PATH = "/root/path";
 
 	@Mock
 	private ItemActionHandlerRegistry eventHandlerRegistry;
@@ -49,6 +51,8 @@ public class ItemsServiceImplTest {
 	public void preapre() {
 		Mockito.when(eventHandlerRegistry.getHandler(CreateDirectoryAction.class)).thenReturn(handler);
 		Mockito.when(context.getGetUserId()).thenReturn(DUMMY_USER_ID);
+		Mockito.when(storageService.getStoragePath(DUMMY_USER_ID)).thenReturn(DUMMY_PATH);
+		Mockito.when(itemDetailsService.getItemFullPath(DUMMY_PARENT_ID)).thenReturn(DUMMY_PATH);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -56,7 +60,6 @@ public class ItemsServiceImplTest {
 		unit.createDirectory(null);
 	}
 
-	@Ignore
 	@Test
 	public void testCreateDirectoryCreatesUnderRootWhenParentIdIsNull() {
 
@@ -70,7 +73,6 @@ public class ItemsServiceImplTest {
 
 	}
 
-	@Ignore
 	@Test
 	public void testCreateDirectoryCreatesUnderParentDirWhenParentIdNotNull() {
 
