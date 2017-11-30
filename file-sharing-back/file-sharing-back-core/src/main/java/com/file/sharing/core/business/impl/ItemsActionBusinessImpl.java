@@ -8,17 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.business.ItemsActionBusiness;
 import com.file.sharing.core.dao.DirectoryItemDao;
 import com.file.sharing.core.dao.ItemActionDao;
 import com.file.sharing.core.dao.ItemDao;
 import com.file.sharing.core.dao.UsersDao;
 import com.file.sharing.core.entity.DirectoryItem;
+import com.file.sharing.core.entity.FileItem;
+import com.file.sharing.core.entity.FileItemCategory;
 import com.file.sharing.core.entity.Item;
 import com.file.sharing.core.entity.ItemActionEntity;
 import com.file.sharing.core.entity.User;
 import com.file.sharing.core.exception.UserNotFoundException;
+import com.file.sharing.core.objects.file.FileCategories;
 import com.file.sharing.core.objects.file.ItemActionType;
+import com.file.sharing.core.utils.FileCategoryUtil;
 
 /**
  * @author Alexandru Mihai
@@ -112,6 +117,22 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		return directoryItemDao.find(parentId).orElse(null);
 	}
 
+	@Override
+	public void saveFileItem(UploadFileAction uploadAction) {
+		
+		
+		FileItem fileItem = new FileItem();
+		
+		fileItem.setCategory(getFileCategory(uploadAction.getItemName()));
+
+	}
+
+	private FileItemCategory getFileCategory(String itemName) {
+		String ext = FileCategoryUtil.getExtensionFromFileName(itemName);
+		FileCategories category = FileCategoryUtil.getCategoryBasedOnExtension(ext);
+
+		FileItemCategory fileItemCategory = new FileItemCategory();
+	}
 
 
 

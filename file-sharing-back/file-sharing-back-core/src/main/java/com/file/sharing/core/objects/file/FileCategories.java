@@ -6,6 +6,6 @@ package com.file.sharing.core.objects.file;
  */
 public enum FileCategories {
 
-	MUSIC, VIDEOS, DOCUMENTS, IMAGES
+	MUSIC, VIDEOS, DOCUMENTS, IMAGES, OTHER
 
 }

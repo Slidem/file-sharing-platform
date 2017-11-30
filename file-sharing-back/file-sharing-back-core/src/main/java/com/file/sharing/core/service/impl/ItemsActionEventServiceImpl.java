@@ -1,16 +1,22 @@
 package com.file.sharing.core.service.impl;
 
 import static com.file.sharing.core.objects.file.ItemActionType.CREATE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.DELETE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.MOVE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.RENAME_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
+import com.file.sharing.core.actions.ItemAction;
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.actions.directory.MoveDirectoryAction;
 import com.file.sharing.core.actions.directory.RenameDirectoryAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.business.ItemsActionBusiness;
 import com.file.sharing.core.entity.DirectoryItem;
 import com.file.sharing.core.jms.ItemActionJmsSender;
@@ -43,10 +49,7 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryCreated(CreateDirectoryAction action) {
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
-				action.getItemName(), ItemActionType.CREATE_DIRECTORY, itemActionJmsSender));
-
-
+		registerTransactionSynchronization(action, CREATE_DIRECTORY);
 		DirectoryItem directoryItem = itemsActionBusiness.saveDirectoryItem(action);
 		itemsActionBusiness.saveFileItemAction(directoryItem.getId(), CREATE_DIRECTORY);
 	}
@@ -55,19 +58,15 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryDeleted(DeleteDirectoryAction action) {
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
-				action.getItemName(), ItemActionType.DELETE_DIRECTORY, itemActionJmsSender));
-		
+		registerTransactionSynchronization(action, DELETE_DIRECTORY);
 		itemsActionBusiness.deleteItem(action.getItemId());
-		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.DELETE_DIRECTORY);
+		itemsActionBusiness.saveFileItemAction(action.getItemId(), DELETE_DIRECTORY);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryRanamed(RenameDirectoryAction action) {
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
-				action.getItemName(), ItemActionType.RENAME_DIRECTORY, itemActionJmsSender));
-
+		registerTransactionSynchronization(action, RENAME_DIRECTORY);
 		itemsActionBusiness.renameItem(action.getItemId(), action.getNewItemName());
 		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.RENAME_DIRECTORY);
 	}
@@ -75,11 +74,21 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryMoved(MoveDirectoryAction action) {
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
-				action.getItemName(), ItemActionType.MOVE_DIRECTORY, itemActionJmsSender));
-
+		registerTransactionSynchronization(action, MOVE_DIRECTORY);
 		itemsActionBusiness.moveItem(action.getItemId(), action.getNewParentId());
 		itemsActionBusiness.saveFileItemAction(action.getItemId(), ItemActionType.MOVE_DIRECTORY);
+	}
+
+	@Override
+	public void fileUploaded(UploadFileAction action) {
+		registerTransactionSynchronization(action, UPLOAD_FILE);
+
+
+	}
+
+	private void registerTransactionSynchronization(ItemAction action, ItemActionType itemActionType) {
+		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+				action.getItemName(), itemActionType, itemActionJmsSender));
 	}
 
 }

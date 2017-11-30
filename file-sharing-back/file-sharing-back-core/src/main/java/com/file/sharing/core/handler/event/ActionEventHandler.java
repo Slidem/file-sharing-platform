@@ -4,6 +4,7 @@ import static com.file.sharing.core.objects.file.ItemActionType.CREATE_DIRECTORY
 import static com.file.sharing.core.objects.file.ItemActionType.DELETE_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.MOVE_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
@@ -14,6 +15,7 @@ import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.actions.directory.MoveDirectoryAction;
 import com.file.sharing.core.actions.directory.RenameDirectoryAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.events.ItemActionEvent;
 import com.file.sharing.core.jms.ItemActionJmsSender;
 import com.file.sharing.core.objects.file.ItemActionStatus;
@@ -39,9 +41,6 @@ public class ActionEventHandler {
 		this.itemActionJmsSender = itemActionJmsSender;
 	}
 
-	/**
-	 * @param createDirectoryAction
-	 */
 	@EventListener
 	public void handleCreateDirectoryActionEvent(ItemActionEvent<CreateDirectoryAction> createDirectoryActionEvent) {
 		if (ItemActionStatus.SUCCESS != createDirectoryActionEvent.status()) {
@@ -52,9 +51,6 @@ public class ActionEventHandler {
 		itemsActionEventService.directoryCreated(createDirectoryActionEvent.itemAction());
 	}
 	
-	/**
-	 * @param createDirectoryAction
-	 */
 	@EventListener
 	public void handleDeleteDirectoryActionEvent(ItemActionEvent<DeleteDirectoryAction> createDirectoryActionEvent) {
 		if (ItemActionStatus.SUCCESS != createDirectoryActionEvent.status()) {
@@ -83,6 +79,16 @@ public class ActionEventHandler {
 		}
 
 		itemsActionEventService.directoryMoved(moveDirectoryActionEvent.itemAction());
+	}
+
+	@EventListener
+	public void handleUploadFileActionEvent(ItemActionEvent<UploadFileAction> uploadFileActionEvent) {
+		if (ItemActionStatus.SUCCESS != uploadFileActionEvent.status()) {
+			sendMessage(uploadFileActionEvent, UPLOAD_FILE);
+			return;
+		}
+
+		itemsActionEventService.fileUploaded(uploadFileActionEvent.itemAction());
 	}
 
 	private void sendMessage(ItemActionEvent<? extends ItemAction> itemActionEvent, ItemActionType type) {

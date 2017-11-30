@@ -1,6 +1,7 @@
 package com.file.sharing.core.service;
 
 import com.file.sharing.core.exception.ItemNotFoundException;
+import com.file.sharing.core.objects.file.FileData;
 
 /**
  * @author Alexandru Mihai
@@ -57,5 +58,13 @@ public interface ItemsService {
 	 * @throws ItemNotFoundException directory id, or newParentId is an invalid one
 	 */
 	void moveDirectory(Integer newParentId, Integer directoryId);
+
+	/**
+	 * @param parentId
+	 *            -> if parentId is null, the file will be uploaded under the
+	 *            user's root
+	 * @param fileData
+	 */
+	void uploadFile(Integer parentId, FileData fileData);
 
 }

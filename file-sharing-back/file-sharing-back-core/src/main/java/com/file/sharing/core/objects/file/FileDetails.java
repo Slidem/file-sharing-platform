@@ -12,14 +12,11 @@ public class FileDetails extends ItemDetails {
 
 	private final Instant uploadTime;
 
-	private final Integer version;
-
 	protected FileDetails(FileDetailsBuilder builder) {
 		super(builder);
 		this.category = builder.category;
 		this.extension = builder.extension;
 		this.uploadTime = builder.uploadTime;
-		this.version = builder.version;
 	}
 
 	public FileCategories getCategory() {
@@ -34,9 +31,6 @@ public class FileDetails extends ItemDetails {
 		return uploadTime;
 	}
 
-	public Integer getVersion() {
-		return version;
-	}
 
 	public static class FileDetailsBuilder extends ItemBuilder<FileDetails, FileDetailsBuilder> {
 
@@ -45,8 +39,6 @@ public class FileDetails extends ItemDetails {
 		private String extension;
 
 		private Instant uploadTime;
-
-		private Integer version;
 
 		public FileDetailsBuilder withCategory(FileCategories category) {
 			this.category = category;
@@ -60,11 +52,6 @@ public class FileDetails extends ItemDetails {
 
 		public FileDetailsBuilder withUploadTime(Instant uploadTime) {
 			this.uploadTime = uploadTime;
-			return getThis();
-		}
-
-		public FileDetailsBuilder withVersion(Integer version) {
-			this.version = version;
 			return getThis();
 		}
 

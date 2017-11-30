@@ -1,6 +1,7 @@
 package com.file.sharing.core.business;
 
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.entity.DirectoryItem;
 import com.file.sharing.core.objects.file.ItemActionType;
 
@@ -37,5 +38,10 @@ public interface ItemsActionBusiness {
 	 * @param newParentId
 	 */
 	public void moveItem(Integer itemId, Integer newParentId);
+
+	/**
+	 * @param uploadAction
+	 */
+	public void saveFileItem(UploadFileAction uploadAction);
 
 }

@@ -4,6 +4,7 @@ import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.actions.directory.MoveDirectoryAction;
 import com.file.sharing.core.actions.directory.RenameDirectoryAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 
 /**
  * @author Alexandru Mihai
@@ -17,7 +18,7 @@ public interface ItemsActionEventService {
 	public void directoryCreated(CreateDirectoryAction action);
 
 	/**
-	 * 
+	 * @param action
 	 */
 	public void directoryDeleted(DeleteDirectoryAction action);
 
@@ -30,5 +31,10 @@ public interface ItemsActionEventService {
 	 * @param action
 	 */
 	public void directoryMoved(MoveDirectoryAction action);
+
+	/**
+	 * @param action
+	 */
+	public void fileUploaded(UploadFileAction action);
 
 }
