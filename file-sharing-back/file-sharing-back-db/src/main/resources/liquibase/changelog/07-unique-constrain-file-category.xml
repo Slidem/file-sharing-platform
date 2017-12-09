@@ -1,0 +1,20 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+	<changeSet id="file_category_unique_constrain" author="Alexandru Mihai">
+		<comment>Unique constrain for file_cateogry. File category and extension should be unique.</comment>
+		<dropUniqueConstraint
+            constraintName="_idx_unique"
+            schemaName="public"
+            tableName="file_category"
+            uniqueColumns="category_name"/>
+        <addUniqueConstraint 
+		    columnNames="category_name, extension"
+            constraintName="idx_file_category_extension"
+            deferrable="true"
+            schemaName="public"
+            tableName="file_category"/>
+	</changeSet>
+</databaseChangeLog>

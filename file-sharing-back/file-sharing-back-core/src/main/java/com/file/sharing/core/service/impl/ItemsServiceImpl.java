@@ -147,6 +147,7 @@ public class ItemsServiceImpl implements ItemsService {
 		
 		UploadFileAction uploadFileAction = new UploadFileAction.UploadFileActionBuilder()
 				.withUserId(context.getGetUserId())
+				.withParentId(parentId)
 				.withItemName(fileData.getFileName())
 				.withPath(directoryPath)
 				.withBytes(fileData.getBytes())

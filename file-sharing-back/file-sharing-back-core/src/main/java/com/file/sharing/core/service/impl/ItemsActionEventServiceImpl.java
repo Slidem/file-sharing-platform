@@ -19,6 +19,7 @@ import com.file.sharing.core.actions.directory.RenameDirectoryAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.business.ItemsActionBusiness;
 import com.file.sharing.core.entity.DirectoryItem;
+import com.file.sharing.core.entity.FileItem;
 import com.file.sharing.core.jms.ItemActionJmsSender;
 import com.file.sharing.core.objects.file.ItemActionType;
 import com.file.sharing.core.service.ItemActionEventSynchronization;
@@ -32,11 +33,9 @@ import com.file.sharing.core.service.ItemsActionEventService;
 @Transactional(readOnly = false)
 public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 
-
 	private final ItemsActionBusiness itemsActionBusiness;
 
 	private final ItemActionJmsSender itemActionJmsSender;
-
 
 	@Autowired
 	public ItemsActionEventServiceImpl(ItemsActionBusiness itemsActionBusiness,
@@ -45,7 +44,6 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 		this.itemActionJmsSender = itemActionJmsSender;
 	}
 
-
 	@Override
 	@Transactional(readOnly = false)
 	public void directoryCreated(CreateDirectoryAction action) {
@@ -53,7 +51,6 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 		DirectoryItem directoryItem = itemsActionBusiness.saveDirectoryItem(action);
 		itemsActionBusiness.saveFileItemAction(directoryItem.getId(), CREATE_DIRECTORY);
 	}
-
 
 	@Override
 	@Transactional(readOnly = false)
@@ -82,8 +79,8 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	@Override
 	public void fileUploaded(UploadFileAction action) {
 		registerTransactionSynchronization(action, UPLOAD_FILE);
-
-
+		FileItem fileItem = itemsActionBusiness.saveFileItem(action);
+		itemsActionBusiness.saveFileItemAction(fileItem.getId(), ItemActionType.UPLOAD_FILE);
 	}
 
 	private void registerTransactionSynchronization(ItemAction action, ItemActionType itemActionType) {

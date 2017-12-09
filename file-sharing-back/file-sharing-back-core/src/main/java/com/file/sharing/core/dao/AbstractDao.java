@@ -1,19 +1,19 @@
 package com.file.sharing.core.dao;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 /**
+ * @author Alexandru Mihai
+ * @created Dec 9, 2017
  * 
- * @author Alexandru
- *
- * @param <T>
  */
 public interface AbstractDao<T> {
 
-	// TODO implement other functionalities that are general for most of the DAO
-	// concrete implementations
 	void save(T entity);
+
+	Serializable saveAndGetId(T entity);
 
 	void delete(T entity);
 
