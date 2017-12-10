@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.file.sharing.core.dao.DirectoryItemDao;
+import com.file.sharing.core.dao.FileItemDao;
 import com.file.sharing.core.dao.ItemDao;
 import com.file.sharing.core.entity.DirectoryItem;
+import com.file.sharing.core.entity.FileItem;
 import com.file.sharing.core.entity.Item;
 import com.file.sharing.core.exception.ItemNotFoundException;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
@@ -35,11 +37,13 @@ public class ItemsDetailServiceImpl implements ItemDetailsService {
 
 	private final DirectoryItemDao directoryItemDao;
 
-	
+	private final FileItemDao fileItemDao;
+
 	@Autowired
-	public ItemsDetailServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao) {
+	public ItemsDetailServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao, FileItemDao fileItemDao) {
 		this.itemDao = itemDao;
 		this.directoryItemDao = directoryItemDao;
+		this.fileItemDao = fileItemDao;
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class ItemsDetailServiceImpl implements ItemDetailsService {
 				.withId(directoryId)
 				.withLastModified(attr.lastModifiedTime().toInstant())
 				.withName(directoryItem.getName())
-				.withParent(ofNullable(directoryItem.getParent()).map(DirectoryItem::getId).orElse(null))
+				.withParent(getParentId(directoryItem))
 				.withPath(directoryItem.getPath())
 				.withSize(attr.size())
 				.withCreationTime(attr.creationTime().toInstant())
@@ -78,11 +82,34 @@ public class ItemsDetailServiceImpl implements ItemDetailsService {
 				
 	}
 
+
 	@Override
-	public FileDetails getFileDetails(int fileId) {
-		// TODO IMPLEMENT !!!
-		return null;
+	public FileDetails getFileDetails(int fileId) throws IOException {
+		FileItem fileItem = fileItemDao.find(fileId).orElse(null);
+
+		if (fileItem == null) {
+			throwItemNotFound(fileId);
+		}
+		
+		BasicFileAttributes attr = readAttributes(getPath(fileItem), BasicFileAttributes.class);
+		
+		return new FileDetails.FileDetailsBuilder()
+				.withId(fileItem.getId())
+				.withCategory(fileItem.getCategory().getCategory())
+				.withExtension(fileItem.getCategory().getExtension())
+				.withName(fileItem.getName())
+				.withParent(getParentId(fileItem))
+				.withPath(fileItem.getPath())
+				.withUploadTime(fileItem.getUploadTime().toInstant())
+				.withSize(attr.size())
+				.withLastModified(attr.lastModifiedTime().toInstant())
+				.build();
 	}
+
+	private Integer getParentId(Item item) {
+		return ofNullable(item.getParent()).map(Item::getId).orElse(null);
+	}
+
 
 	private String getPathAsString(Item item) {
 		return item.getPath() + File.separator + item.getName();

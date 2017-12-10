@@ -11,5 +11,6 @@
   <include file="changelog/05-drop-column-file-version.xml" relativeToChangelogFile="true"/>
   <include file="changelog/06-unique-constrain-on-item-name-and-path.xml" relativeToChangelogFile="true"/>
   <include file="changelog/07-unique-constrain-file-category.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/08-drop-notNull-constrain-file-parent.xml" relativeToChangelogFile="true"/>
   
 </databaseChangeLog>

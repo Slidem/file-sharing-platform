@@ -3,6 +3,7 @@ package com.file.sharing.rest.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,8 @@ public class DummyController {
 	}
 
 	@PostMapping(value = "/uploadFile")
-	public void uploadFile(@RequestParam(value = "file", required = false) MultipartFile file) {
+	public void uploadFile(@RequestParam(value = "file", required = false) MultipartFile file,
+			@RequestParam(value = "directoryId", required = false) Integer directoryId) {
 		String fileName = file.getOriginalFilename();
 
 		FileData fileData;
@@ -39,9 +41,26 @@ public class DummyController {
 					.withExtension(FileCategoryUtil.getExtensionFromFileName(fileName)).withBytes(file.getBytes())
 					.build();
 
-			itemService.uploadFile(null, fileData);
+			itemService.uploadFile(directoryId, fileData);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@PostMapping(value = "/createDirectory")
+	public void createDirectory(@RequestParam(value = "directoryName", required = true) String directoryName,
+			@RequestParam(value = "parentId", required = false) Integer parentId) {
+		
+		if (parentId == null) {
+			itemService.createDirectory(directoryName);
+		} else {
+			itemService.createDirectory(parentId, directoryName);
+		}
+		
+	}
+
+	@DeleteMapping(value = "/deleteItem")
+	public void deleteFile(@RequestParam(value = "fileId") Integer fileId) {
+		itemService.deleteFile(fileId);
 	}
 }

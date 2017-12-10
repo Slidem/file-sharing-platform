@@ -56,7 +56,7 @@ public class FileDetails extends ItemDetails {
 		}
 
 		@Override
-		protected FileDetails build() {
+		public FileDetails build() {
 			return new FileDetails(this);
 		}
 	}

@@ -30,8 +30,8 @@ public final class FileCategoryUtil {
 						".mp4 ", ".m4p ", ".m4v ", ".mpg ", ".mp2 ", ".mpeg ", ".mpe ", ".mpv ", ".mpg ", ".mpeg ",
 						".m2v ", ".m4v ", ".svi ", ".3gp ", ".3g2 ", ".mxf ", ".roq ", ".nsv ", ".flv ", ".f4v ",
 						".f4p ", ".f4a ", ".f4b"));
-		EXT_CATEGORIES.put(FileCategories.IMAGES, Arrays.asList(".tif", " .tiff", ".gif", ".jpeg", " jpg", " .jif",
-				" .jfif", ".jp2", " .jpx", " .j2k", " .j2c", ".fpx", ".pcd", ".png", ".pdf"));
+		EXT_CATEGORIES.put(FileCategories.IMAGES, Arrays.asList(".tif", ".tiff", ".gif", ".jpeg", ".jpg", ".jif",
+				".jfif", ".jp2", " .jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"));
 		EXT_CATEGORIES.put(FileCategories.DOCUMENTS,
 				Arrays.asList(".doc", ".docx", ".pdf", ".xls", "xlsx", ".ppt", ".odt"));
 	}

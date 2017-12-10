@@ -2,6 +2,7 @@ package com.file.sharing.core.handler.event;
 
 import static com.file.sharing.core.objects.file.ItemActionType.CREATE_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.DELETE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.DELETE_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.MOVE_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
@@ -15,6 +16,7 @@ import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.actions.directory.MoveDirectoryAction;
 import com.file.sharing.core.actions.directory.RenameDirectoryAction;
+import com.file.sharing.core.actions.file.DeleteFileAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.events.ItemActionEvent;
 import com.file.sharing.core.jms.ItemActionJmsSender;
@@ -90,6 +92,18 @@ public class ActionEventHandler {
 
 		itemsActionEventService.fileUploaded(uploadFileActionEvent.itemAction());
 	}
+
+	@EventListener
+	public void handleDeleteFileActionEvent(ItemActionEvent<DeleteFileAction> deleteFileActionEvent) {
+		if (ItemActionStatus.SUCCESS != deleteFileActionEvent.status()) {
+			sendMessage(deleteFileActionEvent, DELETE_FILE);
+			return;
+		}
+
+		itemsActionEventService.fileDeleted(deleteFileActionEvent.itemAction());
+	}
+
+	// -------------------------------------------------------------------------------------------------
 
 	private void sendMessage(ItemActionEvent<? extends ItemAction> itemActionEvent, ItemActionType type) {
 		ItemAction itemAction = itemActionEvent.itemAction();

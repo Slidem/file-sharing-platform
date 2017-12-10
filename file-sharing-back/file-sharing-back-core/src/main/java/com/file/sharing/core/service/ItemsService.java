@@ -67,4 +67,9 @@ public interface ItemsService {
 	 */
 	void uploadFile(Integer parentId, FileData fileData);
 
+	/**
+	 * @param fileId
+	 */
+	void deleteFile(Integer fileId);
+
 }
