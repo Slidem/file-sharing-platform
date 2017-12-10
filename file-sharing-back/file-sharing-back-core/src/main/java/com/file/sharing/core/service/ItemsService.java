@@ -69,7 +69,25 @@ public interface ItemsService {
 
 	/**
 	 * @param fileId
+	 * 
+	 * @throws IllegalArgumentException if the fileId is null
+	 * @throws ItemNotFoundException fileId is an invalid one
 	 */
 	void deleteFile(Integer fileId);
 
+	/**
+	 * @param fileId
+	 * @param newName
+	 * 
+	 * @throws IllegalArgumentException if the fileId is null
+	 * @throws IllegalArgumentException if the newName is null, empty, or is the same as the previous name of the file
+	 * @throws ItemNotFoundException file id is an invalid one
+	 */
+	void renameFile(Integer fileId, String newName);
+
+	/**
+	 * @param fileId
+	 * @param newParentId
+	 */
+	void moveFile(Integer fileId, Integer newParentId);
 }
