@@ -37,7 +37,7 @@ public class UploadFileActionHandler extends AbstractItemActionHandler<UploadFil
 	@Override
 	protected ItemActionStatus handleAction(UploadFileAction action) {
 		File file = new File(action.getPath(), action.getItemName());
-		if (file.exists()) {
+		if (!file.exists()) {
 			try {
 				FileUtils.writeByteArrayToFile(file, action.getBytes());
 				return ItemActionStatus.SUCCESS;

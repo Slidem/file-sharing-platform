@@ -96,10 +96,10 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 
 	@Override
 	public void moveItem(Integer itemId, Integer newParentId) {
-		Optional<DirectoryItem> newParent = directoryItemDao.find(newParentId);
+		DirectoryItem newParent = getParent(newParentId);
 		Optional<Item> item = itemDao.find(itemId);
 		item.ifPresent(i -> {
-			i.setParent(newParent.orElse(null));
+			i.setParent(newParent);
 			itemDao.save(i);
 
 		});
@@ -125,7 +125,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		
 		fileItem.setCategory(fileItemCategory);
 		fileItem.setName(uploadAction.getItemName());
-		fileItem.setParent(directoryItemDao.find(uploadAction.getParentId()).orElse(null));
+		fileItem.setParent(getParent(uploadAction.getParentId()));
 		fileItem.setPath(uploadAction.getPath());
 		fileItem.setUploadTime(Timestamp.from(Instant.now()));
 		fileItem.setUser(usersDao.find(uploadAction.getUserId()).orElse(null));
@@ -136,6 +136,9 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	private DirectoryItem getParent(Integer parentId) {
+		if (parentId == null) {
+			return null;
+		}
 		return directoryItemDao.find(parentId).orElse(null);
 	}
 

@@ -62,7 +62,7 @@ public final class FileCategoryUtil {
 	 */
 	public static String getExtensionFromFileName(String fileName) {
 
-		int i = fileName.lastIndexOf(fileName);
+		int i = fileName.lastIndexOf('.');
 
 		if (i > 0) {
 			return fileName.substring(i);

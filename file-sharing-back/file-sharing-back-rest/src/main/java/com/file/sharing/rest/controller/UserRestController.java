@@ -40,5 +40,4 @@ public class UserRestController {
 		UserInfo userInfo = userService.getUserInfoByEmail(email);
 		return userFactory.fromUserInfo(userInfo);
 	}
-
 }

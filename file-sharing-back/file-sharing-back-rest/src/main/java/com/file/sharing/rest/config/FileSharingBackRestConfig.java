@@ -23,5 +23,4 @@ public class FileSharingBackRestConfig {
 	public void init() {
 		LOGGER.info("Added file sharing backend rest module");
 	}
-
 }
