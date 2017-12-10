@@ -60,7 +60,7 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("Directory name cannot be null or empty");
 		}
 
-		String directoryPath = parentId == null ? storageService.getStoragePath(context.getGetUserId())
+		String directoryPath = parentId == null ? storageService.getUserStoragePath(context.getGetUserId())
 				: itemDetailsService.getItemFullPath(parentId);
 
 		CreateDirectoryAction createDirEvent = new CreateDirectoryAction.CreateDirectoryActionBuilder()
@@ -116,7 +116,7 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
 		}
 
-		String newDirectoryPath = newParentId == null ? storageService.getStoragePath(context.getGetUserId())
+		String newDirectoryPath = newParentId == null ? storageService.getUserStoragePath(context.getGetUserId())
 				: itemDetailsService.getItemFullPath(newParentId);
 
 		MoveDirectoryAction moveDirAction = new MoveDirectoryAction.MoveDirectoryActionBuilder().withItemId(directoryId)

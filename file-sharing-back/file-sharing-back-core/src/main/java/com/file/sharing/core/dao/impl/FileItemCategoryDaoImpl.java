@@ -16,6 +16,7 @@ import com.file.sharing.core.objects.file.FileCategories;
  * @created Dec 9, 2017
  * 
  */
+
 @Repository
 public class FileItemCategoryDaoImpl extends AbstractDaoImpl<FileItemCategory> implements FileItemCategoryDao {
 

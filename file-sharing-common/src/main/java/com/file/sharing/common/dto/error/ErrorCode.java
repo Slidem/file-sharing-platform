@@ -12,6 +12,8 @@ public enum ErrorCode {
 
 	USER_NOT_FOUND,
 	
-	INVALID_EMAIL
+	INVALID_EMAIL,
+	
+	USER_STORAGE_NOT_FOUND
 
 }

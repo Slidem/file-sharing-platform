@@ -50,7 +50,7 @@ public class ItemsServiceImplTest {
 	public void preapre() {
 		Mockito.when(eventHandlerRegistry.getHandler(CreateDirectoryAction.class)).thenReturn(handler);
 		Mockito.when(context.getGetUserId()).thenReturn(DUMMY_USER_ID);
-		Mockito.when(storageService.getStoragePath(DUMMY_USER_ID)).thenReturn(DUMMY_PATH);
+		Mockito.when(storageService.getUserStoragePath(DUMMY_USER_ID)).thenReturn(DUMMY_PATH);
 		Mockito.when(itemDetailsService.getItemFullPath(DUMMY_PARENT_ID)).thenReturn(DUMMY_PATH);
 	}
 
@@ -64,7 +64,7 @@ public class ItemsServiceImplTest {
 
 		unit.createDirectory(null, "dummy");
 
-		Mockito.verify(storageService).getStoragePath(DUMMY_USER_ID);
+		Mockito.verify(storageService).getUserStoragePath(DUMMY_USER_ID);
 
 		Mockito.verify(itemDetailsService, Mockito.never()).getItemFullPath(Mockito.anyInt());
 
@@ -77,7 +77,7 @@ public class ItemsServiceImplTest {
 
 		unit.createDirectory(DUMMY_PARENT_ID, "dummy");
 
-		Mockito.verify(storageService, Mockito.never()).getStoragePath(DUMMY_USER_ID);
+		Mockito.verify(storageService, Mockito.never()).getUserStoragePath(DUMMY_USER_ID);
 
 		Mockito.verify(itemDetailsService).getItemFullPath(DUMMY_PARENT_ID);
 
