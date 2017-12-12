@@ -10,6 +10,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.file.sharing.core.exception.UserStorageNotFoundException;
@@ -24,12 +25,22 @@ import com.file.sharing.core.service.UserService;
 @Component
 public class StorageServiceImpl implements StorageService {
 	
-	@Value("${storage.path}")
 	private String storagePath;
 	
+	private Environment env;
+	
+	@Autowired
+	public StorageServiceImpl(Environment env) {
+		this.env = env;
+		storagePath = env.getProperty("storage.path");
+	}
+
 	@Override
 	public String getUserStoragePath(Integer userId) {
-		return storagePath + File.separator + userId + File.separator;
+		if(userId == null) {
+			throw new IllegalArgumentException();
+		}
+		return storagePath + userId;
 	}
 	
 	@Override

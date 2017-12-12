@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.file.sharing.core.objects.StorageInfo;
 import com.file.sharing.core.objects.UserInfo;
+import com.file.sharing.core.service.StorageService;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.context.ContextConfigurer;
 import com.file.sharing.rest.context.ContextImpl.ContextBuidler;
@@ -21,10 +23,12 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private UserService userService;
+	private StorageService storageService;
 
 	@Autowired
-	public PrincipalContextConfigurer(UserService userService) {
+	public PrincipalContextConfigurer(UserService userService, StorageService storageService) {
 		this.userService = userService;
+		this.storageService = storageService;
 	}
 
 	@Override
@@ -37,11 +41,11 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		builder.setUserEmail(email);
 
 		UserInfo userInfo = userService.getUserInfoByEmail(email);
+		StorageInfo storageInfo = storageService.getUserStorageInfo(userInfo.getUserId());
 
 		builder.setUserId(userInfo.getUserId());
 		builder.setUserAccountType(userInfo.getAccStatsInfo().getType());
-
-		// TODO: Set also user storage here.
+		builder.setUserStorageInfo(storageInfo);
 	}
 
 }

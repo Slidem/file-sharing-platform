@@ -74,7 +74,7 @@ public final class ContextImpl implements Context {
 			return this;
 		}
 
-		public ContextBuidler setUserStorageLocation(StorageInfo userStorageInfo) {
+		public ContextBuidler setUserStorageInfo(StorageInfo userStorageInfo) {
 			this.userStorageInfo = userStorageInfo;
 			return this;
 		}
