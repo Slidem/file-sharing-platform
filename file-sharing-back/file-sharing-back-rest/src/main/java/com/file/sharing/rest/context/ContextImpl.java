@@ -2,6 +2,7 @@ package com.file.sharing.rest.context;
 
 import com.file.sharing.common.user.AccountType;
 import com.file.sharing.core.objects.Context;
+import com.file.sharing.core.objects.StorageInfo;
 
 /**
  * @author Alexandru Mihai
@@ -15,13 +16,13 @@ public final class ContextImpl implements Context {
 
 	private final AccountType userAccountType;
 
-	private final String userStorageLocation;
+	private final StorageInfo userStorageInfo;
 
 	private ContextImpl(ContextBuidler builder) {
 		this.userEmail = builder.userEmail;
 		this.getUserId = builder.userId;
 		this.userAccountType = builder.userAccountType;
-		this.userStorageLocation = builder.userStorageLocation;
+		this.userStorageInfo = builder.userStorageInfo;
 	}
 
 	@Override
@@ -40,8 +41,8 @@ public final class ContextImpl implements Context {
 	}
 
 	@Override
-	public String getUserStorageLocation() {
-		return userStorageLocation;
+	public StorageInfo getUserStorageInfo() {
+		return userStorageInfo;
 	}
 
 	/**
@@ -56,7 +57,7 @@ public final class ContextImpl implements Context {
 
 		private AccountType userAccountType;
 
-		private String userStorageLocation;
+		private StorageInfo userStorageInfo;
 
 		public ContextBuidler setUserEmail(String userEmail) {
 			this.userEmail = userEmail;
@@ -73,8 +74,8 @@ public final class ContextImpl implements Context {
 			return this;
 		}
 
-		public ContextBuidler setUserStorageLocation(String userStorageLocation) {
-			this.userStorageLocation = userStorageLocation;
+		public ContextBuidler setUserStorageInfo(StorageInfo userStorageInfo) {
+			this.userStorageInfo = userStorageInfo;
 			return this;
 		}
 

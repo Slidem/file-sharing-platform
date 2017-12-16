@@ -26,6 +26,6 @@ public interface Context {
 	/**
 	 * @return
 	 */
-	String getUserStorageLocation();
+	StorageInfo getUserStorageInfo();
 
 }

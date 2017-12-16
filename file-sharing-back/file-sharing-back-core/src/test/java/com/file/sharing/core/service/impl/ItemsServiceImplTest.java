@@ -12,6 +12,7 @@ import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.handler.action.ItemActionHandlerRegistry;
 import com.file.sharing.core.handler.action.impl.CreateDirectoryActionHandler;
 import com.file.sharing.core.objects.Context;
+import com.file.sharing.core.objects.StorageInfo;
 import com.file.sharing.core.service.ItemDetailsService;
 import com.file.sharing.core.service.StorageService;
 
@@ -36,21 +37,25 @@ public class ItemsServiceImplTest {
 
 	@Mock
 	private ItemDetailsService itemDetailsService;
-
+	
 	@Mock
 	private Context context;
 
 	@InjectMocks
 	private ItemsServiceImpl unit;
+	
+	@Mock
+	private StorageInfo storageInfo;
 
 	@Mock
 	private CreateDirectoryActionHandler handler;
 
 	@Before
-	public void preapre() {
+	public void prepare() {
 		Mockito.when(eventHandlerRegistry.getHandler(CreateDirectoryAction.class)).thenReturn(handler);
 		Mockito.when(context.getGetUserId()).thenReturn(DUMMY_USER_ID);
-		Mockito.when(storageService.getStoragePath(DUMMY_USER_ID)).thenReturn(DUMMY_PATH);
+		Mockito.when(context.getUserStorageInfo()).thenReturn(storageInfo);
+		Mockito.when(storageInfo.getLocation()).thenReturn("DUMMY_PATH");
 		Mockito.when(itemDetailsService.getItemFullPath(DUMMY_PARENT_ID)).thenReturn(DUMMY_PATH);
 	}
 
@@ -64,7 +69,9 @@ public class ItemsServiceImplTest {
 
 		unit.createDirectory(null, "dummy");
 
-		Mockito.verify(storageService).getStoragePath(DUMMY_USER_ID);
+		Mockito.verify(context).getUserStorageInfo();
+		
+		Mockito.verify(storageInfo).getLocation();
 
 		Mockito.verify(itemDetailsService, Mockito.never()).getItemFullPath(Mockito.anyInt());
 
@@ -77,7 +84,9 @@ public class ItemsServiceImplTest {
 
 		unit.createDirectory(DUMMY_PARENT_ID, "dummy");
 
-		Mockito.verify(storageService, Mockito.never()).getStoragePath(DUMMY_USER_ID);
+		Mockito.verify(context, Mockito.never()).getUserStorageInfo();
+		
+		Mockito.verify(storageInfo, Mockito.never()).getLocation();
 
 		Mockito.verify(itemDetailsService).getItemFullPath(DUMMY_PARENT_ID);
 

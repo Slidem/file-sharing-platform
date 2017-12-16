@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import com.file.sharing.common.dto.error.ErrorCode;
 import com.file.sharing.common.dto.error.ErrorResponseDTO;
 import com.file.sharing.core.exception.UserNotFoundException;
+import com.file.sharing.core.exception.UserStorageNotFoundException;
 
 /**
  * @author Alexandru
@@ -39,6 +40,14 @@ public class FileSharingExceptionHandler extends ResponseEntityExceptionHandler 
 		logger.info(ex.getMessage(), ex);
 		response.setStatus(SC_NOT_FOUND);
 		return new ErrorResponseDTO(ErrorCode.USER_NOT_FOUND, "User not found.");
+	}
+	
+	@ExceptionHandler(value = { UserStorageNotFoundException.class })
+	@ResponseBody
+	protected ErrorResponseDTO handle(UserStorageNotFoundException ex, HttpServletResponse response) {
+		logger.info(ex.getMessage(), ex);
+		response.setStatus(SC_NOT_FOUND);
+		return new ErrorResponseDTO(ErrorCode.USER_STORAGE_NOT_FOUND, "User storage not found.");
 	}
 
 }
