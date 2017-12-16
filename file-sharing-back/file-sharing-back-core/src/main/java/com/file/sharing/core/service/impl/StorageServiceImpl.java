@@ -1,6 +1,5 @@
 package com.file.sharing.core.service.impl;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +33,7 @@ public class StorageServiceImpl implements StorageService {
 		if(userId == null) {
 			throw new IllegalArgumentException();
 		}
-		return storagePath + File.separator + userId;
+		return storagePath + userId;
 	}
 	
 	@Override
