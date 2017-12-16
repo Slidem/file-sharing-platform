@@ -22,7 +22,6 @@ import com.file.sharing.core.objects.file.FileData;
 import com.file.sharing.core.objects.file.FileDetails;
 import com.file.sharing.core.service.ItemDetailsService;
 import com.file.sharing.core.service.ItemsService;
-import com.file.sharing.core.service.StorageService;
 
 /**
  * @author Alexandru Mihai
@@ -33,17 +32,14 @@ public class ItemsServiceImpl implements ItemsService {
 
 	private ItemActionHandlerRegistry eventHandlerRegistry;
 
-	private StorageService storageService;
-
 	private ItemDetailsService itemDetailsService;
 
 	private Context context;
 
 	@Autowired
-	public ItemsServiceImpl(ItemActionHandlerRegistry eventHandlerRegistry, StorageService storageService,
-			ItemDetailsService itemDetailsService, Context context) {
+	public ItemsServiceImpl(ItemActionHandlerRegistry eventHandlerRegistry, ItemDetailsService itemDetailsService,
+			Context context) {
 		this.eventHandlerRegistry = eventHandlerRegistry;
-		this.storageService = storageService;
 		this.itemDetailsService = itemDetailsService;
 		this.context = context;
 	}
@@ -60,8 +56,7 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("Directory name cannot be null or empty");
 		}
 
-		String directoryPath = parentId == null ? context.getUserStorageInfo().getLocation()
-				: itemDetailsService.getItemFullPath(parentId);
+		String directoryPath = getPath(parentId);
 
 		CreateDirectoryAction createDirEvent = new CreateDirectoryAction.CreateDirectoryActionBuilder()
 				.withParentId(parentId).withItemName(directoryName).withPath(directoryPath)
@@ -116,8 +111,7 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
 		}
 
-		String newDirectoryPath = newParentId == null ? context.getUserStorageInfo().getLocation()
-				: itemDetailsService.getItemFullPath(newParentId);
+		String newDirectoryPath = getPath(newParentId);
 
 		MoveDirectoryAction moveDirAction = new MoveDirectoryAction.MoveDirectoryActionBuilder().withItemId(directoryId)
 				.withItemName(dirDetails.getName()).withNewPath(newDirectoryPath).withNewParentId(newParentId)
@@ -148,14 +142,11 @@ public class ItemsServiceImpl implements ItemsService {
 		}
 
 		FileDetails fileDetails = getFileDetails(fileId);
-		
-		DeleteFileAction deleteAction = new DeleteFileAction.DeleteFileActionBuilder()
-				.withItemId(fileId)
-				.withItemName(fileDetails.getName())
-				.withPath(fileDetails.getPath())
-				.withUserId(context.getGetUserId())
+
+		DeleteFileAction deleteAction = new DeleteFileAction.DeleteFileActionBuilder().withItemId(fileId)
+				.withItemName(fileDetails.getName()).withPath(fileDetails.getPath()).withUserId(context.getGetUserId())
 				.build();
-		
+
 		eventHandlerRegistry.getHandler(DeleteFileAction.class).handle(deleteAction);
 	}
 
@@ -165,18 +156,14 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("File id or new file name cannot be null or empty");
 		}
 		FileDetails fileDetails = getFileDetails(fileId);
-		
+
 		if (fileDetails.getName().equals(newName)) {
 			throw new IllegalArgumentException("New file name cannot be the same as the current one");
 		}
-		
-		RenameFileAction renameAction = new RenameFileAction.RenameFileActionBuider()
-				.withItemId(fileId)
-				.withItemName(fileDetails.getName())
-				.withNewItemName(newName)
-				.withPath(fileDetails.getPath())
-				.withUserId(context.getGetUserId())
-				.build();
+
+		RenameFileAction renameAction = new RenameFileAction.RenameFileActionBuider().withItemId(fileId)
+				.withItemName(fileDetails.getName()).withNewItemName(newName).withPath(fileDetails.getPath())
+				.withUserId(context.getGetUserId()).build();
 
 		eventHandlerRegistry.getHandler(RenameFileAction.class).handle(renameAction);
 	}
@@ -193,8 +180,7 @@ public class ItemsServiceImpl implements ItemsService {
 			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
 		}
 
-		String newDirectoryPath = newParentId == null ? storageService.getStoragePath(context.getGetUserId())
-				: itemDetailsService.getItemFullPath(newParentId);
+		String newDirectoryPath = getPath(newParentId);
 
 		MoveFileAction moveFileAction = new MoveFileAction.MoveFileActionBuilder().withItemId(fileId)
 				.withItemName(fileDetails.getName()).withNewPath(newDirectoryPath).withNewParentId(newParentId)
@@ -204,7 +190,6 @@ public class ItemsServiceImpl implements ItemsService {
 
 	}
 
-
 	// ----------------------------------------------------------------------------------
 
 	private FileDetails getFileDetails(Integer fileId) {
@@ -212,8 +197,7 @@ public class ItemsServiceImpl implements ItemsService {
 			return itemDetailsService.getFileDetails(fileId);
 		} catch (IOException e) {
 			throw new FileSharingException(
-					"Could not retrieve item details for item id: " + fileId + " userId: "
-					+ context.getGetUserId(), e);
+					"Could not retrieve item details for item id: " + fileId + " userId: " + context.getGetUserId(), e);
 		}
 	}
 
@@ -227,7 +211,6 @@ public class ItemsServiceImpl implements ItemsService {
 	}
 
 	private String getPath(Integer itemId) {
-		return itemId == null ? storageService.getStoragePath(context.getGetUserId())
-				: itemDetailsService.getItemFullPath(itemId);
+		return itemId == null ? context.getUserStorageInfo().getLocation() : itemDetailsService.getItemFullPath(itemId);
 	}
 }
