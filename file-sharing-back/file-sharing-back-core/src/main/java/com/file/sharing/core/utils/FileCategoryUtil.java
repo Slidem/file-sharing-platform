@@ -1,7 +1,7 @@
 package com.file.sharing.core.utils;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +16,7 @@ import com.file.sharing.core.objects.file.FileCategories;
  */
 public final class FileCategoryUtil {
 
-	private static final Map<FileCategories, List<String>> EXT_CATEGORIES = new HashMap<>();
+	private static final Map<FileCategories, List<String>> EXT_CATEGORIES = new EnumMap<>(FileCategories.class);
 
 	static {
 		EXT_CATEGORIES.put(FileCategories.MUSIC,
@@ -25,11 +25,10 @@ public final class FileCategoryUtil {
 						".mpc", ".msv", ".ogg", ".oga", ".mogg", ".opus", ".ra", ".rm", ".raw", ".sln", ".tta", ".vox",
 						".wav", ".wma", ".wv", ".webm", ".8svx"));
 		EXT_CATEGORIES.put(FileCategories.VIDEOS,
-				Arrays.asList(".webm ", ".mkv ", ".flv ", ".vob ", ".ogv ", ".ogg ", ".drc ", ".gif ", ".gifv ",
-						".mng ", ".avi ", ".mov ", ".qt ", ".wmv ", ".yuv ", ".rm ", ".rmvb ", ".asf ", ".amv ",
-						".mp4 ", ".m4p ", ".m4v ", ".mpg ", ".mp2 ", ".mpeg ", ".mpe ", ".mpv ", ".mpg ", ".mpeg ",
-						".m2v ", ".m4v ", ".svi ", ".3gp ", ".3g2 ", ".mxf ", ".roq ", ".nsv ", ".flv ", ".f4v ",
-						".f4p ", ".f4a ", ".f4b"));
+				Arrays.asList(".webm", ".mkv", ".flv", ".vob", ".ogv", ".ogg", ".drc", ".gif", ".gifv", ".mng", ".avi",
+						".mov", ".qt", ".wmv", ".yuv", ".rm", ".rmvb", ".asf", ".amv", ".mp4", ".m4p", ".m4v", ".mpg",
+						".mp2", ".mpeg", ".mpe", ".mpv", ".mpg", ".mpeg", ".m2v", ".m4v", ".svi", ".3gp", ".3g2",
+						".mxf", ".roq", ".nsv", ".flv", ".f4v", ".f4p", ".f4a", ".f4b"));
 		EXT_CATEGORIES.put(FileCategories.IMAGES, Arrays.asList(".tif", ".tiff", ".gif", ".jpeg", ".jpg", ".jif",
 				".jfif", ".jp2", " .jpx", ".j2k", ".j2c", ".fpx", ".pcd", ".png", ".pdf"));
 		EXT_CATEGORIES.put(FileCategories.DOCUMENTS,
@@ -45,7 +44,7 @@ public final class FileCategoryUtil {
 	 */
 	public static FileCategories getCategoryBasedOnExtension(String extension) {
 		String ext = Objects.requireNonNull(extension).trim();
-		for(Map.Entry<FileCategories, List<String>> e : EXT_CATEGORIES.entrySet()){
+		for (Map.Entry<FileCategories, List<String>> e : EXT_CATEGORIES.entrySet()) {
 			if (e.getValue().contains(ext)) {
 				return e.getKey();
 			}
@@ -67,7 +66,7 @@ public final class FileCategoryUtil {
 		if (i > 0) {
 			return fileName.substring(i);
 		}
-		
+
 		throw new FileExtensionException("File name does not contain any extensions");
 
 	}

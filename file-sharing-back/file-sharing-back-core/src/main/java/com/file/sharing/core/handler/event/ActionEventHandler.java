@@ -4,6 +4,7 @@ import static com.file.sharing.core.objects.file.ItemActionType.CREATE_DIRECTORY
 import static com.file.sharing.core.objects.file.ItemActionType.DELETE_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.DELETE_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.MOVE_DIRECTORY;
+import static com.file.sharing.core.objects.file.ItemActionType.MOVE_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
@@ -18,6 +19,7 @@ import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.actions.directory.MoveDirectoryAction;
 import com.file.sharing.core.actions.directory.RenameDirectoryAction;
 import com.file.sharing.core.actions.file.DeleteFileAction;
+import com.file.sharing.core.actions.file.MoveFileAction;
 import com.file.sharing.core.actions.file.RenameFileAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.events.ItemActionEvent;
@@ -112,6 +114,15 @@ public class ActionEventHandler {
 			return;
 		}
 		itemsActionEventService.fileRenamed(renameFileActionEvent.itemAction());
+	}
+
+	@EventListener
+	public void handleMoveFileActionEvent(ItemActionEvent<MoveFileAction> moveFileActionEvent) {
+		if (ItemActionStatus.SUCCESS != moveFileActionEvent.status()) {
+			sendMessage(moveFileActionEvent, MOVE_FILE);
+			return;
+		}
+		itemsActionEventService.fileMoved(moveFileActionEvent.itemAction());
 	}
 
 	// -------------------------------------------------------------------------------------------------
