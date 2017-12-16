@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -39,12 +38,13 @@ public class UserCreatedEventListener {
 	public void handleUserCreatedEvent(UserCreatedEvent event) {
 		logger.info("User created event: {}", event);
 		
-		//Create user storage
 		Path dir = Paths.get(storagePath, event.getUserId().toString());
+
 		try {
 			Files.createDirectories(dir);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.warn("Unable to create directory for user created event {}", event);
+			logger.warn(e.getMessage(), e);
 		}
 	}
 }

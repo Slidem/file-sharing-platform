@@ -11,6 +11,10 @@ import com.file.sharing.core.jms.event.UserCreatedEvent;
 import com.file.sharing.jms.commons.converter.JmsMessageConverter;
 import com.file.sharing.jms.commons.object.JmsUserInfo;
 
+/**
+ * @author Alexandru Mihai
+ * 
+ */
 @Component
 public class JmsReceiver {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -27,12 +31,15 @@ public class JmsReceiver {
 	}
 
 	@JmsListener(destination = "${user-info.topic}", containerFactory = "jmsListenerContainerFactory", subscription = "${user-info.topic}")
-	public void receive(String message) {
+	public void recieveUserCreatedMessage(String message) {
 		if (message == null) {
 			return;
 		}
 		JmsUserInfo userInfo = jmsMessageConverter.toObject(message, JmsUserInfo.class);
 		UserCreatedEvent userCreatedEvent = new UserCreatedEvent(userInfo.getId(), userInfo.getEmail());
+
+		logger.info("Jms message recieved: {}", userCreatedEvent);
+
 		applicationEventPublisher.publishEvent(userCreatedEvent);
 	}
 

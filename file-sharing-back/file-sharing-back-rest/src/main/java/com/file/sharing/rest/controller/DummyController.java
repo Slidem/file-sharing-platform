@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,11 +57,21 @@ public class DummyController {
 		} else {
 			itemService.createDirectory(parentId, directoryName);
 		}
-		
 	}
 
-	@DeleteMapping(value = "/deleteItem")
+	@DeleteMapping(value = "/deleteFile")
 	public void deleteFile(@RequestParam(value = "fileId") Integer fileId) {
 		itemService.deleteFile(fileId);
+	}
+	
+	@PatchMapping(value = "/renameFile")
+	public void renameFile(@RequestParam(value = "fileId") Integer fileId, @RequestParam(value = "newName") String newName) {
+		itemService.renameFile(fileId, newName);
+	}
+
+	@PatchMapping(value = "/moveFile")
+	public void moveFile(@RequestParam(value = "fileId") Integer fileId,
+			@RequestParam(value = "newParentId") Integer newParentId) {
+		itemService.moveFile(fileId, newParentId);
 	}
 }

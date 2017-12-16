@@ -36,7 +36,7 @@ public class StorageServiceImplTest {
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetUserStoragePathNull() {
-		unit.getUserStoragePath(123);
+		unit.getUserStoragePath(null);
 	}
 
 }
