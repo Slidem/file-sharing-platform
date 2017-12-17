@@ -68,5 +68,4 @@ public class FileItem extends Item {
 	public void setParent(DirectoryItem directory) {
 		this.parent = directory;
 	}
-
 }

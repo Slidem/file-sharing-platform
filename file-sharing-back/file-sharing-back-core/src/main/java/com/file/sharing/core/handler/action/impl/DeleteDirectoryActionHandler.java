@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
 import com.file.sharing.core.handler.action.AbstractItemActionHandler;
 import com.file.sharing.core.objects.file.ItemActionStatus;
-import com.file.sharing.core.service.ItemDetailsService;
+import com.file.sharing.core.service.ItemService;
 
 /**
  * @author Alexandru Mihai
@@ -34,7 +34,7 @@ public class DeleteDirectoryActionHandler extends AbstractItemActionHandler<Dele
 	 */
 	@Autowired
 	public DeleteDirectoryActionHandler(ApplicationEventPublisher applicationEventPublisher,
-			ItemDetailsService itemDetailsService) {
+			ItemService itemDetailsService) {
 		super(applicationEventPublisher);
 	}
 

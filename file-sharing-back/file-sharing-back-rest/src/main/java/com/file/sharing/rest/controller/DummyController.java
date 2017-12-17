@@ -1,9 +1,15 @@
 package com.file.sharing.rest.controller;
 
+import java.io.File;
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.file.sharing.core.objects.file.FileData;
-import com.file.sharing.core.service.ItemsService;
+import com.file.sharing.core.service.ItemActionService;
 import com.file.sharing.core.utils.FileCategoryUtil;
 
 /**
@@ -24,10 +30,10 @@ import com.file.sharing.core.utils.FileCategoryUtil;
 @RestController
 public class DummyController {
 
-	private ItemsService itemService;
+	private ItemActionService itemService;
 
 	@Autowired
-	public DummyController(ItemsService itemService) {
+	public DummyController(ItemActionService itemService) {
 		this.itemService = itemService;
 	}
 
@@ -73,5 +79,12 @@ public class DummyController {
 	public void moveFile(@RequestParam(value = "fileId") Integer fileId,
 			@RequestParam(value = "newParentId") Integer newParentId) {
 		itemService.moveFile(fileId, newParentId);
+	}
+
+	@GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public FileSystemResource downloadFile(@RequestParam(value = "fileId") Integer fileId, HttpServletResponse response) {
+		File file = itemService.retrieveFile(fileId);
+		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
+		return new FileSystemResource(file);
 	}
 }

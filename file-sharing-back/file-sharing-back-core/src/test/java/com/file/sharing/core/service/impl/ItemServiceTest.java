@@ -20,7 +20,7 @@ import com.file.sharing.core.exception.ItemNotFoundException;
  * @created Nov 11, 2017
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ItemsDetailsServiceImplTest {
+public class ItemServiceTest {
 
 	private final static int INVALID_ITEM_ID = 1;
 
@@ -30,7 +30,7 @@ public class ItemsDetailsServiceImplTest {
 	private ItemDao itemDao;
 
 	@InjectMocks
-	private ItemsDetailServiceImpl unit;
+	private ItemsServiceImpl unit;
 
 	@Mock
 	private Item item;

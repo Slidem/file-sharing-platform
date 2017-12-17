@@ -13,7 +13,8 @@ import com.file.sharing.core.handler.action.ItemActionHandlerRegistry;
 import com.file.sharing.core.handler.action.impl.CreateDirectoryActionHandler;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.StorageInfo;
-import com.file.sharing.core.service.ItemDetailsService;
+import com.file.sharing.core.service.ItemActionService;
+import com.file.sharing.core.service.ItemService;
 import com.file.sharing.core.service.StorageService;
 
 /**
@@ -21,7 +22,7 @@ import com.file.sharing.core.service.StorageService;
  * @created Nov 12, 2017
  */
 @RunWith(MockitoJUnitRunner.class)
-public class ItemsServiceImplTest {
+public class ItemActionServiceTest {
 
 	private static final int DUMMY_PARENT_ID = 1;
 
@@ -36,13 +37,13 @@ public class ItemsServiceImplTest {
 	private StorageService storageService;
 
 	@Mock
-	private ItemDetailsService itemDetailsService;
+	private ItemService itemDetailsService;
 	
 	@Mock
 	private Context context;
 
 	@InjectMocks
-	private ItemsServiceImpl unit;
+	private ItemActionService unit;
 	
 	@Mock
 	private StorageInfo storageInfo;

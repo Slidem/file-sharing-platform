@@ -1,5 +1,7 @@
 package com.file.sharing.core.service;
 
+import java.io.File;
+
 import com.file.sharing.core.exception.ItemNotFoundException;
 import com.file.sharing.core.objects.file.FileData;
 
@@ -7,7 +9,7 @@ import com.file.sharing.core.objects.file.FileData;
  * @author Alexandru Mihai
  * @created Nov 4, 2017
  */
-public interface ItemsService {
+public interface ItemActionService {
 
 	/**
 	 * Creates a directory under the user's root directory.
@@ -90,4 +92,10 @@ public interface ItemsService {
 	 * @param newParentId
 	 */
 	void moveFile(Integer fileId, Integer newParentId);
+
+	/**
+	 * @param fileId
+	 * @return
+	 */
+	File retrieveFile(Integer fileId);
 }

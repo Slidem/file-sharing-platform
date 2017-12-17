@@ -9,7 +9,7 @@ import com.file.sharing.core.objects.file.FileDetails;
  * @author Alexandru Mihai
  * @created Nov 4, 2017
  */
-public interface ItemDetailsService {
+public interface ItemService {
 
 	/**
 	 * @param itemId

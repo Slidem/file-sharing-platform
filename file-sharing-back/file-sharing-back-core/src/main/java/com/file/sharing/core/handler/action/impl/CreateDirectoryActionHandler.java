@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.handler.action.AbstractItemActionHandler;
 import com.file.sharing.core.objects.file.ItemActionStatus;
-import com.file.sharing.core.service.ItemDetailsService;
+import com.file.sharing.core.service.ItemService;
 import com.file.sharing.core.service.StorageService;
 
 /**
@@ -31,7 +31,7 @@ public class CreateDirectoryActionHandler extends AbstractItemActionHandler<Crea
 
 	@Autowired
 	public CreateDirectoryActionHandler(ApplicationEventPublisher applicationEventPublisher,
-			StorageService storageService, ItemDetailsService itemDetailsService) {
+			StorageService storageService, ItemService itemDetailsService) {
 		super(applicationEventPublisher);
 	}
 

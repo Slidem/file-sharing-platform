@@ -1,216 +1,128 @@
 package com.file.sharing.core.service.impl;
 
+import static java.nio.file.Files.readAttributes;
+import static java.util.Optional.ofNullable;
+
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.file.sharing.core.actions.directory.CreateDirectoryAction;
-import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
-import com.file.sharing.core.actions.directory.MoveDirectoryAction;
-import com.file.sharing.core.actions.directory.RenameDirectoryAction;
-import com.file.sharing.core.actions.file.DeleteFileAction;
-import com.file.sharing.core.actions.file.MoveFileAction;
-import com.file.sharing.core.actions.file.RenameFileAction;
-import com.file.sharing.core.actions.file.UploadFileAction;
-import com.file.sharing.core.exception.FileSharingException;
-import com.file.sharing.core.handler.action.ItemActionHandlerRegistry;
-import com.file.sharing.core.objects.Context;
+import com.file.sharing.core.dao.DirectoryItemDao;
+import com.file.sharing.core.dao.FileItemDao;
+import com.file.sharing.core.dao.ItemDao;
+import com.file.sharing.core.entity.DirectoryItem;
+import com.file.sharing.core.entity.FileItem;
+import com.file.sharing.core.entity.Item;
+import com.file.sharing.core.exception.ItemNotFoundException;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
-import com.file.sharing.core.objects.file.FileData;
 import com.file.sharing.core.objects.file.FileDetails;
-import com.file.sharing.core.service.ItemDetailsService;
-import com.file.sharing.core.service.ItemsService;
+import com.file.sharing.core.service.ItemService;
 
 /**
  * @author Alexandru Mihai
- * @created Nov 4, 2017
+ * @created Nov 11, 2017
  */
 @Service
-public class ItemsServiceImpl implements ItemsService {
+@Transactional(readOnly = true)
+public class ItemsServiceImpl implements ItemService {
 
-	private ItemActionHandlerRegistry eventHandlerRegistry;
+	private final ItemDao itemDao;
 
-	private ItemDetailsService itemDetailsService;
+	private final DirectoryItemDao directoryItemDao;
 
-	private Context context;
+	private final FileItemDao fileItemDao;
 
 	@Autowired
-	public ItemsServiceImpl(ItemActionHandlerRegistry eventHandlerRegistry, ItemDetailsService itemDetailsService,
-			Context context) {
-		this.eventHandlerRegistry = eventHandlerRegistry;
-		this.itemDetailsService = itemDetailsService;
-		this.context = context;
+	public ItemsServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao, FileItemDao fileItemDao) {
+		this.itemDao = itemDao;
+		this.directoryItemDao = directoryItemDao;
+		this.fileItemDao = fileItemDao;
 	}
 
 	@Override
-	public void createDirectory(String directoryName) {
-		createDirectory(null, directoryName);
+	public String getItemFullPath(int itemId) {
+		Optional<Item> item = itemDao.find(itemId);
+
+		String fullPath = item.map(this::getPathAsString).orElse(null);
+
+		if (fullPath == null) {
+			throwItemNotFound(itemId);
+		}
+
+		return fullPath;
 	}
 
 	@Override
-	public void createDirectory(Integer parentId, String directoryName) {
+	public DirectoryDetails getDirectoryDetails(int directoryId) throws IOException {
+		DirectoryItem directoryItem = directoryItemDao.find(directoryId).orElse(null);
 
-		if (directoryName == null || directoryName.isEmpty()) {
-			throw new IllegalArgumentException("Directory name cannot be null or empty");
+		if (directoryItem == null) {
+			throwItemNotFound(directoryId);
 		}
 
-		String directoryPath = getPath(parentId);
+		BasicFileAttributes attr = readAttributes(getPath(directoryItem), BasicFileAttributes.class);
 
-		CreateDirectoryAction createDirEvent = new CreateDirectoryAction.CreateDirectoryActionBuilder()
-				.withParentId(parentId).withItemName(directoryName).withPath(directoryPath)
-				.withUserId(context.getGetUserId()).build();
-
-		eventHandlerRegistry.getHandler(CreateDirectoryAction.class).handle(createDirEvent);
-	}
-
-	@Override
-	public void deleteDirectory(Integer directoryId) {
-		if (directoryId == null) {
-			throw new IllegalArgumentException("Directory id cannot be null");
-		}
-
-		DirectoryDetails directoryDetails = getDirectoryDetails(directoryId);
-
-		DeleteDirectoryAction deleteDirEvent = new DeleteDirectoryAction.DeleteDirectoryActionBuilder()
-				.withItemId(directoryDetails.getId()).withItemName(directoryDetails.getName())
-				.withPath(directoryDetails.getPath()).withUserId(context.getGetUserId()).build();
-
-		eventHandlerRegistry.getHandler(DeleteDirectoryAction.class).handle(deleteDirEvent);
-	}
-
-	@Override
-	public void renameDirectory(Integer directoryId, String newName) {
-
-		if (directoryId == null || StringUtils.isEmpty(newName)) {
-			throw new IllegalArgumentException("Directory id or new directory name cannot be null or empty");
-		}
-
-		DirectoryDetails directoryDetails = getDirectoryDetails(directoryId);
-
-		if (directoryDetails.getName().equals(newName)) {
-			throw new IllegalArgumentException("New directory name cannot be the same as the current one");
-		}
-
-		RenameDirectoryAction renameDirAction = new RenameDirectoryAction.RenameDirectoryActionBuilder()
-				.withItemId(directoryDetails.getId()).withItemName(directoryDetails.getName()).withNewItemName(newName)
-				.withPath(directoryDetails.getPath()).withUserId(context.getGetUserId()).build();
-		eventHandlerRegistry.getHandler(RenameDirectoryAction.class).handle(renameDirAction);
-	}
-
-	@Override
-	public void moveDirectory(Integer newParentId, Integer directoryId) {
-		if (directoryId == null) {
-			throw new IllegalArgumentException("Directory id cannot be null.");
-		}
-
-		DirectoryDetails dirDetails = getDirectoryDetails(directoryId);
-
-		if (dirDetails.getParent() != null && dirDetails.getParent().equals(newParentId)) {
-			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
-		}
-
-		String newDirectoryPath = getPath(newParentId);
-
-		MoveDirectoryAction moveDirAction = new MoveDirectoryAction.MoveDirectoryActionBuilder().withItemId(directoryId)
-				.withItemName(dirDetails.getName()).withNewPath(newDirectoryPath).withNewParentId(newParentId)
-				.withPath(dirDetails.getPath()).withUserId(context.getGetUserId()).build();
-
-		eventHandlerRegistry.getHandler(MoveDirectoryAction.class).handle(moveDirAction);
-	}
-
-	@Override
-	public void uploadFile(Integer parentId, FileData fileData) {
-		if (fileData == null) {
-			throw new IllegalArgumentException("file data cannot be nulll");
-		}
-
-		String directoryPath = getPath(parentId);
-
-		UploadFileAction uploadFileAction = new UploadFileAction.UploadFileActionBuilder()
-				.withUserId(context.getGetUserId()).withParentId(parentId).withItemName(fileData.getFileName())
-				.withPath(directoryPath).withBytes(fileData.getBytes()).build();
-
-		eventHandlerRegistry.getHandler(UploadFileAction.class).handle(uploadFileAction);
-	}
-
-	@Override
-	public void deleteFile(Integer fileId) {
-		if (fileId == null) {
-			throw new IllegalArgumentException("File id cannot be null");
-		}
-
-		FileDetails fileDetails = getFileDetails(fileId);
-
-		DeleteFileAction deleteAction = new DeleteFileAction.DeleteFileActionBuilder().withItemId(fileId)
-				.withItemName(fileDetails.getName()).withPath(fileDetails.getPath()).withUserId(context.getGetUserId())
+		return new DirectoryDetails.DirectoryBuilder()
+				.withId(directoryId)
+				.withLastModified(attr.lastModifiedTime().toInstant())
+				.withName(directoryItem.getName())
+				.withParent(getParentId(directoryItem))
+				.withPath(directoryItem.getPath())
+				.withSize(attr.size())
+				.withCreationTime(attr.creationTime().toInstant())
 				.build();
-
-		eventHandlerRegistry.getHandler(DeleteFileAction.class).handle(deleteAction);
+				
 	}
+
 
 	@Override
-	public void renameFile(Integer fileId, String newName) {
-		if (fileId == null || StringUtils.isEmpty(newName)) {
-			throw new IllegalArgumentException("File id or new file name cannot be null or empty");
+	public FileDetails getFileDetails(int fileId) throws IOException {
+		FileItem fileItem = fileItemDao.find(fileId).orElse(null);
+
+		if (fileItem == null) {
+			throwItemNotFound(fileId);
 		}
-		FileDetails fileDetails = getFileDetails(fileId);
-
-		if (fileDetails.getName().equals(newName)) {
-			throw new IllegalArgumentException("New file name cannot be the same as the current one");
-		}
-
-		RenameFileAction renameAction = new RenameFileAction.RenameFileActionBuider().withItemId(fileId)
-				.withItemName(fileDetails.getName()).withNewItemName(newName).withPath(fileDetails.getPath())
-				.withUserId(context.getGetUserId()).build();
-
-		eventHandlerRegistry.getHandler(RenameFileAction.class).handle(renameAction);
+		
+		BasicFileAttributes attr = readAttributes(getPath(fileItem), BasicFileAttributes.class);
+		
+		return new FileDetails.FileDetailsBuilder()
+				.withId(fileItem.getId())
+				.withCategory(fileItem.getCategory().getCategory())
+				.withExtension(fileItem.getCategory().getExtension())
+				.withName(fileItem.getName())
+				.withParent(getParentId(fileItem))
+				.withPath(fileItem.getPath())
+				.withUploadTime(fileItem.getUploadTime().toInstant())
+				.withSize(attr.size())
+				.withLastModified(attr.lastModifiedTime().toInstant())
+				.build();
 	}
 
-	@Override
-	public void moveFile(Integer fileId, Integer newParentId) {
-		if (fileId == null) {
-			throw new IllegalArgumentException("Directory id cannot be null.");
-		}
-
-		FileDetails fileDetails = getFileDetails(fileId);
-
-		if (fileDetails.getParent() != null && fileDetails.getParent().equals(newParentId)) {
-			throw new IllegalArgumentException("New parentId cannot be the same as the previous one");
-		}
-
-		String newDirectoryPath = getPath(newParentId);
-
-		MoveFileAction moveFileAction = new MoveFileAction.MoveFileActionBuilder().withItemId(fileId)
-				.withItemName(fileDetails.getName()).withNewPath(newDirectoryPath).withNewParentId(newParentId)
-				.withPath(fileDetails.getPath()).withUserId(context.getGetUserId()).build();
-
-		eventHandlerRegistry.getHandler(MoveFileAction.class).handle(moveFileAction);
-
+	private Integer getParentId(Item item) {
+		return ofNullable(item.getParent()).map(Item::getId).orElse(null);
 	}
 
-	// ----------------------------------------------------------------------------------
 
-	private FileDetails getFileDetails(Integer fileId) {
-		try {
-			return itemDetailsService.getFileDetails(fileId);
-		} catch (IOException e) {
-			throw new FileSharingException(
-					"Could not retrieve item details for item id: " + fileId + " userId: " + context.getGetUserId(), e);
-		}
+	private String getPathAsString(Item item) {
+		return item.getPath() + File.separator + item.getName();
 	}
 
-	private DirectoryDetails getDirectoryDetails(Integer directoryId) {
-		try {
-			return itemDetailsService.getDirectoryDetails(directoryId);
-		} catch (IOException e) {
-			throw new FileSharingException("Could not retrieve item details for item id: " + directoryId + " userId: "
-					+ context.getGetUserId(), e);
-		}
+	private Path getPath(Item item) {
+		return Paths.get(getPathAsString(item));
 	}
 
-	private String getPath(Integer itemId) {
-		return itemId == null ? context.getUserStorageInfo().getLocation() : itemDetailsService.getItemFullPath(itemId);
+
+	private static void throwItemNotFound(Integer itemId) {
+		throw new ItemNotFoundException("Item not found for id: " + itemId);
 	}
+
+
+
 }
