@@ -39,7 +39,9 @@ import com.file.sharing.core.utils.FileCategoryUtil;
 @RestController
 public class DummyController {
 
+
 	private ItemActionService itemActionService;
+
 	private ItemService itemService;
 
 	private ItemService itemService;
@@ -60,6 +62,7 @@ public class DummyController {
 			fileData = new FileData.Builder().withFileName(fileName)
 					.withExtension(FileCategoryUtil.getExtensionFromFileName(fileName)).withBytes(file.getBytes())
 					.build();
+
 
 			itemActionService.uploadFile(directoryId, fileData);
 		} catch (IOException e) {
@@ -99,8 +102,7 @@ public class DummyController {
 		File file = itemActionService.retrieveFile(fileId);
 		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
 		return new FileSystemResource(file);
-	}	@GetMapping(value = "/getItemsByParentId")
-	public void getFilesByParentId(@RequestParam(value = "parentId") Integer parentId) {
+	@GetMapping(value = "/getItemsByParentId")	public void getFilesByParentId(@RequestParam(value = "parentId") Integer parentId) {
 		itemService.getItemsByParentId(parentId);
 	}
 
