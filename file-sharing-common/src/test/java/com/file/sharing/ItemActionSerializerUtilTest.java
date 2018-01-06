@@ -1,5 +1,7 @@
 package com.file.sharing;
 
+import java.time.Instant;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,21 +18,25 @@ public class ItemActionSerializerUtilTest {
 
 	private static final Integer DUMMY_ID = 1;
 
-	// dummyItemName_dummyPathName_1
-	private static final String DUMMY_SERIALIZED_ITEM_ACTION = "ZHVtbXlJdGVtTmFtZV9kdW1teVBhdGhOYW1lXzE="; // ->
+	private static final Instant DUMMY_ACTION_TIME = Instant.now();
+
+	// dummyItemName_dummyPathName_1_${Intant.now}
+	private static final String DUMMY_SERIALIZED_ITEM_ACTION = "ZHVtbXlJdGVtTmFtZV9kdW1teVBhdGhOYW1lXzFfMTUxNTIxNTcyNjYyNw=="; // ->
 
 	// dummy_1 -> only 2 parts
 	private static final String INVALID_SERIALIZED_ITEM_ACTION_1 = "ZHVtbXlfMQ==";
 
-	// dummy_dummy_dummy -> id is not an integer
-	private static final String INVALID_SERIALIZED_ITEM_ACTION_2 = "ZHVtbXlfZHVtbXlfZHVtbXk=";
+	// dummy_dummy_1_notALongValue -> actionTime is not a long value
+	private static final String INVALID_SERIALIZED_ITEM_ACTION_2 = "ZHVtbXlJdGVtTmFtZV9kdW1teVBhdGhOYW1lXzFfbm90QUxvbmdWYWx1ZQ==";
+
 
 	private static final String INVALID_BASE64_SERIALIZED_STRING = "notABase64String";
 
 	@Test
 	public void test_successfull_serialization() {
 
-		ItemActionDTO dto = new ItemActionDTO.Builder().withItemName(DUMMY_ITEM_NAME).withPath(DUMMY_PATH_NAME).withUserId(DUMMY_ID).build();
+		ItemActionDTO dto = new ItemActionDTO.Builder().withItemName(DUMMY_ITEM_NAME).withPath(DUMMY_PATH_NAME)
+				.withUserId(DUMMY_ID).withActionTime(DUMMY_ACTION_TIME).build();
 		String result = ItemActionSerializerUtil.serialize(dto);
 
 		Assert.assertNotNull(result);

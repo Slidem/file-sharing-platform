@@ -2,7 +2,6 @@ package com.file.sharing.common.serializer;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.MessageFormat;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.regex.Matcher;
@@ -18,7 +17,7 @@ import com.file.sharing.common.exceptions.ItemActionSerializationException;
  */
 public final class ItemActionSerializerUtil {
 
-	private static final String ENCODED_STRING_FORMAT = "{0}_{1}_{2}_{3}";
+	private static final String ENCODED_STRING_FORMAT = "%s_%s_%d_%d";
 
 	private static final Pattern ENCODED_STRING_PATTERN = Pattern.compile("(.*)_(.*)_([0-9]*)_([0-9]*)");
 
@@ -32,10 +31,9 @@ public final class ItemActionSerializerUtil {
 	 * @return Encoded base64 String representation of itemActionDTO
 	 */
 	public static String serialize(ItemActionDTO itemActionDTO) {
-		
+
 		//@formatter:off
-		String stringToBeEncoded = MessageFormat.format(
-										 ENCODED_STRING_FORMAT,
+		String stringToBeEncoded = String.format(ENCODED_STRING_FORMAT, 
 				                         itemActionDTO.getItemName(), 
 				                         itemActionDTO.getPath(), 
 				                         itemActionDTO.getUserId(),
@@ -47,7 +45,7 @@ public final class ItemActionSerializerUtil {
 	public static ItemActionDTO deserialize(String text) {
 		Matcher matcher;
 
-		try{
+		try {
 			byte[] decodedTextBytes = Base64.getDecoder().decode(text.getBytes(ENCODE_CHARSET));
 			String decodedText = new String(decodedTextBytes, ENCODE_CHARSET);
 			matcher = ENCODED_STRING_PATTERN.matcher(decodedText);
@@ -55,7 +53,7 @@ public final class ItemActionSerializerUtil {
 		} catch (IllegalArgumentException e) {
 			throw new ItemActionSerializationException(e);
 		}
-		
+
 		if (!matcher.matches()) {
 			throw new ItemActionSerializationException("Decoded text does not match pattern.");
 		}

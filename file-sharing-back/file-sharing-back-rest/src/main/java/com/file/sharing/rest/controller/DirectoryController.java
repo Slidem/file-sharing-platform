@@ -2,6 +2,7 @@ package com.file.sharing.rest.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,7 @@ public class DirectoryController extends ItemController {
 		return ItemActionResponseDTO.of(itemActionDtoFactory.toDto(itemAction));
 	}
 	
-	@PatchMapping(value = "/directories/{directoryId}")
+	@DeleteMapping(value = "/directories/{directoryId}")
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public ItemActionResponseDTO deleteDirectory(@PathVariable Integer directoryId) {
 		ItemAction itemAction = itemActionService.deleteDirectory(directoryId);

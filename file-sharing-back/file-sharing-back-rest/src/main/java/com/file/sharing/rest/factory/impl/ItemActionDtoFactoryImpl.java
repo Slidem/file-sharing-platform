@@ -20,6 +20,7 @@ public class ItemActionDtoFactoryImpl implements ItemActionDtoFactory {
 		return new ItemActionDTO.Builder()
 				.withItemName(itemAction.getItemName())
 				.withPath(itemAction.getPath())
+				.withActionTime(itemAction.getActionTime())
 				.withUserId(itemAction.getUserId())
 				.build();
 		//@formatter:on
