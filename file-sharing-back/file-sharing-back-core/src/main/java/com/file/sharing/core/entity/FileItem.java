@@ -20,6 +20,11 @@ import com.file.sharing.core.objects.file.ItemType;
 public class FileItem extends Item {
 
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4679575857768871973L;
+
 	@Column(name = "upload_time")
 	private Timestamp uploadTime;
 
@@ -36,6 +41,13 @@ public class FileItem extends Item {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "category_id")
 	private FileItemCategory category;
+
+	public FileItem() {
+	}
+
+	public FileItem(FileItemCategory category) {
+		this.category = category;
+	}
 
 
 	public FileItemCategory getCategory() {

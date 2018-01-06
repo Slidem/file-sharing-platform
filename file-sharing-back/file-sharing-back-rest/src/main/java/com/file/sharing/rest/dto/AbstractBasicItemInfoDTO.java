@@ -1,5 +1,7 @@
-package com.file.sharing.core.objects;
+package com.file.sharing.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.file.sharing.core.objects.file.ItemType;
 
 /**
@@ -7,7 +9,8 @@ import com.file.sharing.core.objects.file.ItemType;
  * @created Dec 17, 2017
  * 
  */
-public abstract class AbstractBasicItemInfo implements BasicItemInfo {
+@JsonInclude(value = Include.NON_NULL)
+public abstract class AbstractBasicItemInfoDTO {
 
 	private final Integer id;
 
@@ -15,28 +18,25 @@ public abstract class AbstractBasicItemInfo implements BasicItemInfo {
 
 	private final ItemType itemType;
 
-	protected AbstractBasicItemInfo(Builder<?, ?> builder) {
+	protected AbstractBasicItemInfoDTO(Builder<?, ?> builder) {
 		this.id = builder.id;
 		this.name = builder.name;
 		this.itemType = builder.itemType;
 	}
 
-	@Override
 	public Integer getId() {
 		return this.id;
 	}
 
-	@Override
 	public ItemType getItemType() {
 		return this.itemType;
 	}
 
-	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	public abstract static class Builder<T extends AbstractBasicItemInfo, B extends Builder<T, B>> {
+	public abstract static class Builder<T extends AbstractBasicItemInfoDTO, B extends Builder<T, B>> {
 
 		private Integer id;
 

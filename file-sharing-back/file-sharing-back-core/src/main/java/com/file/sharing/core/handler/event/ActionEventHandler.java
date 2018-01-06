@@ -133,6 +133,8 @@ public class ActionEventHandler {
 		JmsItemActionInfo itemInfo = new JmsItemActionInfo.Builder()
 				.withItemAction(type.name())
 				.withItemName(itemAction.getItemName())
+				.withItemPath(itemAction.getPath())
+				.withActionTime(itemAction.getActionTime())
 				.withStatus(itemActionEvent.status().name())
 				.withUserId(itemAction.getUserId())
 				.build();

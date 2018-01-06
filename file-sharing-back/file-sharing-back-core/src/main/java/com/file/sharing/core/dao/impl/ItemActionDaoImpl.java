@@ -1,9 +1,16 @@
 package com.file.sharing.core.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Root;
 
 import org.hibernate.NonUniqueResultException;
 import org.slf4j.Logger;
@@ -13,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import com.file.sharing.core.dao.AbstractDaoImpl;
 import com.file.sharing.core.dao.ItemActionDao;
 import com.file.sharing.core.entity.ItemActionEntity;
+import com.file.sharing.core.search.OrderValue;
 
 /**
  * @author Alexandru Mihai
@@ -37,6 +45,21 @@ public class ItemActionDaoImpl extends AbstractDaoImpl<ItemActionEntity> impleme
 			logger.warn("More than one item actio found for itemId: " + itemId, e);
 			throw e;
 		}
+	}
+
+	@Override
+	public List<ItemActionEntity> findActionsBasedOnItemId(Integer itemId, OrderValue actionTimeOrder) {
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<ItemActionEntity> criteriaQuery = cb.createQuery(ItemActionEntity.class);
+		Root<ItemActionEntity> root = criteriaQuery.from(ItemActionEntity.class);
+		
+		Path<Set<String>> actionTimePath = root.get("actionTime");
+		
+		Order order = OrderValue.ASC == actionTimeOrder ? cb.asc(actionTimePath) : cb.desc(actionTimePath);
+
+		TypedQuery<ItemActionEntity> typeQuery = entityManager.createQuery(criteriaQuery.select(root).orderBy(order));
+
+		return typeQuery.getResultList();
 	}
 
 }

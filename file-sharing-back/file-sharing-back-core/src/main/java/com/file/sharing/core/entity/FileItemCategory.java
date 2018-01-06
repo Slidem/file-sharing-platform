@@ -1,5 +1,6 @@
 package com.file.sharing.core.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -22,7 +23,12 @@ import com.file.sharing.core.objects.file.FileCategories;
  */
 @Entity
 @Table(name = "file_category", schema = "public")
-public class FileItemCategory {
+public class FileItemCategory implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2663657129451380087L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

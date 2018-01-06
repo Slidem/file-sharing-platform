@@ -1,6 +1,5 @@
 package com.file.sharing.core.service.impl;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +45,12 @@ public class ItemActionServiceImpl implements ItemActionService {
 	}
 
 	@Override
-	public void createDirectory(String directoryName) {
-		createDirectory(null, directoryName);
+	public CreateDirectoryAction createDirectory(String directoryName) {
+		return createDirectory(null, directoryName);
 	}
 
 	@Override
-	public void createDirectory(Integer parentId, String directoryName) {
+	public CreateDirectoryAction createDirectory(Integer parentId, String directoryName) {
 
 		if (directoryName == null || directoryName.isEmpty()) {
 			throw new IllegalArgumentException("Directory name cannot be null or empty");
@@ -59,34 +58,38 @@ public class ItemActionServiceImpl implements ItemActionService {
 
 		String directoryPath = getPath(parentId);
 
-		CreateDirectoryAction createDirEvent = new CreateDirectoryAction.CreateDirectoryActionBuilder()
+		CreateDirectoryAction createDirAction = new CreateDirectoryAction.CreateDirectoryActionBuilder()
 				.withParentId(parentId)
 				.withItemName(directoryName)
 				.withPath(directoryPath)
 				.withUserId(context.getGetUserId())
 				.build();
 
-		eventHandlerRegistry.getHandler(CreateDirectoryAction.class).handle(createDirEvent);
+		eventHandlerRegistry.getHandler(CreateDirectoryAction.class).handle(createDirAction);
+
+		return createDirAction;
 	}
 
 	@Override
-	public void deleteDirectory(Integer directoryId) {
+	public DeleteDirectoryAction deleteDirectory(Integer directoryId) {
 		checkItemId(directoryId);
 
 		DirectoryDetails directoryDetails = getDirectoryDetails(directoryId);
 
-		DeleteDirectoryAction deleteDirEvent = new DeleteDirectoryAction.DeleteDirectoryActionBuilder()
+		DeleteDirectoryAction deleteDirAction = new DeleteDirectoryAction.DeleteDirectoryActionBuilder()
 				.withItemId(directoryDetails.getId())
 				.withItemName(directoryDetails.getName())
 				.withPath(directoryDetails.getPath())
 				.withUserId(context.getGetUserId())
 				.build();
 
-		eventHandlerRegistry.getHandler(DeleteDirectoryAction.class).handle(deleteDirEvent);
+		eventHandlerRegistry.getHandler(DeleteDirectoryAction.class).handle(deleteDirAction);
+
+		return deleteDirAction;
 	}
 
 	@Override
-	public void renameDirectory(Integer directoryId, String newName) {
+	public RenameDirectoryAction renameDirectory(Integer directoryId, String newName) {
 
 		if (directoryId == null || StringUtils.isEmpty(newName)) {
 			throw new IllegalArgumentException("Directory id or new directory name cannot be null or empty");
@@ -106,10 +109,12 @@ public class ItemActionServiceImpl implements ItemActionService {
 				.withUserId(context.getGetUserId())
 				.build();
 		eventHandlerRegistry.getHandler(RenameDirectoryAction.class).handle(renameDirAction);
+
+		return renameDirAction;
 	}
 
 	@Override
-	public void moveDirectory(Integer newParentId, Integer directoryId) {
+	public MoveDirectoryAction moveDirectory(Integer directoryId, Integer newParentId) {
 		checkItemId(directoryId);
 
 		DirectoryDetails dirDetails = getDirectoryDetails(directoryId);
@@ -130,10 +135,12 @@ public class ItemActionServiceImpl implements ItemActionService {
 				.build();
 
 		eventHandlerRegistry.getHandler(MoveDirectoryAction.class).handle(moveDirAction);
+
+		return moveDirAction;
 	}
 
 	@Override
-	public void uploadFile(Integer parentId, FileData fileData) {
+	public UploadFileAction uploadFile(Integer parentId, FileData fileData) {
 		if (fileData == null) {
 			throw new IllegalArgumentException("file data cannot be nulll");
 		}
@@ -145,26 +152,30 @@ public class ItemActionServiceImpl implements ItemActionService {
 				.withPath(directoryPath).withBytes(fileData.getBytes()).build();
 
 		eventHandlerRegistry.getHandler(UploadFileAction.class).handle(uploadFileAction);
+
+		return uploadFileAction;
 	}
 
 	@Override
-	public void deleteFile(Integer fileId) {
+	public DeleteFileAction deleteFile(Integer fileId) {
 		checkItemId(fileId);
 
 		FileDetails fileDetails = getFileDetails(fileId);
 
-		DeleteFileAction deleteAction = new DeleteFileAction.DeleteFileActionBuilder()
+		DeleteFileAction deleteFileAction = new DeleteFileAction.DeleteFileActionBuilder()
 				.withItemId(fileId)
 				.withItemName(fileDetails.getName())
 				.withPath(fileDetails.getPath())
 				.withUserId(context.getGetUserId())
 				.build();
 
-		eventHandlerRegistry.getHandler(DeleteFileAction.class).handle(deleteAction);
+		eventHandlerRegistry.getHandler(DeleteFileAction.class).handle(deleteFileAction);
+
+		return deleteFileAction;
 	}
 
 	@Override
-	public void renameFile(Integer fileId, String newName) {
+	public RenameFileAction renameFile(Integer fileId, String newName) {
 		if (fileId == null || StringUtils.isEmpty(newName)) {
 			throw new IllegalArgumentException("File id or new file name cannot be null or empty");
 		}
@@ -174,7 +185,7 @@ public class ItemActionServiceImpl implements ItemActionService {
 			throw new IllegalArgumentException("New file name cannot be the same as the current one");
 		}
 
-		RenameFileAction renameAction = new RenameFileAction.RenameFileActionBuider()
+		RenameFileAction renameFileAction = new RenameFileAction.RenameFileActionBuider()
 				.withItemId(fileId)
 				.withItemName(fileDetails.getName())
 				.withNewItemName(newName)
@@ -182,11 +193,13 @@ public class ItemActionServiceImpl implements ItemActionService {
 				.withUserId(context.getGetUserId())
 				.build();
 
-		eventHandlerRegistry.getHandler(RenameFileAction.class).handle(renameAction);
+		eventHandlerRegistry.getHandler(RenameFileAction.class).handle(renameFileAction);
+
+		return renameFileAction;
 	}
 
 	@Override
-	public void moveFile(Integer fileId, Integer newParentId) {
+	public MoveFileAction moveFile(Integer fileId, Integer newParentId) {
 		checkItemId(fileId);
 
 		FileDetails fileDetails = getFileDetails(fileId);
@@ -207,15 +220,8 @@ public class ItemActionServiceImpl implements ItemActionService {
 				.build();
 
 		eventHandlerRegistry.getHandler(MoveFileAction.class).handle(moveFileAction);
-	}
 
-	@Override
-	public File retrieveFile(Integer fileId) {
-		checkItemId(fileId);
-		
-		FileDetails fileDetails = getFileDetails(fileId);
-
-		return new File(fileDetails.getPath() + File.separator + fileDetails.getName());
+		return moveFileAction;
 	}
 
 	// ----------------------------------------------------------------------------------

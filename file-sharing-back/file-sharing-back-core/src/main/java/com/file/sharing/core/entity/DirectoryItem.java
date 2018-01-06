@@ -25,6 +25,11 @@ import com.file.sharing.core.objects.file.ItemType;
 @Table(name = "directory", schema = "public")
 public class DirectoryItem extends Item {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7886741424046967059L;
+
 	@ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "parent_id")

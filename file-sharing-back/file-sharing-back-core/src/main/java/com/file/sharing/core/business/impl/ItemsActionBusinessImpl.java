@@ -135,11 +135,15 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		return fileItem;
 	}
 
+	// -----------------------------------------------------------------
+
 	private DirectoryItem getParent(Integer parentId) {
 		if (parentId == null) {
 			return null;
 		}
 		return directoryItemDao.find(parentId).orElse(null);
 	}
+
+
 
 }

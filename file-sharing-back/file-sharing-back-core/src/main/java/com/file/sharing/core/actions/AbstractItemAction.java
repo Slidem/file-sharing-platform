@@ -1,5 +1,6 @@
 package com.file.sharing.core.actions;
 
+import java.time.Instant;
 import java.util.Objects;
 
 /**
@@ -14,10 +15,13 @@ public abstract class AbstractItemAction implements ItemAction {
 
 	private final String path;
 
+	private final Instant actionTime;
+
 	protected AbstractItemAction(AbstractBuilder<?, ?> builder) {
 		this.userId = Objects.requireNonNull(builder.userId);
 		this.itemName = Objects.requireNonNull(builder.itemName);
 		this.path = Objects.requireNonNull(builder.path);
+		this.actionTime = Instant.now();
 	}
 
 	public Integer getUserId() {
@@ -32,6 +36,11 @@ public abstract class AbstractItemAction implements ItemAction {
 	@Override
 	public String getPath() {
 		return path;
+	}
+
+	@Override
+	public Instant getActionTime() {
+		return actionTime;
 	}
 
 	/**

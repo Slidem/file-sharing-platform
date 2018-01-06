@@ -8,11 +8,11 @@ import static com.file.sharing.core.objects.file.ItemActionType.MOVE_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_DIRECTORY;
 import static com.file.sharing.core.objects.file.ItemActionType.RENAME_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
+import static org.springframework.transaction.support.TransactionSynchronizationManager.registerSynchronization;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.file.sharing.core.actions.ItemAction;
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
@@ -117,7 +117,7 @@ public class ItemsActionEventServiceImpl implements ItemsActionEventService {
 	// --------------------------------------------------------------------------------------------------
 
 	private void registerTransactionSynchronization(ItemAction action, ItemActionType itemActionType) {
-		TransactionSynchronizationManager.registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
+		registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
 				action.getItemName(), itemActionType, itemActionJmsSender));
 	}
 

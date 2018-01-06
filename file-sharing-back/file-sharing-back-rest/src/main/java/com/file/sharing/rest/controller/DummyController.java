@@ -2,6 +2,7 @@ package com.file.sharing.rest.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,8 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.file.sharing.core.objects.PageResult;
+import com.file.sharing.core.objects.file.BasicFileInfo;
+import com.file.sharing.core.objects.file.FileCategories;
 import com.file.sharing.core.objects.file.FileData;
+import com.file.sharing.core.search.ItemSearch;
+import com.file.sharing.core.search.PageSearch;
+import com.file.sharing.core.search.impl.ItemSearchImpl;
+import com.file.sharing.core.search.impl.PageSearchImpl;
 import com.file.sharing.core.service.ItemActionService;
+import com.file.sharing.core.service.ItemService;
 import com.file.sharing.core.utils.FileCategoryUtil;
 
 /**
@@ -30,10 +39,13 @@ import com.file.sharing.core.utils.FileCategoryUtil;
 @RestController
 public class DummyController {
 
-	private ItemActionService itemService;
+	private ItemActionService itemActionService;
+
+	private ItemService itemService;
 
 	@Autowired
-	public DummyController(ItemActionService itemService) {
+	public DummyController(ItemActionService itemActionService, ItemService itemService) {
+		this.itemActionService = itemActionService;
 		this.itemService = itemService;
 	}
 
@@ -48,7 +60,7 @@ public class DummyController {
 					.withExtension(FileCategoryUtil.getExtensionFromFileName(fileName)).withBytes(file.getBytes())
 					.build();
 
-			itemService.uploadFile(directoryId, fileData);
+			itemActionService.uploadFile(directoryId, fileData);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -59,32 +71,41 @@ public class DummyController {
 			@RequestParam(value = "parentId", required = false) Integer parentId) {
 		
 		if (parentId == null) {
-			itemService.createDirectory(directoryName);
+			itemActionService.createDirectory(directoryName);
 		} else {
-			itemService.createDirectory(parentId, directoryName);
+			itemActionService.createDirectory(parentId, directoryName);
 		}
 	}
 
 	@DeleteMapping(value = "/deleteFile")
 	public void deleteFile(@RequestParam(value = "fileId") Integer fileId) {
-		itemService.deleteFile(fileId);
+		itemActionService.deleteFile(fileId);
 	}
 	
 	@PatchMapping(value = "/renameFile")
 	public void renameFile(@RequestParam(value = "fileId") Integer fileId, @RequestParam(value = "newName") String newName) {
-		itemService.renameFile(fileId, newName);
+		itemActionService.renameFile(fileId, newName);
 	}
 
 	@PatchMapping(value = "/moveFile")
 	public void moveFile(@RequestParam(value = "fileId") Integer fileId,
 			@RequestParam(value = "newParentId") Integer newParentId) {
-		itemService.moveFile(fileId, newParentId);
+		itemActionService.moveFile(fileId, newParentId);
 	}
 
 	@GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	public FileSystemResource downloadFile(@RequestParam(value = "fileId") Integer fileId, HttpServletResponse response) {
+	public FileSystemResource downloadFile(@RequestParam(value = "fileId") Integer fileId, HttpServletResponse response) throws IOException {
 		File file = itemService.retrieveFile(fileId);
 		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
 		return new FileSystemResource(file);
+	}
+
+	@GetMapping(value = "/getFilesInfo")
+	public void getFilesInfo() {
+		PageSearch pageSearch = PageSearchImpl.of(1, 10);
+		ItemSearch itemSearch = ItemSearchImpl.newBuilder().withCategories(Arrays.asList(FileCategories.IMAGES))
+				.withPageSearch(pageSearch).build();
+		PageResult<BasicFileInfo> pageResult = itemService.searchFiles(itemSearch);
+		System.out.println(pageResult);
 	}
 }

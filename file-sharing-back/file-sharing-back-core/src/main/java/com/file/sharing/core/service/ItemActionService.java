@@ -1,7 +1,13 @@
 package com.file.sharing.core.service;
 
-import java.io.File;
-
+import com.file.sharing.core.actions.directory.CreateDirectoryAction;
+import com.file.sharing.core.actions.directory.DeleteDirectoryAction;
+import com.file.sharing.core.actions.directory.MoveDirectoryAction;
+import com.file.sharing.core.actions.directory.RenameDirectoryAction;
+import com.file.sharing.core.actions.file.DeleteFileAction;
+import com.file.sharing.core.actions.file.MoveFileAction;
+import com.file.sharing.core.actions.file.RenameFileAction;
+import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.exception.ItemNotFoundException;
 import com.file.sharing.core.objects.file.FileData;
 
@@ -18,7 +24,7 @@ public interface ItemActionService {
 	 * 
 	 * @throws IllegalArgumentException if the directoryName is null or empty
 	 */
-	void createDirectory(String directoryName);
+	CreateDirectoryAction createDirectory(String directoryName);
 
 	/**
 	 * @param parentId Id of the parent directory.
@@ -28,7 +34,7 @@ public interface ItemActionService {
 	 * @throws ItemNotFoundException if the parentId is an invalid directory id 
 	 * 	
 	 **/
-	void createDirectory(Integer parentId, String directoryName);
+	CreateDirectoryAction createDirectory(Integer parentId, String directoryName);
 
 	/**
 	 * @param directoryId
@@ -37,7 +43,7 @@ public interface ItemActionService {
 	 * @throws IllegalArgumentException if the directoryId is null
 	 * @throws ItemNotFoundException directory id is an invalid one
 	 */
-	void deleteDirectory(Integer directoryId);
+	DeleteDirectoryAction deleteDirectory(Integer directoryId);
 
 	/**
 	 * @param directoryId
@@ -47,7 +53,7 @@ public interface ItemActionService {
 	 * @throws IllegalArgumentException if the newName is null, empty, or is the same as the previous name of the directory
 	 * @throws ItemNotFoundException directory id is an invalid one
 	 */
-	void renameDirectory(Integer directoryId, String newName);
+	RenameDirectoryAction renameDirectory(Integer directoryId, String newName);
 
 	/**
 	 * @param newParentId
@@ -59,7 +65,7 @@ public interface ItemActionService {
 	 * @throws IllegalArgumentException if the directoryId is null
 	 * @throws ItemNotFoundException directory id, or newParentId is an invalid one
 	 */
-	void moveDirectory(Integer newParentId, Integer directoryId);
+	MoveDirectoryAction moveDirectory(Integer directoryId, Integer newParentId);
 
 	/**
 	 * @param parentId
@@ -67,7 +73,7 @@ public interface ItemActionService {
 	 *            user's root
 	 * @param fileData
 	 */
-	void uploadFile(Integer parentId, FileData fileData);
+	UploadFileAction uploadFile(Integer parentId, FileData fileData);
 
 	/**
 	 * @param fileId
@@ -75,7 +81,7 @@ public interface ItemActionService {
 	 * @throws IllegalArgumentException if the fileId is null
 	 * @throws ItemNotFoundException fileId is an invalid one
 	 */
-	void deleteFile(Integer fileId);
+	DeleteFileAction deleteFile(Integer fileId);
 
 	/**
 	 * @param fileId
@@ -85,17 +91,11 @@ public interface ItemActionService {
 	 * @throws IllegalArgumentException if the newName is null, empty, or is the same as the previous name of the file
 	 * @throws ItemNotFoundException file id is an invalid one
 	 */
-	void renameFile(Integer fileId, String newName);
+	RenameFileAction renameFile(Integer fileId, String newName);
 
 	/**
 	 * @param fileId
 	 * @param newParentId
 	 */
-	void moveFile(Integer fileId, Integer newParentId);
-
-	/**
-	 * @param fileId
-	 * @return
-	 */
-	File retrieveFile(Integer fileId);
+	MoveFileAction moveFile(Integer fileId, Integer newParentId);
 }

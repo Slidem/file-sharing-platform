@@ -1,9 +1,16 @@
 package com.file.sharing.core.service;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import com.file.sharing.core.objects.ItemActionInfo;
+import com.file.sharing.core.objects.PageResult;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
+import com.file.sharing.core.objects.file.BasicFileInfo;
 import com.file.sharing.core.objects.file.FileDetails;
+import com.file.sharing.core.search.ItemSearch;
+import com.file.sharing.core.search.OrderValue;
 
 /**
  * @author Alexandru Mihai
@@ -30,5 +37,30 @@ public interface ItemService {
 	 * @return
 	 */
 	FileDetails getFileDetails(int fileId) throws IOException;
+
+	/**
+	 * @param fileId
+	 * @return
+	 */
+	File retrieveFile(Integer fileId) throws IOException;
+
+	/**
+	 * @param itemSearch
+	 * @return
+	 */
+	PageResult<BasicFileInfo> searchFiles(ItemSearch itemSearch);
+
+	/**
+	 * @param itemId
+	 * @return
+	 */
+	List<ItemActionInfo> getItemActionsInfo(Integer itemId);
+
+	/**
+	 * @param itemId
+	 * @param orderValue
+	 * @return
+	 */
+	List<ItemActionInfo> getItemActionsInfo(Integer itemId, OrderValue orderValue);
 
 }

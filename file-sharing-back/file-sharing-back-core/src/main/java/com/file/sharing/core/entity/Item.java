@@ -1,5 +1,7 @@
 package com.file.sharing.core.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +21,12 @@ import com.file.sharing.core.objects.file.ItemType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class Item {
+public abstract class Item implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -711533308680470247L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
