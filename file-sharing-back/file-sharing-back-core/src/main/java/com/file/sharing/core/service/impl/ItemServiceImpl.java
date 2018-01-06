@@ -11,6 +11,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,8 @@ import com.file.sharing.core.entity.FileItem;
 import com.file.sharing.core.entity.Item;
 import com.file.sharing.core.exception.FileSharingException;
 import com.file.sharing.core.exception.ItemNotFoundException;
+import com.file.sharing.core.factory.BasicItemInfoFactory;
+import com.file.sharing.core.objects.BasicItemInfo;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.ItemActionInfo;
 import com.file.sharing.core.objects.PageResult;
@@ -53,14 +56,17 @@ public class ItemServiceImpl implements ItemService {
 
 	private final ItemInfoBusiness itemInfoBusiness;
 
-	@Autowired{
-	public ItemsServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao, FileItemDao fileItemDao,
-			Context context, ItemInfoBusiness itemInfoBusiness) {
+	private final BasicItemInfoFactory basicItemInfoFactory;
+
+	@Autowired
+	public ItemServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao, FileItemDao fileItemDao, Context context,
+			ItemInfoBusiness itemInfoBusiness, BasicItemInfoFactory basicItemInfoFactory) {
 		this.itemDao = itemDao;
 		this.directoryItemDao = directoryItemDao;
 		this.fileItemDao = fileItemDao;
 		this.context = context;
 		this.itemInfoBusiness = itemInfoBusiness;
+		this.basicItemInfoFactory = basicItemInfoFactory;
 	}
 
 	@Override
@@ -86,14 +92,10 @@ public class ItemServiceImpl implements ItemService {
 		}
 
 		BasicFileAttributes attr = readAttributes(getPath(directoryItem), BasicFileAttributes.class);
-
-				.withId(directoryId)				.withLastModified(attr.lastModifiedTime().toInstant())
-				.withName(directoryItem.getName())
-				.withParent(getParentId(directoryItem))
-				.withPath(directoryItem.getPath())
-				.withSize(attr.size())
-				.withCreationTime(attr.creationTime().toInstant())
-				.build();
+		return new DirectoryDetails.DirectoryBuilder().withId(directoryId)
+				.withLastModified(attr.lastModifiedTime().toInstant()).withName(directoryItem.getName())
+				.withParent(getParentId(directoryItem)).withPath(directoryItem.getPath()).withSize(attr.size())
+				.withCreationTime(attr.creationTime().toInstant()).build();
 
 	}
 
@@ -107,17 +109,11 @@ public class ItemServiceImpl implements ItemService {
 
 		BasicFileAttributes attr = readAttributes(getPath(fileItem), BasicFileAttributes.class);
 
-
 		return new FileDetails.FileDetailsBuilder().withId(fileItem.getId())
-				.withCategory(fileItem.getCategory().getCategory())
-				.withExtension(fileItem.getCategory().getExtension())
-				.withName(fileItem.getName())
-				.withParent(getParentId(fileItem))
-				.withPath(fileItem.getPath())
-				.withUploadTime(fileItem.getUploadTime().toInstant())
-				.withSize(attr.size())
-				.withLastModified(attr.lastModifiedTime().toInstant())
-				.build();
+				.withCategory(fileItem.getCategory().getCategory()).withExtension(fileItem.getCategory().getExtension())
+				.withName(fileItem.getName()).withParent(getParentId(fileItem)).withPath(fileItem.getPath())
+				.withUploadTime(fileItem.getUploadTime().toInstant()).withSize(attr.size())
+				.withLastModified(attr.lastModifiedTime().toInstant()).build();
 	}
 
 	@Override
@@ -131,7 +127,8 @@ public class ItemServiceImpl implements ItemService {
 		try {
 			fileDetails = getFileDetails(fileId);
 		} catch (IOException e) {
-			throw new FileSharingException("Could not retrieve item details for item id: " + fileId + " userId: " + context.getGetUserId(), e);
+			throw new FileSharingException(
+					"Could not retrieve item details for item id: " + fileId + " userId: " + context.getGetUserId(), e);
 		}
 
 		return new File(fileDetails.getPath() + File.separator + fileDetails.getName());
@@ -166,10 +163,19 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public List<Item> getItemsByParentId(int parentId) {
-		List<Item> result = itemDao.getItemsByParentId(parentId);
-		return result;
+		return itemDao.getItemsByParentId(parentId);
+	}
+
+	@Override
+	public List<BasicItemInfo> getBasicItemInfoByParentId(int parentId) {
+		List<Item> itemList = itemDao.getItemsByParentId(parentId);
+		List<BasicItemInfo> basicItemInfoList = itemList.stream().map(basicItemInfoFactory::fromItemEntity)
+				.collect(Collectors.toList());
+		return basicItemInfoList;
 	}
 
 	private static void throwItemNotFound(Integer itemId) {
 		throw new ItemNotFoundException("Item not found for id: " + itemId);
+	}
+
 }
