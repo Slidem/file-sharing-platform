@@ -30,7 +30,7 @@ public class ItemServiceTest {
 	private ItemDao itemDao;
 
 	@InjectMocks
-	private ItemsServiceImpl unit;
+	private ItemServiceImpl unit;
 
 	@Mock
 	private Item item;
@@ -54,6 +54,11 @@ public class ItemServiceTest {
 		String result = unit.getItemFullPath(VALID_ITEM_ID);
 
 		Assert.assertEquals("dummyPath" + File.separator + "dummyFileName", result);
+	}
+	
+	public void testGetItemsByParentId() {
+		
+		
 	}
 
 }

@@ -41,7 +41,7 @@ import com.file.sharing.core.service.ItemService;
  */
 @Service
 @Transactional(readOnly = true)
-public class ItemsServiceImpl implements ItemService {
+public class ItemServiceImpl implements ItemService {
 
 	private final ItemDao itemDao;
 
@@ -164,9 +164,12 @@ public class ItemsServiceImpl implements ItemService {
 		return Paths.get(getPathAsString(item));
 	}
 
-	private static void throwItemNotFound(Integer itemId) {
-		throw new ItemNotFoundException("Item not found for id: " + itemId);
+	@Override
+	public List<Item> getItemsByParentId(int parentId) {
+		List<Item> result = itemDao.getItemsByParentId(parentId);
+		return result;
 	}
 
-
-}
+	private static void throwItemNotFound(Integer itemId) {
+		throw new ItemNotFoundException("Item not found for id: " + itemId);
+	}}

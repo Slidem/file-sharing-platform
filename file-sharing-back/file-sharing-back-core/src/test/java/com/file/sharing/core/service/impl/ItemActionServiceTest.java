@@ -38,12 +38,12 @@ public class ItemActionServiceTest {
 
 	@Mock
 	private ItemService itemDetailsService;
-	
+
 	@Mock
 	private Context context;
 
 	@InjectMocks
-	private ItemActionService unit;
+	private ItemActionServiceImpl unit;
 	
 	@Mock
 	private StorageInfo storageInfo;

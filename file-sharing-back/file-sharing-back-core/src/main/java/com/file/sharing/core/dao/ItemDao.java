@@ -1,5 +1,7 @@
 package com.file.sharing.core.dao;
 
+import java.util.List;
+
 import com.file.sharing.core.entity.Item;
 
 /**
@@ -8,4 +10,10 @@ import com.file.sharing.core.entity.Item;
  */
 public interface ItemDao extends AbstractDao<Item> {
 
+	/**
+	 * 
+	 * @param parentId
+	 * @return a list of all the items under the same parent.
+	 */
+	public List<Item> getItemsByParentId(Integer parentId);
 }
