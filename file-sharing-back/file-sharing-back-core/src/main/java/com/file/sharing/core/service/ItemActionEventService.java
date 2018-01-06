@@ -13,7 +13,7 @@ import com.file.sharing.core.actions.file.UploadFileAction;
  * @author Alexandru Mihai
  * @created Nov 18, 2017
  */
-public interface ItemsActionEventService {
+public interface ItemActionEventService {
 
 	/**
 	 * @param action

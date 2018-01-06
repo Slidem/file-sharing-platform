@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.file.sharing.core.objects.ItemActionInfo;
 import com.file.sharing.core.objects.PageResult;
+import com.file.sharing.core.entity.Item;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
 import com.file.sharing.core.objects.file.BasicFileInfo;
 import com.file.sharing.core.objects.file.FileDetails;
@@ -37,6 +38,13 @@ public interface ItemService {
 	 * @return
 	 */
 	FileDetails getFileDetails(int fileId) throws IOException;
+
+	/**
+	 * 
+	 * @param parentId
+	 * @return
+	 */
+	List<Item> getItemsByParentId(int parentId);
 
 	/**
 	 * @param fileId

@@ -26,7 +26,7 @@ import com.file.sharing.core.events.ItemActionEvent;
 import com.file.sharing.core.jms.ItemActionJmsSender;
 import com.file.sharing.core.objects.file.ItemActionStatus;
 import com.file.sharing.core.objects.file.ItemActionType;
-import com.file.sharing.core.service.ItemsActionEventService;
+import com.file.sharing.core.service.ItemActionEventService;
 import com.file.sharing.jms.commons.object.JmsItemActionInfo;
 
 /**
@@ -36,12 +36,12 @@ import com.file.sharing.jms.commons.object.JmsItemActionInfo;
 @Component
 public class ActionEventHandler {
 
-	private ItemsActionEventService itemsActionEventService;
+	private ItemActionEventService itemsActionEventService;
 
 	private ItemActionJmsSender itemActionJmsSender;
 
 	@Autowired
-	public ActionEventHandler(ItemsActionEventService itemsActionEventService,
+	public ActionEventHandler(ItemActionEventService itemsActionEventService,
 			ItemActionJmsSender itemActionJmsSender) {
 		this.itemsActionEventService = itemsActionEventService;
 		this.itemActionJmsSender = itemActionJmsSender;

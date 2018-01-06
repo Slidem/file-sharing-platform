@@ -29,7 +29,7 @@ import com.file.sharing.core.entity.FileItem;
 import com.file.sharing.core.jms.ItemActionJmsSender;
 import com.file.sharing.core.objects.file.ItemActionType;
 import com.file.sharing.core.service.ItemActionEventSynchronization;
-import com.file.sharing.core.service.ItemsActionEventService;
+import com.file.sharing.core.service.ItemActionEventService;
 
 /**
  * @author Alexandru Mihai
@@ -37,14 +37,14 @@ import com.file.sharing.core.service.ItemsActionEventService;
  */
 @Service
 @Transactional(readOnly = false)
-public class ItemsActionEventServiceImpl implements ItemsActionEventService {
+public class ItemActionEventServiceImpl implements ItemActionEventService {
 
 	private final ItemsActionBusiness itemsActionBusiness;
 
 	private final ItemActionJmsSender itemActionJmsSender;
 
 	@Autowired
-	public ItemsActionEventServiceImpl(ItemsActionBusiness itemsActionBusiness,
+	public ItemActionEventServiceImpl(ItemsActionBusiness itemsActionBusiness,
 			ItemActionJmsSender itemActionJmsSender) {
 		this.itemsActionBusiness = itemsActionBusiness;
 		this.itemActionJmsSender = itemActionJmsSender;

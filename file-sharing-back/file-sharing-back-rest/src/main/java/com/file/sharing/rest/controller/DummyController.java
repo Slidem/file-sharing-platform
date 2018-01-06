@@ -40,6 +40,7 @@ import com.file.sharing.core.utils.FileCategoryUtil;
 public class DummyController {
 
 	private ItemActionService itemActionService;
+	private ItemService itemService;
 
 	private ItemService itemService;
 
@@ -95,9 +96,12 @@ public class DummyController {
 
 	@GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public FileSystemResource downloadFile(@RequestParam(value = "fileId") Integer fileId, HttpServletResponse response) throws IOException {
-		File file = itemService.retrieveFile(fileId);
+		File file = itemActionService.retrieveFile(fileId);
 		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
 		return new FileSystemResource(file);
+	}	@GetMapping(value = "/getItemsByParentId")
+	public void getFilesByParentId(@RequestParam(value = "parentId") Integer parentId) {
+		itemService.getItemsByParentId(parentId);
 	}
 
 	@GetMapping(value = "/getFilesInfo")
