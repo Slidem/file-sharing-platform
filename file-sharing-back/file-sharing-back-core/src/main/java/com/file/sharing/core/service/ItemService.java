@@ -4,12 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.file.sharing.core.entity.Item;
+import com.file.sharing.core.objects.BasicItemInfo;
 import com.file.sharing.core.objects.ItemActionInfo;
 import com.file.sharing.core.objects.PageResult;
-import com.file.sharing.core.entity.Item;
-import com.file.sharing.core.objects.ItemActionInfo;
-import com.file.sharing.core.objects.PageResult;import com.file.sharing.core.objects.directory.DirectoryDetails;
-import com.file.sharing.core.objects.file.BasicFileInfo;
+import com.file.sharing.core.objects.directory.DirectoryDetails;
 import com.file.sharing.core.objects.file.BasicFileInfo;
 import com.file.sharing.core.objects.file.FileDetails;
 import com.file.sharing.core.search.ItemSearch;
@@ -47,18 +46,14 @@ public interface ItemService {
 	 * @return
 	 */
 	List<Item> getItemsByParentId(int parentId);
-	/**
-	 * @param fileId
-	 * @return
-	 */
-	File retrieveFile(Integer fileId) throws IOException;
-
+	
 	/**
 	 * 
 	 * @param parentId
 	 * @return
 	 */
-	List<Item> getItemsByParentId(int parentId);
+	List<BasicItemInfo> getBasicItemInfoByParentId(int parentId);
+	
 
 	/**
 	 * @param fileId

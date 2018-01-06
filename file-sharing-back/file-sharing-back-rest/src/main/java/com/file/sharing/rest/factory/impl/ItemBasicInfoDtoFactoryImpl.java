@@ -23,8 +23,8 @@ public class ItemBasicInfoDtoFactoryImpl implements ItemBasicInfoDtoFactory {
 	public AbstractBasicItemInfoDTO toDto(BasicItemInfo itemInfo) {
 		//@formatter:off
 		return isDirectory(itemInfo) ? 
-			   toDto((BasicFileInfo) itemInfo) : 
-			   toDto((BasicDirectoryInfo) itemInfo);
+			   toDto((BasicDirectoryInfo) itemInfo) : 
+			   toDto((BasicFileInfo) itemInfo);
 		//@formatter:on	   
 	}
 

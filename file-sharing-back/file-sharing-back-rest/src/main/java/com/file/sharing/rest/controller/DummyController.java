@@ -2,7 +2,6 @@ package com.file.sharing.rest.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,14 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.file.sharing.core.objects.PageResult;
-import com.file.sharing.core.objects.file.BasicFileInfo;
-import com.file.sharing.core.objects.file.FileCategories;
 import com.file.sharing.core.objects.file.FileData;
-import com.file.sharing.core.search.ItemSearch;
-import com.file.sharing.core.search.PageSearch;
-import com.file.sharing.core.search.impl.ItemSearchImpl;
-import com.file.sharing.core.search.impl.PageSearchImpl;
 import com.file.sharing.core.service.ItemActionService;
 import com.file.sharing.core.service.ItemService;
 import com.file.sharing.core.utils.FileCategoryUtil;
@@ -41,10 +33,7 @@ public class DummyController {
 
 
 	private ItemActionService itemActionService;
-	private ItemService itemService;
-
-	private ItemService itemService;
-
+	
 	private ItemService itemService;
 
 	@Autowired
@@ -100,12 +89,14 @@ public class DummyController {
 
 	@GetMapping(value = "/downloadFile", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	public FileSystemResource downloadFile(@RequestParam(value = "fileId") Integer fileId, HttpServletResponse response) throws IOException {
-		File file = itemActionService.retrieveFile(fileId);
+		File file = itemService.retrieveFile(fileId);
 		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
 		return new FileSystemResource(file);
-	@GetMapping(value = "/getItemsByParentId")	public void getFilesByParentId(@RequestParam(value = "parentId") Integer parentId) {
-		itemService.getItemsByParentId(parentId);
 	}
 
-		itemService.getItemsByParentId(parentId);	}
+	
+	@GetMapping(value = "/getItemInfoByParentId")
+	public void getItemInfoByParentId(@RequestParam(value = "parentId") Integer parentId) {
+		itemService.getBasicItemInfoByParentId(parentId);
+	}
 }
