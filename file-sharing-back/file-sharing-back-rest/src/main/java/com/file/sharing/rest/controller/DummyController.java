@@ -93,7 +93,6 @@ public class DummyController {
 		response.setHeader("Content-Dispition", "attachementl; filename=\"" + file.getName() + "\"");
 		return new FileSystemResource(file);
 	}
-
 	
 	@GetMapping(value = "/getItemInfoByParentId")
 	public void getItemInfoByParentId(@RequestParam(value = "parentId") Integer parentId) {

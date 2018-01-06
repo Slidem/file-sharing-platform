@@ -45,14 +45,14 @@ public interface ItemService {
 	 * @param parentId
 	 * @return
 	 */
-	List<Item> getItemsByParentId(int parentId);
+	List<Item> getItemsByParentId(Integer parentId);
 	
 	/**
 	 * 
 	 * @param parentId
 	 * @return
 	 */
-	List<BasicItemInfo> getBasicItemInfoByParentId(int parentId);
+	List<BasicItemInfo> getBasicItemInfoByParentId(Integer parentId);
 	
 
 	/**
