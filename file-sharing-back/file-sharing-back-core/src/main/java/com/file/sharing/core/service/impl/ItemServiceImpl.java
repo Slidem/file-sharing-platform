@@ -172,3 +172,4 @@ public class ItemServiceImpl implements ItemService {
 
 	private static void throwItemNotFound(Integer itemId) {
 		throw new ItemNotFoundException("Item not found for id: " + itemId);
+}

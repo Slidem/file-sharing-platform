@@ -41,6 +41,7 @@ public class DummyController {
 
 
 	private ItemActionService itemActionService;
+	private ItemService itemService;
 
 	private ItemService itemService;
 
@@ -106,12 +107,5 @@ public class DummyController {
 		itemService.getItemsByParentId(parentId);
 	}
 
-	@GetMapping(value = "/getFilesInfo")
-	public void getFilesInfo() {
-		PageSearch pageSearch = PageSearchImpl.of(1, 10);
-		ItemSearch itemSearch = ItemSearchImpl.newBuilder().withCategories(Arrays.asList(FileCategories.IMAGES))
-				.withPageSearch(pageSearch).build();
-		PageResult<BasicFileInfo> pageResult = itemService.searchFiles(itemSearch);
-		System.out.println(pageResult);
-	}
+		itemService.getItemsByParentId(parentId);	}
 }

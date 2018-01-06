@@ -41,6 +41,17 @@ public interface ItemService {
 	 */
 	FileDetails getFileDetails(int fileId) throws IOException;
 
+	/**
+	 * 
+	 * @param parentId
+	 * @return
+	 */
+	List<Item> getItemsByParentId(int parentId);
+	/**
+	 * @param fileId
+	 * @return
+	 */
+	File retrieveFile(Integer fileId) throws IOException;
 
 	/**
 	 * 
