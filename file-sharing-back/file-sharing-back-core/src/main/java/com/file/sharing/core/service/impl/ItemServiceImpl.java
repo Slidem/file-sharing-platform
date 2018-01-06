@@ -53,7 +53,7 @@ public class ItemServiceImpl implements ItemService {
 
 	private final ItemInfoBusiness itemInfoBusiness;
 
-	@Autowired
+	@Autowired{
 	public ItemsServiceImpl(ItemDao itemDao, DirectoryItemDao directoryItemDao, FileItemDao fileItemDao,
 			Context context, ItemInfoBusiness itemInfoBusiness) {
 		this.itemDao = itemDao;
@@ -87,8 +87,7 @@ public class ItemServiceImpl implements ItemService {
 
 		BasicFileAttributes attr = readAttributes(getPath(directoryItem), BasicFileAttributes.class);
 
-		return new DirectoryDetails.DirectoryBuilder().withId(directoryId)
-				.withLastModified(attr.lastModifiedTime().toInstant())
+				.withId(directoryId)				.withLastModified(attr.lastModifiedTime().toInstant())
 				.withName(directoryItem.getName())
 				.withParent(getParentId(directoryItem))
 				.withPath(directoryItem.getPath())
@@ -107,6 +106,7 @@ public class ItemServiceImpl implements ItemService {
 		}
 
 		BasicFileAttributes attr = readAttributes(getPath(fileItem), BasicFileAttributes.class);
+
 
 		return new FileDetails.FileDetailsBuilder().withId(fileItem.getId())
 				.withCategory(fileItem.getCategory().getCategory())
@@ -172,4 +172,3 @@ public class ItemServiceImpl implements ItemService {
 
 	private static void throwItemNotFound(Integer itemId) {
 		throw new ItemNotFoundException("Item not found for id: " + itemId);
-	}}
