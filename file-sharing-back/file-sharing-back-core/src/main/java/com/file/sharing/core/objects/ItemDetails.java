@@ -57,6 +57,8 @@ public abstract class ItemDetails {
 		return lastModified;
 	}
 
+	public abstract void accept(ItemDetailsVisitor itemDetailsVisitior);
+
 	/**
 	 * @author Alexandru Mihai
 	 * @created Nov 4, 2017
@@ -113,5 +115,7 @@ public abstract class ItemDetails {
 		protected abstract T build();
 
 	}
+	
+	
 
 }

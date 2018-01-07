@@ -37,6 +37,7 @@ import com.file.sharing.core.objects.file.ItemType;
 import com.file.sharing.core.objects.impl.PageResultImpl;
 import com.file.sharing.core.search.ItemSearch;
 import com.file.sharing.core.search.OrderValue;
+import com.file.sharing.core.utils.FileUtils;
 
 /**
  * @author Alexandru Mihai
@@ -88,10 +89,11 @@ public class ItemInfoBusinessImpl implements ItemInfoBusiness {
 
 		//@formatter:off
 		return actionInfos.stream()
-				          .map(e -> newBuilder().withActionTime(e.getActionTime().toInstant())
-				        		                .withActionType(e.getActionType())
-				        		                .withBasicItemInfo(basicItemInfo)
-				        		                .build())
+				          .map(e -> newBuilder()
+				        		    .withActionTime(e.getActionTime().toInstant())
+				        		    .withActionType(e.getActionType())
+				        		    .withBasicItemInfo(basicItemInfo)
+				        		    .build())
 				          .collect(Collectors.toList());
 		//@formatter:on
 	}
@@ -113,6 +115,8 @@ public class ItemInfoBusinessImpl implements ItemInfoBusiness {
 		FileItem fileItem = fileItemDao.find(fileId).orElseThrow(ItemNotFoundException::new);
 		return getFileDetails(fileItem);
 	}
+
+	// -------------------------------------------------------------------
 
 	private FileDetails getFileDetails(FileItem item) throws IOException {
 		BasicFileAttributes attr = readBasicAttributes(item);
@@ -144,7 +148,7 @@ public class ItemInfoBusinessImpl implements ItemInfoBusiness {
 		       .withName(item.getName())
 		       .withPath(item.getPath())
 		       .withParent(Optional.ofNullable(item.getParent()).map(DirectoryItem::getId).orElse(null))
-			   .withSize(attr.size());
+			   .withSize(FileUtils.getItemSize(Paths.get(item.getPath(), item.getName())));
 		//@formatter:on
 	}
 

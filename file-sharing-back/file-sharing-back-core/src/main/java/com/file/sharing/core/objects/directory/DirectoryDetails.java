@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Objects;
 
 import com.file.sharing.core.objects.ItemDetails;
+import com.file.sharing.core.objects.ItemDetailsVisitor;
 
 /**
  * @author Alexandru Mihai
@@ -40,6 +41,11 @@ public final class DirectoryDetails extends ItemDetails {
 			return new DirectoryDetails(this);
 		}
 
+	}
+
+	@Override
+	public void accept(ItemDetailsVisitor itemDetailsVisitior) {
+		itemDetailsVisitior.visit(this);
 	}
 
 }

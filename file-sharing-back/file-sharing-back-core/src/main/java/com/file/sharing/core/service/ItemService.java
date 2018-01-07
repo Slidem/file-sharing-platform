@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.file.sharing.core.objects.ItemActionInfo;
+import com.file.sharing.core.objects.ItemDetails;
 import com.file.sharing.core.objects.PageResult;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
 import com.file.sharing.core.objects.file.BasicFileInfo;
@@ -25,6 +26,12 @@ public interface ItemService {
 	 *         the full path of the item will be <b><i>/dir/test/testItem</i></b>.
 	 */
 	String getItemFullPath(int itemId);
+
+	/**
+	 * @param itemId
+	 * @return
+	 */
+	ItemDetails getItemDetails(int itemId) throws IOException;
 
 	/**
 	 * @param directoryId

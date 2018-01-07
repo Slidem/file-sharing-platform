@@ -42,19 +42,31 @@ public interface ItemInfoBusiness {
 	/**
 	 * @param itemId
 	 * @return
+	 * 
+	 * @throws IOException
+	 * @throws {@link
+	 *             ItemNotFoundException} if the no item found for itemId
 	 */
 	public ItemDetails getItemDetails(Integer itemId) throws IOException;
 
 	/**
 	 * @param directoryId
 	 * @return
+	 * 
+	 * @throws IOException
+	 * @throws {@link
+	 *             ItemNotFoundException} if the no item found for itemId
 	 */
 	public DirectoryDetails getDirectoryDetails(Integer directoryId) throws IOException;
 
 	/**
 	 * @param fileDetails
 	 * @return
+	 * 
+	 * @throws IOException
+	 * @throws {@link
+	 *             ItemNotFoundException} if the no item found for itemId
 	 */
-	public FileDetails getFileDetails(Integer fileDetails) throws IOException;
+	public FileDetails getFileDetails(Integer fileId) throws IOException;
 
 }

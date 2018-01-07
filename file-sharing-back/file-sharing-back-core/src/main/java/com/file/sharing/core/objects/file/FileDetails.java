@@ -3,6 +3,7 @@ package com.file.sharing.core.objects.file;
 import java.time.Instant;
 
 import com.file.sharing.core.objects.ItemDetails;
+import com.file.sharing.core.objects.ItemDetailsVisitor;
 
 public class FileDetails extends ItemDetails {
 
@@ -29,6 +30,11 @@ public class FileDetails extends ItemDetails {
 
 	public Instant getUploadTime() {
 		return uploadTime;
+	}
+
+	@Override
+	public void accept(ItemDetailsVisitor itemDetailsVisitior) {
+		itemDetailsVisitior.visit(this);
 	}
 
 
