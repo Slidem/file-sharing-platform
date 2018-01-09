@@ -27,6 +27,11 @@ import com.file.sharing.core.entity.Item;
 @Repository
 public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
 
+	/**
+	 * Searches for all the items inside a directory by their parentId.
+	 * 
+	 * @return list of items (files and directories) contained by a folder
+	 */
 	@Override
 	public List<Item> getItemsByParentId(Integer parentId) {		
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -36,6 +41,16 @@ public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
 		return result;
 	}
 	
+	/**
+	 * Helper method used to create and run a query which returns items
+	 * by a given parentId.
+	 * 
+	 * @param cb
+	 * @param em
+	 * @param itemType
+	 * @param parentId
+	 * @return
+	 */
 	private <E extends Item> List<E> getItems(CriteriaBuilder cb, EntityManager em, Class<E> itemType, Integer parentId){
 		CriteriaQuery<E> query = cb.createQuery(itemType);
 		Root<E> itemRoot = query.from(itemType);
@@ -44,8 +59,17 @@ public class ItemDaoImpl extends AbstractDaoImpl<Item> implements ItemDao {
 		return em.createQuery(query).getResultList();
 	}
 	
+	/**
+	 * Predicate method used to change a given <code>CriteriaBuilder</code> argument testing
+	 * for both cases where the parentId can be null or non-null.
+	 * 
+	 * @param cb
+	 * @param path
+	 * @param parentId
+	 * @return
+	 */
 	private Predicate getParentIdPredicate(CriteriaBuilder cb, Path<? extends Item> path, Integer parentId) {
-		return   ofNullable(parentId)
+		return ofNullable(parentId)
 				.map(pi -> cb.equal(path, pi))
 				.orElse(cb.isNull(path));
 	}

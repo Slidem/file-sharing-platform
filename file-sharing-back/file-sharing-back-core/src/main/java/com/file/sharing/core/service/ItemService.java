@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import com.file.sharing.core.entity.Item;
 import com.file.sharing.core.objects.BasicItemInfo;
 import com.file.sharing.core.objects.ItemActionInfo;
 import com.file.sharing.core.objects.PageResult;
@@ -39,18 +38,15 @@ public interface ItemService {
 	 * @return
 	 */
 	FileDetails getFileDetails(int fileId) throws IOException;
-
-	/**
-	 * 
-	 * @param parentId
-	 * @return
-	 */
-	List<Item> getItemsByParentId(Integer parentId);
 	
 	/**
+	 * Gets instances of <code>BasicItemInfo</code> for all the items under 
+	 * a parent with the given parentId.
+	 * In case of a null parentId, will return instances of <code>BasicItemInfo</code>
+	 * for all items under the root directory.
 	 * 
 	 * @param parentId
-	 * @return
+	 * @return list of items with given parentId
 	 */
 	List<BasicItemInfo> getBasicItemInfoByParentId(Integer parentId);
 	
