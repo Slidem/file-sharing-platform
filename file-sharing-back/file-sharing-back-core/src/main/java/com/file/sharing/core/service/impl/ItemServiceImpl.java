@@ -162,16 +162,10 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<Item> getItemsByParentId(Integer parentId) {
-		return itemDao.getItemsByParentId(parentId);
-	}
-
-	@Override
 	public List<BasicItemInfo> getBasicItemInfoByParentId(Integer parentId) {
 		List<Item> itemList = itemDao.getItemsByParentId(parentId);
-		List<BasicItemInfo> basicItemInfoList = itemList.stream().map(basicItemInfoFactory::fromItemEntity)
+		return itemList.stream().map(basicItemInfoFactory::fromItemEntity)
 				.collect(Collectors.toList());
-		return basicItemInfoList;
 	}
 
 	private static void throwItemNotFound(Integer itemId) {
