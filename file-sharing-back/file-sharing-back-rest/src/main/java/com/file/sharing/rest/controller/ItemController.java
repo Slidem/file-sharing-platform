@@ -13,7 +13,9 @@ import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.service.ItemActionService;
 import com.file.sharing.core.service.ItemService;
 import com.file.sharing.rest.dto.AbstractBasicItemInfoDTO;
+import com.file.sharing.rest.dto.ItemActionInfoDTO;
 import com.file.sharing.rest.factory.ItemActionDtoFactory;
+import com.file.sharing.rest.factory.ItemActionInfoDtoFactory;
 import com.file.sharing.rest.factory.ItemBasicInfoDtoFactory;
 
 /**
@@ -38,6 +40,9 @@ public class ItemController {
 	protected ItemBasicInfoDtoFactory itemBasicInfoDtoFactory;
 	
 	@Autowired
+	protected ItemActionInfoDtoFactory ItemActionInfoDtoFactory;
+	
+	@Autowired
 	protected ItemService itemService;
 	
 	@GetMapping
@@ -46,6 +51,15 @@ public class ItemController {
 														.stream()
 														.map(itemBasicInfoDtoFactory::toDto)
 														.collect(Collectors.toList());
+		return result;
+	}
+	
+	@GetMapping("/actions")
+	public List<ItemActionInfoDTO> getItemActionsInfo(@RequestParam Integer itemId){
+		List<ItemActionInfoDTO> result = itemService.getItemActionsInfo(itemId)
+											.stream()
+											.map(ItemActionInfoDtoFactory::toDto)
+											.collect(Collectors.toList());
 		return result;
 	}
 }

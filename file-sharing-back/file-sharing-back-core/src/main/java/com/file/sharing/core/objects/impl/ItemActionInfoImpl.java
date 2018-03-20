@@ -4,6 +4,10 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 import com.file.sharing.core.objects.BasicItemInfo;
 import com.file.sharing.core.objects.ItemActionInfo;
 import com.file.sharing.core.objects.file.ItemActionType;
@@ -13,6 +17,8 @@ import com.file.sharing.core.objects.file.ItemActionType;
  * @created Dec 28, 2017
  * 
  */
+@JsonInclude(value = Include.NON_NULL)
+@JsonDeserialize(builder = ItemActionInfoImpl.Builder.class)
 public class ItemActionInfoImpl implements ItemActionInfo {
 
 	private BasicItemInfo basicItemInfo;
@@ -48,6 +54,7 @@ public class ItemActionInfoImpl implements ItemActionInfo {
 		return new Builder();
 	}
 
+	@JsonPOJOBuilder(buildMethodName = "build", withPrefix = "with")
 	public static class Builder {
 
 		private BasicItemInfo basicItemInfo;
