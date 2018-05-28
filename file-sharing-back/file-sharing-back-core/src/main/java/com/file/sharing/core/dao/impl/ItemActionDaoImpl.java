@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.NonUniqueResultException;
@@ -56,8 +57,9 @@ public class ItemActionDaoImpl extends AbstractDaoImpl<ItemActionEntity> impleme
 		Path<Set<String>> actionTimePath = root.get("actionTime");
 		
 		Order order = OrderValue.ASC == actionTimeOrder ? cb.asc(actionTimePath) : cb.desc(actionTimePath);
+		Predicate idPredicate = cb.equal(root.get("itemId"), itemId);
 
-		TypedQuery<ItemActionEntity> typeQuery = entityManager.createQuery(criteriaQuery.select(root).orderBy(order));
+		TypedQuery<ItemActionEntity> typeQuery = entityManager.createQuery(criteriaQuery.select(root).where(idPredicate).orderBy(order));
 
 		return typeQuery.getResultList();
 	}

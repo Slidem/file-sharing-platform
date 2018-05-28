@@ -1,6 +1,7 @@
 package com.file.sharing.core.service.impl;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.file.sharing.core.actions.file.MoveFileAction;
 import com.file.sharing.core.actions.file.RenameFileAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.exception.FileSharingException;
+import com.file.sharing.core.exception.UserStorageNotFoundException;
 import com.file.sharing.core.handler.action.ItemActionHandlerRegistry;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.directory.DirectoryDetails;
@@ -22,6 +24,7 @@ import com.file.sharing.core.objects.file.FileData;
 import com.file.sharing.core.objects.file.FileDetails;
 import com.file.sharing.core.service.ItemActionService;
 import com.file.sharing.core.service.ItemService;
+import java.nio.file.NoSuchFileException;
 
 /**
  * @author Alexandru Mihai
