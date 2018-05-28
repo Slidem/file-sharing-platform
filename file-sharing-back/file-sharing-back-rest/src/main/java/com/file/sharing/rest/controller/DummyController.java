@@ -80,6 +80,11 @@ public class DummyController {
 	public void renameFile(@RequestParam(value = "fileId") Integer fileId, @RequestParam(value = "newName") String newName) {
 		itemActionService.renameFile(fileId, newName);
 	}
+	
+	@PatchMapping(value = "/renameDirectory")
+	public void renameDirectory(@RequestParam(value = "fileId") Integer fileId, @RequestParam(value = "newName") String newName) {
+		itemActionService.renameDirectory(fileId, newName);
+	}
 
 	@PatchMapping(value = "/moveFile")
 	public void moveFile(@RequestParam(value = "fileId") Integer fileId,
