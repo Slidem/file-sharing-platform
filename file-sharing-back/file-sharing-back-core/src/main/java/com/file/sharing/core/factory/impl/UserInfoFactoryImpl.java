@@ -32,7 +32,7 @@ public class UserInfoFactoryImpl implements UserInfoFactory {
 		if (accStats == null) {
 			return null;
 		}
-		return new AccStatsInfo(accStats.getType(), accStats.getStatus());
+		return new AccStatsInfo(accStats.getSubscription(), accStats.getStatus());
 	}
 
 }

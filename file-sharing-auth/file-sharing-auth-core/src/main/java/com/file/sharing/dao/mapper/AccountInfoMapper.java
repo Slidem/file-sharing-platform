@@ -19,9 +19,9 @@ public class AccountInfoMapper implements RowMapper<AccountInfo> {
 
 		Integer id = rs.getInt(DbConstants.AccountInfoTable.ID_COLUMN);
 		String status = rs.getString(DbConstants.AccountInfoTable.STATUS_COLUMN);
-		String type = rs.getString(DbConstants.AccountInfoTable.TYPE_COLUMN);
+		Integer subscriptionId = rs.getInt(DbConstants.AccountInfoTable.SUBSCRIPTION_COLUMN);
 
-		return AccountInfo.newInstance(id, AccountStatus.valueOf(status), AccountType.valueOf(type));
+		return AccountInfo.newInstance(id, AccountStatus.valueOf(status), subscriptionId);
 	}
 
 }

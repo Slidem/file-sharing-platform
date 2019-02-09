@@ -11,12 +11,12 @@ public class AccountInfo {
 
 	private final AccountStatus accountStatus;
 
-	private final AccountType accountType;
+	private final Integer subscriptionId;
 
-	private AccountInfo(Integer id, AccountStatus accountStatus, AccountType accountType) {
+	private AccountInfo(Integer id, AccountStatus accountStatus, Integer subscriptionId) {
 		this.id = id;
 		this.accountStatus = accountStatus;
-		this.accountType = accountType;
+		this.subscriptionId = subscriptionId;
 	}
 
 	public Integer getId() {
@@ -27,16 +27,14 @@ public class AccountInfo {
 		return accountStatus;
 	}
 
-	public AccountType getAccountType() {
-		return accountType;
+	public Integer getSubscriptionId() { return subscriptionId; }
+
+	public static AccountInfo newInstance(AccountStatus accountStatus, Integer subscriptionId) {
+		return new AccountInfo(null, requireNonNull(accountStatus), requireNonNull(subscriptionId));
 	}
 
-	public static AccountInfo newInstance(AccountStatus accountStatus, AccountType accountType) {
-		return new AccountInfo(null, requireNonNull(accountStatus), requireNonNull(accountType));
-	}
-
-	public static AccountInfo newInstance(Integer id, AccountStatus accountStatus, AccountType accountType) {
-		return new AccountInfo(requireNonNull(id), requireNonNull(accountStatus), requireNonNull(accountType));
+	public static AccountInfo newInstance(Integer id, AccountStatus accountStatus, Integer subscriptionId) {
+		return new AccountInfo(requireNonNull(id), requireNonNull(accountStatus), requireNonNull(subscriptionId));
 	}
 
 }

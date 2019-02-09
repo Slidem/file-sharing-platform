@@ -7,20 +7,19 @@ import java.util.Optional;
 /**
  * @author Alexandru Mihai
  * @created Dec 9, 2017
- * 
  */
 public interface AbstractDao<T> {
 
-	void save(T entity);
+    void save(T entity);
 
-	Serializable saveAndGetId(T entity);
+    Serializable saveAndGetId(T entity);
 
-	void delete(T entity);
+    void delete(T entity);
 
-	Optional<T> find(Object id);
+    Optional<T> find(Object id);
 
-	List<T> getAll();
+    List<T> getAll();
 
-	void flush();
+    void flush();
 
 }

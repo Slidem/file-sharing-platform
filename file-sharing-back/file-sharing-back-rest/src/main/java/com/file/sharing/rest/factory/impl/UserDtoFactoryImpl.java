@@ -25,7 +25,7 @@ public class UserDtoFactoryImpl implements UserDtoFactory {
 				.withPicture(userInfo.getPicture())
 				.withRole(userInfo.getRole())
 				.withStatus(userInfo.getAccStatsInfo().getStatus())
-				.withType(userInfo.getAccStatsInfo().getType())
+				.withType(userInfo.getAccStatsInfo().getSubscription().getType())
 				.build();
 	}
 

@@ -34,7 +34,7 @@ import org.springframework.data.util.Pair;
  */
 public class DevDatabaseSetup {
 	//THIS MUST BE CHANGED BEFORE RUN
-	private static final String AUTHORISATION = "bearer "
+	private static final String AUTHORISATION = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDkzNDAwNDYsInVzZXJfbmFtZSI6ImFzZGFzZEBhc2QuY29tIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6IjQ4YTJiZWFjLWJjYmUtNDQxMi1iODE4LTViMTBjZmI3YzE4OCIsImNsaWVudF9pZCI6InBvc3RtYW4iLCJzY29wZSI6WyJmaWxlc2hhcmluZyJdfQ.RzA2Dr4Hea0bjvAl6Tq02tO4E7aMfsCCU-erfFv0Bgk"
 			+ "";
 	private static final String AUTH_HEADER = "Authorization";
 	private static final String AUTH_URL = "http://localhost:9081/file-sharing-auth/oauth/authorize";

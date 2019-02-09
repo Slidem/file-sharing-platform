@@ -44,7 +44,7 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		StorageInfo storageInfo = storageService.getUserStorageInfo(userInfo.getUserId());
 
 		builder.setUserId(userInfo.getUserId());
-		builder.setUserAccountType(userInfo.getAccStatsInfo().getType());
+		builder.setUserSubscription(userInfo.getAccStatsInfo().getSubscription());
 		builder.setUserStorageInfo(storageInfo);
 	}
 

@@ -1,6 +1,6 @@
 package com.file.sharing.rest.context;
 
-import com.file.sharing.common.user.AccountType;
+import com.file.sharing.core.entity.Subscription;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.StorageInfo;
 
@@ -14,14 +14,14 @@ public final class ContextImpl implements Context {
 
 	private final Integer getUserId;
 
-	private final AccountType userAccountType;
+	private final Subscription userSubscription;
 
 	private final StorageInfo userStorageInfo;
 
 	private ContextImpl(ContextBuidler builder) {
 		this.userEmail = builder.userEmail;
 		this.getUserId = builder.userId;
-		this.userAccountType = builder.userAccountType;
+		this.userSubscription = builder.userSubscription;
 		this.userStorageInfo = builder.userStorageInfo;
 	}
 
@@ -36,8 +36,8 @@ public final class ContextImpl implements Context {
 	}
 
 	@Override
-	public AccountType getUserAccountType() {
-		return userAccountType;
+	public Subscription getUserSubscription() {
+		return userSubscription;
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public final class ContextImpl implements Context {
 
 		private Integer userId;
 
-		private AccountType userAccountType;
+		private Subscription userSubscription;
 
 		private StorageInfo userStorageInfo;
 
@@ -69,8 +69,8 @@ public final class ContextImpl implements Context {
 			return this;
 		}
 
-		public ContextBuidler setUserAccountType(AccountType userAccountType) {
-			this.userAccountType = userAccountType;
+		public ContextBuidler setUserSubscription(Subscription userSubscription) {
+			this.userSubscription = userSubscription;
 			return this;
 		}
 

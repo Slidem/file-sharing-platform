@@ -48,7 +48,7 @@ public class UserDtoFactoryImpl implements UserDtoFactory {
 	}
 
 	private AccountInfo getAccountInfo() {
-		return accountInfoService.createOrGet(AccountStatus.ACTIVE, AccountType.REGULAR);
+		return accountInfoService.createOrGet(AccountStatus.ACTIVE, AccountType.REGULAR.getSubscriptionId());
 	}
 
 }

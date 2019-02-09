@@ -24,7 +24,7 @@ import com.file.sharing.objects.AccountType;
 @Repository
 public class AccountInfoDaoImpl implements AccountInfoDao {
 
-	private static final String FIND_SQL = "SELECT a.id, a.type, a.status from %s a where a.type = ? and a.status = ?";
+	private static final String FIND_SQL = "SELECT a.id, a.subscription_id, a.status from %s a where a.subscription_id = ? and a.status = ?";
 
 	private static final String INSERT_SQL = "INSERT INTO %s (%s, %s) VALUES (?, ?)";
 
@@ -39,9 +39,9 @@ public class AccountInfoDaoImpl implements AccountInfoDao {
 	}
 
 	@Override
-	public Optional<AccountInfo> findAccountInfo(AccountStatus status, AccountType type) {
+	public Optional<AccountInfo> findAccountInfo(AccountStatus status, Integer subscriptionId) {
 		String query = String.format(FIND_SQL, DbConstants.AccountInfoTable.NAME);
-		List<AccountInfo> result = jdbcTemplate.query(query, accountInfoRowMapper, type.toString(), status.toString());
+		List<AccountInfo> result = jdbcTemplate.query(query, accountInfoRowMapper, subscriptionId, status.toString());
 		if (result.isEmpty()) {
 			return Optional.empty();
 		}
@@ -49,12 +49,12 @@ public class AccountInfoDaoImpl implements AccountInfoDao {
 	}
 
 	@Override
-	public AccountInfo insertAccountInfo(AccountStatus status, AccountType type) {
+	public AccountInfo insertAccountInfo(AccountStatus status, Integer subscriptionId) {
 		//@formatter:off
 		String insertSql = String.format(INSERT_SQL, 
 										 DbConstants.AccountInfoTable.NAME,
 										 DbConstants.AccountInfoTable.STATUS_COLUMN, 
-										 DbConstants.AccountInfoTable.TYPE_COLUMN);
+										 DbConstants.AccountInfoTable.SUBSCRIPTION_COLUMN);
 		//@formatter:on
 		KeyHolder keyHolder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
@@ -63,11 +63,11 @@ public class AccountInfoDaoImpl implements AccountInfoDao {
 			public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
 				PreparedStatement ps = con.prepareStatement(insertSql, Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, status.toString());
-				ps.setString(2, type.toString());
+				ps.setInt(2, subscriptionId);
 				return ps;
 			}
 		}, keyHolder);
-		return AccountInfo.newInstance((Integer) keyHolder.getKeys().get("id"), status, type);
+		return AccountInfo.newInstance((Integer) keyHolder.getKeys().get("id"), status, subscriptionId);
 	}
 
 }

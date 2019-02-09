@@ -1,0 +1,32 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="insert_subscriptions" author="Andrei Aioanei">
+        <comment>Insert default user subscriptions in table subscription</comment>
+        <insert tableName="subscription" schemaName="public">
+            <column name="id" value="1" />
+            <column name="subscription" value="GUEST" />
+            <column name="storage_size" value="0" />
+        </insert>
+        <insert tableName="subscription" schemaName="public">
+            <column name="id" value="2" />
+            <column name="subscription" value="REGULAR" />
+            <!-- size = 2GB -->
+            <column name="storage_size" value="2147483648" />
+        </insert>
+        <insert tableName="subscription" schemaName="public">
+            <column name="id" value="3" />
+            <column name="subscription" value="PREMIUM" />
+            <!-- size = 10GB -->
+            <column name="storage_size" value="10737418240" />
+        </insert>
+        <insert tableName="subscription" schemaName="public">
+            <column name="id" value="4" />
+            <column name="subscription" value="GOLD" />
+            <!-- size = 100GB -->
+            <column name="storage_size" value="107374182400" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
