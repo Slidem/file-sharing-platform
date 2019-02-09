@@ -8,8 +8,8 @@ import com.file.sharing.objects.AccountType;
 
 public interface AccountInfoDao {
 
-	Optional<AccountInfo> findAccountInfo(AccountStatus status, AccountType type);
+	Optional<AccountInfo> findAccountInfo(AccountStatus status, Integer subscriptionId);
 
-	AccountInfo insertAccountInfo(AccountStatus status, AccountType type);
+	AccountInfo insertAccountInfo(AccountStatus status, Integer subscriptionId);
 
 }

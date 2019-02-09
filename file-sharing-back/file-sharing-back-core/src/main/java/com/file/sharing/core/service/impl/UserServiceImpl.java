@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.transaction.Transactional;
 
+import com.file.sharing.core.entity.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +44,11 @@ public class UserServiceImpl implements UserService {
 			throw new UserNotFoundException(userId);
 		}
 		return userInfo.get();
+	}
+
+	@Override
+	public Subscription getUserSubscription(int userId) {
+		Optional<UserInfo> userInfo = userBusiness.getUserInfoByUserId(userId);
+		return userInfo.map(ui -> ui.getAccStatsInfo().getSubscription()).orElseThrow(() -> new UserNotFoundException(userId));
 	}
 }

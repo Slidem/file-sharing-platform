@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="alter_acc_stats_table" author="Andrei Aioanei">
+        <comment>Renamed column "subscription" to "subscription_id"</comment>
+        <renameColumn columnDataType="text"
+                      newColumnName="subscription_id"
+                      oldColumnName="type"
+                      schemaName="public"
+                      tableName="acc_stats"/>
+        <modifyDataType columnName="subscription_id"
+                        newDataType="int"
+                        schemaName="public"
+                        tableName="acc_stats"/>
+        <addPrimaryKey columnNames="id" constraintName="pk_subscription"
+                       schemaName="public" tableName="subscription" />
+        <addForeignKeyConstraint baseColumnNames="subscription_id"
+                                 baseTableName="acc_stats" constraintName="fk_subscription" deferrable="true"
+                                 initiallyDeferred="true" onDelete="RESTRICT" onUpdate="CASCADE"
+                                 referencedColumnNames="id" referencedTableName="subscription" />
+    </changeSet>
+</databaseChangeLog>

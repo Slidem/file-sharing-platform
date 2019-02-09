@@ -28,23 +28,23 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 
 	@Override
 	@Transactional(rollbackFor = DataIntegrityViolationException.class)
-	public AccountInfo create(AccountStatus status, AccountType type) {
-		return accountInfoDao.insertAccountInfo(status, type);
+	public AccountInfo create(AccountStatus status, Integer subscriptionId) {
+		return accountInfoDao.insertAccountInfo(status, subscriptionId);
 	}
 
 	@Override
 	@Transactional
-	public Optional<AccountInfo> find(AccountStatus status, AccountType type) {
-		return accountInfoDao.findAccountInfo(status, type);
+	public Optional<AccountInfo> find(AccountStatus status, Integer subscriptionId) {
+		return accountInfoDao.findAccountInfo(status, subscriptionId);
 	}
 
 	@Override
 	@Transactional(propagation = Propagation.NEVER)
-	public AccountInfo createOrGet(AccountStatus status, AccountType type) {
+	public AccountInfo createOrGet(AccountStatus status, Integer subscriptionId) {
 		try {
-			return create(status, type);
+			return create(status, subscriptionId);
 		} catch (DataIntegrityViolationException e) {
-			return find(status, type).orElse(null);
+			return find(status, subscriptionId).orElse(null);
 		}
 	}
 

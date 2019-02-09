@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.file.sharing.common.security.Roles;
 import com.file.sharing.common.user.AccountStatus;
-import com.file.sharing.common.user.AccountType;
+import com.file.sharing.common.user.UserAccountType;
 
 /**
  * 
@@ -28,7 +28,7 @@ public class UserDTO {
 
 	private byte[] picture;
 
-	private AccountType type;
+	private UserAccountType type;
 
 	private AccountStatus status;
 
@@ -56,7 +56,7 @@ public class UserDTO {
 		return picture;
 	}
 
-	public AccountType getType() {
+	public UserAccountType getType() {
 		return type;
 	}
 
@@ -114,7 +114,7 @@ public class UserDTO {
 			return this;
 		}
 
-		public Builder withType(AccountType type) {
+		public Builder withType(UserAccountType type) {
 			this.userDto.type = type;
 			return this;
 		}

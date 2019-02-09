@@ -31,13 +31,25 @@ public class UserRestController {
 
 
 	/**
-	 * @param email
-	 * @return
+	 * @return UserDTO object for current user
 	 */
 	@GetMapping("/me")
 	public UserDTO getUser() {
 		String email = context.getUserEmail();
 		UserInfo userInfo = userService.getUserInfoByEmail(email);
 		return userFactory.fromUserInfo(userInfo);
+	}
+
+	//TODO
+	@GetMapping("/space/available")
+	public Long getUserAvailableSpace() {
+		// acc type -> make class that returns size of acct by acc type (from filesystem)
+		return userService.getUserSubscription(context.getGetUserId()).getStorageSize();
+	}
+
+	@GetMapping("/subscription")
+	public String getUserSubscription() {
+		// acc type -> make class that returns size of acct by acc type (from filesystem)
+		return userService.getUserSubscription(context.getGetUserId()).toString();
 	}
 }

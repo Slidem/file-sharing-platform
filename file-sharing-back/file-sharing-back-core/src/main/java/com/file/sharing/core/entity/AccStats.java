@@ -1,17 +1,9 @@
 package com.file.sharing.core.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import com.file.sharing.common.user.AccountStatus;
-import com.file.sharing.common.user.AccountType;
 
 /**
  * @author Alexandru Mihai
@@ -25,10 +17,9 @@ public class AccStats {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@Column(name = "type")
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private AccountType type;
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "subscription_id")
+	private Subscription subscription;
 
 	@Column(name = "status")
 	@NotNull
@@ -42,11 +33,11 @@ public class AccStats {
 	}
 
 	/**
-	 * @param type
+	 * @param subscription
 	 * @param status
 	 */
-	public AccStats(AccountType type, AccountStatus status) {
-		this.type = type;
+	public AccStats(Subscription subscription, AccountStatus status) {
+		this.subscription = subscription;
 		this.status = status;
 	}
 
@@ -58,12 +49,12 @@ public class AccStats {
 		this.id = id;
 	}
 
-	public AccountType getType() {
-		return type;
+	public Subscription getSubscription() {
+		return subscription;
 	}
 
-	public void setType(AccountType type) {
-		this.type = type;
+	public void setSubscription(Subscription subscription) {
+		this.subscription = subscription;
 	}
 
 	public AccountStatus getStatus() {

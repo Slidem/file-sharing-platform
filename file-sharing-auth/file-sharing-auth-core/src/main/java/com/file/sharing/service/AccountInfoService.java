@@ -8,10 +8,10 @@ import com.file.sharing.objects.AccountType;
 
 public interface AccountInfoService {
 
-	public AccountInfo create(AccountStatus status, AccountType type);
+	public AccountInfo create(AccountStatus status, Integer subscriptionId);
 
-	public Optional<AccountInfo> find(AccountStatus status, AccountType type);
+	public Optional<AccountInfo> find(AccountStatus status, Integer subscriptionId);
 
-	public AccountInfo createOrGet(AccountStatus status, AccountType type);
+	public AccountInfo createOrGet(AccountStatus status, Integer subscriptionId);
 
 }

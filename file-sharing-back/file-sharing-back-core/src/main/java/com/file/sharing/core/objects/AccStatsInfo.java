@@ -1,7 +1,7 @@
 package com.file.sharing.core.objects;
 
 import com.file.sharing.common.user.AccountStatus;
-import com.file.sharing.common.user.AccountType;
+import com.file.sharing.core.entity.Subscription;
 
 /**
  * @author Alexandru
@@ -9,21 +9,21 @@ import com.file.sharing.common.user.AccountType;
  */
 public class AccStatsInfo {
 
-	private final AccountType type;
+	private final Subscription subscription;
 
 	private final AccountStatus status;
 
 	/**
-	 * @param type
+	 * @param subscription
 	 * @param status
 	 */
-	public AccStatsInfo(AccountType type, AccountStatus status) {
-		this.type = type;
+	public AccStatsInfo(Subscription subscription, AccountStatus status) {
+		this.subscription = subscription;
 		this.status = status;
 	}
 
-	public AccountType getType() {
-		return type;
+	public Subscription getSubscription() {
+		return subscription;
 	}
 
 	public AccountStatus getStatus() {

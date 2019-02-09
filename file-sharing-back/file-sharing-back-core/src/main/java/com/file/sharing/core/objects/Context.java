@@ -1,6 +1,7 @@
 package com.file.sharing.core.objects;
 
-import com.file.sharing.common.user.AccountType;
+
+import com.file.sharing.core.entity.Subscription;
 
 /**
  * @author Alexandru Mihai
@@ -21,7 +22,7 @@ public interface Context {
 	/**
 	 * @return
 	 */
-	AccountType getUserAccountType();
+	Subscription getUserSubscription();
 
 	/**
 	 * @return

@@ -16,7 +16,7 @@ public final class DbConstants {
 
 		public static final String ID_COLUMN = "id";
 
-		public static final String TYPE_COLUMN = "type";
+		public static final String SUBSCRIPTION_COLUMN = "subscription_id";
 
 		public static final String STATUS_COLUMN = "status";
 

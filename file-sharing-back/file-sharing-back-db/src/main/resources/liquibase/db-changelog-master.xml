@@ -2,7 +2,6 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
- 
 
   <include file="changelog/01-create-tables.xml" relativeToChangelogFile="true"/>
   <include file="changelog/02-insert-user-roles.xml" relativeToChangelogFile="true"/> 
@@ -12,5 +11,8 @@
   <include file="changelog/06-unique-constrain-on-item-name-and-path.xml" relativeToChangelogFile="true"/>
   <include file="changelog/07-unique-constrain-file-category.xml" relativeToChangelogFile="true"/>
   <include file="changelog/08-drop-notNull-constrain-file-parent.xml" relativeToChangelogFile="true"/>
-  
+  <include file="changelog/09-create-table-subscription.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/10-insert-subscriptions.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/11-alter-acc-stats-table.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
