@@ -7,24 +7,24 @@
         <comment>Insert default user subscriptions in table subscription</comment>
         <insert tableName="subscription" schemaName="public">
             <column name="id" value="1" />
-            <column name="subscription" value="GUEST" />
+            <column name="type" value="GUEST" />
             <column name="storage_size" value="0" />
         </insert>
         <insert tableName="subscription" schemaName="public">
             <column name="id" value="2" />
-            <column name="subscription" value="REGULAR" />
+            <column name="type" value="REGULAR" />
             <!-- size = 2GB -->
             <column name="storage_size" value="2147483648" />
         </insert>
         <insert tableName="subscription" schemaName="public">
             <column name="id" value="3" />
-            <column name="subscription" value="PREMIUM" />
+            <column name="type" value="PREMIUM" />
             <!-- size = 10GB -->
             <column name="storage_size" value="10737418240" />
         </insert>
         <insert tableName="subscription" schemaName="public">
             <column name="id" value="4" />
-            <column name="subscription" value="GOLD" />
+            <column name="type" value="GOLD" />
             <!-- size = 100GB -->
             <column name="storage_size" value="107374182400" />
         </insert>

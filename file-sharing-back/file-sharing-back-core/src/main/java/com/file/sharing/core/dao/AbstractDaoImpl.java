@@ -1,20 +1,19 @@
 package com.file.sharing.core.dao;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
-import java.util.Optional;
+import org.hibernate.NonUniqueResultException;
+import org.hibernate.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.hibernate.NonUniqueResultException;
-import org.hibernate.Session;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.List;
+import java.util.Optional;
 
 public class AbstractDaoImpl<T> implements AbstractDao<T> {
 	
@@ -35,6 +34,12 @@ public class AbstractDaoImpl<T> implements AbstractDao<T> {
 	@Override
 	public void save(T entity) {
 		entityManager.persist(entity);
+	}
+
+	@Override
+	public T saveAndGet(T entity) {
+		entityManager.merge(entity);
+		return entity;
 	}
 
 	@Override
