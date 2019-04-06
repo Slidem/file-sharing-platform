@@ -1,0 +1,35 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+
+    <changeSet id="create_table_user_storage" author="Andrei Aioanei">
+        <createSequence cycle="true" incrementBy="1" minValue="100"
+                        schemaName="public" sequenceName="seq_id_user_storage"
+                        startValue="100"/>
+        <createTable tableName="user_storage">
+            <column name="id" type="int" defaultValueSequenceNext="seq_id_user_storage" startWith="100">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="size_used" type="bigint" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="files" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="folders" type="int" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey columnNames="id" constraintName="pk_user_storage"
+                       schemaName="public" tableName="user_storage" />
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_storage" constraintName="fk_user_storage_user"
+                                 deferrable="true" initiallyDeferred="true" referencedColumnNames="id"
+                                 referencedTableName="user" />
+    </changeSet>
+</databaseChangeLog>

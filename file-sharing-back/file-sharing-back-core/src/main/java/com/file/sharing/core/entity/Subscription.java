@@ -57,14 +57,12 @@ public class Subscription {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Subscription that = (Subscription) o;
-        return Objects.equals(id, that.id) &&
-                type == that.type &&
-                Objects.equals(storageSize, that.storageSize);
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, storageSize);
+        return Objects.hash(id);
     }
 
     @Override

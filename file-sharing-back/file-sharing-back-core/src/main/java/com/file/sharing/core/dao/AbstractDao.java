@@ -12,6 +12,8 @@ public interface AbstractDao<T> {
 
     void save(T entity);
 
+    T saveAndGet(T entity);
+
     Serializable saveAndGetId(T entity);
 
     void delete(T entity);
