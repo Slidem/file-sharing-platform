@@ -3,6 +3,8 @@ package com.file.sharing.core.objects;
 
 import com.file.sharing.core.entity.Subscription;
 
+import java.util.Map;
+
 /**
  * @author Alexandru Mihai
  * @created Oct 29, 2017
@@ -28,5 +30,11 @@ public interface Context {
 	 * @return
 	 */
 	StorageInfo getUserStorageInfo();
+
+	/**
+	 *
+	 * @return
+	 */
+	Map<Long, Long> getUserAvailableAndTotalSpace();
 
 }

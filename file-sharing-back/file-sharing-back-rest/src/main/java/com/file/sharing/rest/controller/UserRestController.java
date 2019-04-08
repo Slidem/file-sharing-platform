@@ -3,6 +3,7 @@ package com.file.sharing.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.file.sharing.common.dto.UserDTO;
@@ -10,6 +11,8 @@ import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.factory.UserDtoFactory;
+
+import java.util.Map;
 
 /***
  * 
@@ -42,9 +45,9 @@ public class UserRestController {
 
 	//TODO
 	@GetMapping("/space/available")
-	public Long getUserAvailableSpace() {
-		// acc type -> make class that returns size of acct by acc type (from filesystem)
-		return userService.getUserSubscription(context.getGetUserId()).getStorageSize();
+	public Map<Long, Long> getUserAvailableAndTotalSpace() {
+
+		return context.getUserAvailableAndTotalSpace();
 	}
 
 	@GetMapping("/subscription")

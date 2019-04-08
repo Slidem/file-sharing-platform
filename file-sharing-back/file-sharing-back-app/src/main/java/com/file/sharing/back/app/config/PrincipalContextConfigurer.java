@@ -1,17 +1,16 @@
 package com.file.sharing.back.app.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-
-import com.file.sharing.core.objects.StorageInfo;
+import com.file.sharing.core.caching.ContextProvider;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.StorageService;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.context.ContextConfigurer;
 import com.file.sharing.rest.context.ContextImpl.ContextBuidler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Alexandru Mihai
@@ -24,11 +23,13 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 	
 	private UserService userService;
 	private StorageService storageService;
+	private ContextProvider contextProvider;
 
 	@Autowired
-	public PrincipalContextConfigurer(UserService userService, StorageService storageService) {
+	public PrincipalContextConfigurer(UserService userService, StorageService storageService, ContextProvider contextProvider) {
 		this.userService = userService;
 		this.storageService = storageService;
+		this.contextProvider = contextProvider;
 	}
 
 	@Override
@@ -40,12 +41,11 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		String email = (String) principal;
 		builder.setUserEmail(email);
 
-		UserInfo userInfo = userService.getUserInfoByEmail(email);
-		StorageInfo storageInfo = storageService.getUserStorageInfo(userInfo.getUserId());
+		UserInfo userInfo = contextProvider.getUserInfo(email);
 
 		builder.setUserId(userInfo.getUserId());
 		builder.setUserSubscription(userInfo.getAccStatsInfo().getSubscription());
-		builder.setUserStorageInfo(storageInfo);
+		builder.setUserStorageInfo(contextProvider.getStorageInfo(userInfo.getUserId()));
 	}
 
 }
