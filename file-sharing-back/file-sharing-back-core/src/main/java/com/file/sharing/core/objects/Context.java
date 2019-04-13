@@ -35,6 +35,6 @@ public interface Context {
 	 *
 	 * @return
 	 */
-	Map<Long, Long> getUserAvailableAndTotalSpace();
+	Map<Long, Long> getUserUsedAndTotalSpace();
 
 }

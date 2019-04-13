@@ -31,7 +31,7 @@ public class ContextProvider {
 
     @Cacheable("storageInfo")
     public StorageInfo getStorageInfo(Integer userId) {
-        return storageService.getUserStorageInfo(userId);
+        return storageService.getUserStorageInfoFromDb(userId);
     }
 
 }

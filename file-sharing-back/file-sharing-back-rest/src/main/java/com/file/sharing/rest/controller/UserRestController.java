@@ -3,7 +3,6 @@ package com.file.sharing.rest.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.file.sharing.common.dto.UserDTO;
@@ -47,7 +46,7 @@ public class UserRestController {
 	@GetMapping("/space/available")
 	public Map<Long, Long> getUserAvailableAndTotalSpace() {
 
-		return context.getUserAvailableAndTotalSpace();
+		return context.getUserUsedAndTotalSpace();
 	}
 
 	@GetMapping("/subscription")

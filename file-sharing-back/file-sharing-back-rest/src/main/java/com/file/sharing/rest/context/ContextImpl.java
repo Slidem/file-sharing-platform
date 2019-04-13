@@ -49,8 +49,8 @@ public final class ContextImpl implements Context {
 	}
 
 	@Override
-	public Map<Long, Long> getUserAvailableAndTotalSpace() {
-		return Collections.singletonMap(userStorageInfo.getOccupiedSize(), userSubscription.getStorageSize());
+	public Map<Long, Long> getUserUsedAndTotalSpace() {
+		return Collections.singletonMap(userStorageInfo.getUsedSize(), userSubscription.getStorageSize());
 	}
 
 	/**

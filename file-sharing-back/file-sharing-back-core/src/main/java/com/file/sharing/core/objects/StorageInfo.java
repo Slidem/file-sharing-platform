@@ -9,12 +9,12 @@ package com.file.sharing.core.objects;
 
 public class StorageInfo {
 	private String location;
-	private Long occupiedSize;
+	private Long usedSpaceSize;
 	
-	public StorageInfo(String location, Long occupiedSize) {
+	public StorageInfo(String location, Long usedSpaceSize) {
 		super();
 		this.location = location;
-		this.occupiedSize = occupiedSize;
+		this.usedSpaceSize = usedSpaceSize;
 	}
 
 	public String getLocation() {
@@ -25,17 +25,17 @@ public class StorageInfo {
 		this.location = location;
 	}
 
-	public Long getOccupiedSize() {
-		return occupiedSize;
+	public Long getUsedSize() {
+		return usedSpaceSize;
 	}
 
-	public void setOccupiedSize(Long occupiedSize) {
-		this.occupiedSize = occupiedSize;
+	public void setUsedSpaceSize(Long usedSpaceSize) {
+		this.usedSpaceSize = usedSpaceSize;
 	}
 
 	@Override
 	public String toString() {
-		return "StorageInfo [location=" + location + ", occupiedSize=" + occupiedSize + "]";
+		return "StorageInfo [location=" + location + ", usedSpaceSize=" + usedSpaceSize + "]";
 	}
 	
 }

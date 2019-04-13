@@ -4,11 +4,9 @@ import static com.file.sharing.core.search.ItemSearchOrder.BY_NAME;
 import static com.file.sharing.core.search.ItemSearchOrder.BY_ULOAD_DATE;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -18,7 +16,9 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.swing.text.html.Option;
 
+import com.file.sharing.core.entity.UserStorage;
 import org.springframework.stereotype.Repository;
 
 import com.file.sharing.core.dao.AbstractDaoImpl;
@@ -73,6 +73,15 @@ public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileIt
 		long totalRecordCount = getMaxRowCount(cb, itemSearch);
 		long totalPageCount = getTotalPageCount(totalRecordCount, itemSearch);
 		return PageResultImpl.of(result, totalPageCount, pageSize);
+	}
+
+
+	@Override
+	public Optional<Long> sumOfAllUserFiles(Integer userId) {
+		final Query query = entityManager.createQuery("select SUM(f.size) from FileItem f where f.user.id=:userId");
+		query.setParameter("userId", userId);
+		Long result = (Long) query.getSingleResult();
+		return Optional.ofNullable(result);
 	}
 
 	// --------------------------------------------------------------------------
