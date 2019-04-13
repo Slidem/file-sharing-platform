@@ -1,29 +1,19 @@
 package com.file.sharing.core.business.impl;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.business.FileItemCategoryBusiness;
 import com.file.sharing.core.business.ItemsActionBusiness;
-import com.file.sharing.core.dao.DirectoryItemDao;
-import com.file.sharing.core.dao.FileItemDao;
-import com.file.sharing.core.dao.ItemActionDao;
-import com.file.sharing.core.dao.ItemDao;
-import com.file.sharing.core.dao.UsersDao;
-import com.file.sharing.core.entity.DirectoryItem;
-import com.file.sharing.core.entity.FileItem;
-import com.file.sharing.core.entity.FileItemCategory;
-import com.file.sharing.core.entity.Item;
-import com.file.sharing.core.entity.ItemActionEntity;
-import com.file.sharing.core.entity.User;
+import com.file.sharing.core.dao.*;
+import com.file.sharing.core.entity.*;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.file.ItemActionType;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * @author Alexandru Mihai
@@ -129,6 +119,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		fileItem.setPath(uploadAction.getPath());
 		fileItem.setUploadTime(Timestamp.from(Instant.now()));
 		fileItem.setUser(usersDao.find(uploadAction.getUserId()).orElse(null));
+		fileItem.setSize(uploadAction.getSize());
 		
 		fileItemDao.save(fileItem);
 		fileItemDao.flush();

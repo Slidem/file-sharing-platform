@@ -62,6 +62,7 @@ public class FilesController {
 		FileData fileData = new FileData.Builder()
 				.withFileName(fileName)
 				.withExtension(FileCategoryUtil.getExtensionFromFileName(fileName))
+				.withSize(file.getSize())
 				.withBytes(file.getBytes())
 				.build();
 		

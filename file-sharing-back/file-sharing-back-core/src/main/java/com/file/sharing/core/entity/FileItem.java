@@ -42,6 +42,9 @@ public class FileItem extends Item {
 	@JoinColumn(name = "category_id")
 	private FileItemCategory category;
 
+	@Column(name = "size")
+	private Long size;
+
 	public FileItem() {
 	}
 
@@ -79,5 +82,13 @@ public class FileItem extends Item {
 	@Override
 	public void setParent(DirectoryItem directory) {
 		this.parent = directory;
+	}
+
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
 	}
 }

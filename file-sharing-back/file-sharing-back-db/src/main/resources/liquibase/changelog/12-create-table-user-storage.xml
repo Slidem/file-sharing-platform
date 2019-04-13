@@ -3,7 +3,6 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-
     <changeSet id="create_table_user_storage" author="Andrei Aioanei">
         <createSequence cycle="true" incrementBy="1" minValue="100"
                         schemaName="public" sequenceName="seq_id_user_storage"

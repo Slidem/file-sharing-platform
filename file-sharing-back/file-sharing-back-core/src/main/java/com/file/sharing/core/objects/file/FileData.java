@@ -12,12 +12,15 @@ public class FileData {
 
 	private final String extension;
 
+	private final Long size;
+
 	private final byte[] bytes;
 
 	private FileData(Builder builder) {
 		this.fileName = Objects.requireNonNull(builder.fileName);
 		this.extension = Objects.requireNonNull(builder.extension);
 		this.bytes = Objects.requireNonNull(builder.bytes);
+		this.size = Objects.requireNonNull(builder.size);
 	}
 
 	public String getFileName() {
@@ -26,6 +29,10 @@ public class FileData {
 
 	public String getExtension() {
 		return extension;
+	}
+
+	public Long getSize() {
+		return size;
 	}
 
 	public byte[] getBytes() {
@@ -38,6 +45,8 @@ public class FileData {
 
 		private String extension;
 
+		private Long size;
+
 		private byte[] bytes;
 
 
@@ -49,6 +58,11 @@ public class FileData {
 
 		public Builder withExtension(String extension) {
 			this.extension = extension;
+			return this;
+		}
+
+		public Builder withSize(Long size) {
+			this.size = size;
 			return this;
 		}
 
