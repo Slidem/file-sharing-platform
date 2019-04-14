@@ -1,6 +1,6 @@
 package com.file.sharing.back.app.config;
 
-import com.file.sharing.core.caching.ContextProvider;
+import com.file.sharing.core.caching.CachedContextProvider;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.StorageService;
 import com.file.sharing.core.service.UserService;
@@ -23,13 +23,13 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 	
 	private UserService userService;
 	private StorageService storageService;
-	private ContextProvider contextProvider;
+	private CachedContextProvider cachedContextProvider;
 
 	@Autowired
-	public PrincipalContextConfigurer(UserService userService, StorageService storageService, ContextProvider contextProvider) {
+	public PrincipalContextConfigurer(UserService userService, StorageService storageService, CachedContextProvider cachedContextProvider) {
 		this.userService = userService;
 		this.storageService = storageService;
-		this.contextProvider = contextProvider;
+		this.cachedContextProvider = cachedContextProvider;
 	}
 
 	@Override
@@ -41,11 +41,11 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		String email = (String) principal;
 		builder.setUserEmail(email);
 
-		UserInfo userInfo = contextProvider.getUserInfo(email);
+		UserInfo userInfo = cachedContextProvider.getUserInfo(email);
 
 		builder.setUserId(userInfo.getUserId());
 		builder.setUserSubscription(userInfo.getAccStatsInfo().getSubscription());
-		builder.setUserStorageInfo(contextProvider.getStorageInfo(userInfo.getUserId()));
+		builder.setUserStorageInfo(cachedContextProvider.getStorageInfo(userInfo.getUserId()));
 	}
 
 }

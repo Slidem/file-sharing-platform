@@ -10,6 +10,10 @@ public final class Constants {
 	
 	public static final String ITEM_ACTION_TOPIC_DEST = "itemActionTopicDest";
 
+	public static final String STORAGE_INFO_CACHE_NAME = "storageInfo";
+
+	public static final String USER_INFO_CACHE_NAME = "userInfo";
+
 	private Constants() {
 	}
 	

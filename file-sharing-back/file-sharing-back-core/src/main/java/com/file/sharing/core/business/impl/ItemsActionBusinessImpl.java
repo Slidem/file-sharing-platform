@@ -9,6 +9,7 @@ import com.file.sharing.core.entity.*;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.file.ItemActionType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -70,6 +71,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
+	@CacheEvict(value = "storageInfo", allEntries = true)
 	public void deleteItem(Integer itemId) {
 		Optional<Item> item = itemDao.find(itemId);
 		item.ifPresent(itemDao::delete);
@@ -106,6 +108,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
+	@CacheEvict(value = "storageInfo", allEntries = true)
 	public FileItem saveFileItem(UploadFileAction uploadAction) {
 		String fileName = uploadAction.getItemName();
 
@@ -123,6 +126,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		
 		fileItemDao.save(fileItem);
 		fileItemDao.flush();
+
 		return fileItem;
 	}
 
@@ -134,7 +138,5 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		}
 		return directoryItemDao.find(parentId).orElse(null);
 	}
-
-
 
 }

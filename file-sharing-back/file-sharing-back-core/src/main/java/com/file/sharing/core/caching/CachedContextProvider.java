@@ -8,28 +8,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+import static com.file.sharing.core.objects.Constants.STORAGE_INFO_CACHE_NAME;
+import static com.file.sharing.core.objects.Constants.USER_INFO_CACHE_NAME;
+
 /**
  * created by: andrei
  * date: 06.04.2019
  **/
 @Component
-public class ContextProvider {
+public class CachedContextProvider {
 
     private UserService userService;
     private StorageService storageService;
 
     @Autowired
-    public ContextProvider(UserService userService, StorageService storageService) {
+    public CachedContextProvider(UserService userService, StorageService storageService) {
         this.userService = userService;
         this.storageService = storageService;
     }
 
-    @Cacheable("userInfo")
+    @Cacheable(USER_INFO_CACHE_NAME)
     public UserInfo getUserInfo(String email) {
         return userService.getUserInfoByEmail(email);
     }
 
-    @Cacheable("storageInfo")
+    @Cacheable(STORAGE_INFO_CACHE_NAME)
     public StorageInfo getStorageInfo(Integer userId) {
         return storageService.getUserStorageInfoFromDb(userId);
     }
