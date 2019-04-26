@@ -1,26 +1,5 @@
 package com.file.sharing.core.dao.impl;
 
-import static com.file.sharing.core.search.ItemSearchOrder.BY_NAME;
-import static com.file.sharing.core.search.ItemSearchOrder.BY_ULOAD_DATE;
-
-import java.lang.reflect.Array;
-import java.util.*;
-
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.swing.text.html.Option;
-
-import com.file.sharing.core.entity.UserStorage;
-import org.springframework.stereotype.Repository;
-
 import com.file.sharing.core.dao.AbstractDaoImpl;
 import com.file.sharing.core.dao.FileItemDao;
 import com.file.sharing.core.entity.FileItem;
@@ -31,6 +10,19 @@ import com.file.sharing.core.search.ItemSearch;
 import com.file.sharing.core.search.ItemSearchOrder;
 import com.file.sharing.core.search.OrderValue;
 import com.file.sharing.core.search.PageSearch;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.springframework.stereotype.Repository;
+
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.lang.reflect.Array;
+import java.util.*;
+
+import static com.file.sharing.core.search.ItemSearchOrder.BY_NAME;
+import static com.file.sharing.core.search.ItemSearchOrder.BY_ULOAD_DATE;
 
 /**
  * @author Alexandru Mihai
@@ -40,6 +32,8 @@ import com.file.sharing.core.search.PageSearch;
 public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileItemDao {
 
 	private static final String CATEGORY = "category";
+
+	private static final String DUPLICATE_FILE_REGEX = "\\s(\\(\\w*Copy\\w*)\\s(\\d+)\\)\\..*";
 
 	@Override
 	public PageResult<FileItem> getItemsBasedOnCriteria(ItemSearch itemSearch) {
@@ -75,7 +69,6 @@ public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileIt
 		return PageResultImpl.of(result, totalPageCount, pageSize);
 	}
 
-
 	@Override
 	public Optional<Long> sumOfAllUserFiles(Integer userId) {
 		final Query query = entityManager.createQuery("select SUM(f.size) from FileItem f where f.user.id=:userId");
@@ -84,7 +77,37 @@ public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileIt
 		return Optional.ofNullable(result);
 	}
 
-	// --------------------------------------------------------------------------
+    /**
+     * Used for duplicate checking
+     *
+     * Pattern: \s(\(\w*Copy\w*)\s(\d+)\)\..* only matches:  [$filename Copy $copyNumber] format
+     * @param fileItem
+     * @return
+     */
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<String> getSimilarFileItemsFromSameDirectory(FileItem fileItem) {
+		final Query query = entityManager.createNativeQuery("select f.name from file f " +
+				"where f.parent_id=:parentId and f.size=:size" +
+                " and f.name ~ :regex");
+		query.setParameter("regex", getDuplicateFileRegex(fileItem.getName()));
+		query.setParameter("parentId", fileItem.getParent().getId());
+		query.setParameter("size", fileItem.getSize());
+		return query.getResultList();
+	}
+
+	@Override
+	public boolean exists(FileItem fileItem) {
+		final TypedQuery<FileItem> query = entityManager.createQuery("select f from FileItem f " +
+				"where f.parent.id=:parentId and f.size=:size" +
+				" and f.name like :fileName", FileItem.class);
+		query.setParameter("fileName", fileItem.getName());
+		query.setParameter("parentId", fileItem.getParent().getId());
+		query.setParameter("size", fileItem.getSize());
+		return !query.getResultList().isEmpty();
+	}
+
+    // --------------------------------------------------------------------------
 
 	private long getMaxRowCount(CriteriaBuilder cb, ItemSearch itemSearch) {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
@@ -161,4 +184,7 @@ public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileIt
 		return totalPageCount;
 	}
 
+    private String getDuplicateFileRegex(String fileName) {
+        return fileName.substring(0, fileName.lastIndexOf('.')) + DUPLICATE_FILE_REGEX;
+    }
 }

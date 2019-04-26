@@ -3,6 +3,8 @@ package com.file.sharing.core.handler.action.impl;
 import java.io.File;
 import java.io.IOException;
 
+import com.file.sharing.core.business.ItemsActionBusiness;
+import com.file.sharing.core.entity.FileItem;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,8 @@ import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.handler.action.AbstractItemActionHandler;
 import com.file.sharing.core.objects.file.ItemActionStatus;
 
+import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
+
 /**
  * @author Alexandru Mihai
  * @created Nov 30, 2017
@@ -24,9 +28,12 @@ public class UploadFileActionHandler extends AbstractItemActionHandler<UploadFil
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 
+	ItemsActionBusiness itemsActionBusiness;
+
 	@Autowired
-	public UploadFileActionHandler(ApplicationEventPublisher applicationEventPublisher) {
+	public UploadFileActionHandler(ApplicationEventPublisher applicationEventPublisher, ItemsActionBusiness itemsActionBusiness) {
 		super(applicationEventPublisher);
+		this.itemsActionBusiness = itemsActionBusiness;
 	}
 
 	@Override
@@ -36,17 +43,9 @@ public class UploadFileActionHandler extends AbstractItemActionHandler<UploadFil
 
 	@Override
 	protected ItemActionStatus handleAction(UploadFileAction action) {
-		File file = new File(action.getPath(), action.getItemName());
-		if (!file.exists()) {
-			try {
-				FileUtils.writeByteArrayToFile(file, action.getBytes());
-				return ItemActionStatus.SUCCESS;
-			} catch (IOException e) {
-				logger.info(e.getMessage(), e);
-				return ItemActionStatus.FAILURE;
-			}
-		}
-		return ItemActionStatus.FILE_ALREADY_EXISTS;
+		FileItem fileItem = itemsActionBusiness.saveFileItem(action);
+		itemsActionBusiness.saveFileItemAction(fileItem.getId(), UPLOAD_FILE);
+		return ItemActionStatus.SUCCESS;
 	}
 
 }

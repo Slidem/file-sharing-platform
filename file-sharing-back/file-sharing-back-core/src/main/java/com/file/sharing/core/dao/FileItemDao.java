@@ -4,6 +4,7 @@ import com.file.sharing.core.entity.FileItem;
 import com.file.sharing.core.objects.PageResult;
 import com.file.sharing.core.search.ItemSearch;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,4 +16,9 @@ public interface FileItemDao extends AbstractDao<FileItem> {
 	PageResult<FileItem> getItemsBasedOnCriteria(ItemSearch itemSearch);
 
 	Optional<Long> sumOfAllUserFiles(Integer userId);
+
+    List<String> getSimilarFileItemsFromSameDirectory(FileItem fileItem);
+
+	boolean exists(FileItem fileItem);
+
 }
