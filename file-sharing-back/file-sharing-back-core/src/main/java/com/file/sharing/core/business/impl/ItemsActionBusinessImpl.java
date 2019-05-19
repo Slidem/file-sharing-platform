@@ -9,15 +9,12 @@ import com.file.sharing.core.entity.*;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.file.ItemActionType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING;
 import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING_PATTERN;
@@ -44,7 +41,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 
 	@Autowired
 	public ItemsActionBusinessImpl(DirectoryItemDao directoryItemDao, ItemActionDao itemActionDao, ItemDao itemDao,
-			UsersDao usersDao, FileItemCategoryBusiness fileItemCategoryBusiness, FileItemDao fileItemDao) {
+								   UsersDao usersDao, FileItemCategoryBusiness fileItemCategoryBusiness, FileItemDao fileItemDao) {
 		this.directoryItemDao = directoryItemDao;
 		this.itemActionDao = itemActionDao;
 		this.itemDao = itemDao;
@@ -77,7 +74,6 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
-	@CacheEvict(value = "storageInfo", allEntries = true)
 	public void deleteItem(Integer itemId) {
 		Optional<Item> item = itemDao.find(itemId);
 		item.ifPresent(itemDao::delete);
@@ -104,6 +100,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
+	@Transactional
 	public void saveFileItemAction(Integer itemId, ItemActionType actionType) {
 		ItemActionEntity itemAction = new ItemActionEntity();
 		itemAction.setActionTime(Timestamp.from(Instant.now()));
@@ -114,15 +111,14 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
-    @Transactional
-	@CacheEvict(value = "storageInfo", allEntries = true)
+	@Transactional
 	public FileItem saveFileItem(UploadFileAction uploadAction) {
 		String fileName = uploadAction.getItemName();
 
 		FileItem fileItem = new FileItem();
-		
+
 		FileItemCategory fileItemCategory = fileItemCategoryBusiness.getFileItemCategoryFromItemName(fileName);
-		
+
 		fileItem.setCategory(fileItemCategory);
 		fileItem.setName(uploadAction.getItemName());
 		fileItem.setParent(getParent(uploadAction.getParentId()));
@@ -131,46 +127,52 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		fileItem.setUser(usersDao.find(uploadAction.getUserId()).orElse(null));
 		fileItem.setSize(uploadAction.getSize());
 
-        if(fileItemDao.exists(fileItem)) {
-            List<String> fileItems = fileItemDao.getSimilarFileItemsFromSameDirectory(fileItem);
-            fileItem.setName(getDuplicateNameWithSuffix(fileItem.getName(), getNextAvailableSuffix(fileItems)));
-        }
+		if(fileItemDao.exists(fileItem)) {
+			List<String> fileItems = fileItemDao.getSimilarFileItemsFromSameDirectory(fileItem);
+			fileItem.setName(getDuplicateNameWithSuffix(fileItem.getName(), getNextAvailableSuffix(fileItems)));
+		}
 
-        fileItemDao.save(fileItem);
+		fileItemDao.save(fileItem);
 		fileItemDao.flush();
 
 		return fileItem;
 	}
 
-	String getDuplicateNameWithSuffix(String fileName, String suffix) {
-	    return new StringBuilder(fileName).insert(fileName.lastIndexOf('.'), suffix).toString();
-    }
+	// -----------------------------------------------------------------
 
-    private String getNextAvailableSuffix(List<String> fileNames) {
+	String getOriginalFileName(String name) {
+		return name.substring(0, name.lastIndexOf(" ("+ DUPLICATE_SUFFIX_STRING));
+	}
+
+	String getDuplicateNameWithSuffix(String fileName, String suffix) {
+		return new StringBuilder(fileName).insert(fileName.lastIndexOf('.'), suffix).toString();
+	}
+
+	private String getNextAvailableSuffix(List<String> fileNames) {
 		int suffixNumber = getNextAvailableSuffixNumber(fileNames);
-        return String.format(DUPLICATE_SUFFIX_STRING_PATTERN, suffixNumber);
-    }
+		return String.format(DUPLICATE_SUFFIX_STRING_PATTERN, suffixNumber);
+	}
 
 	int getNextAvailableSuffixNumber(List<String> fileNames) {
-	    if(fileNames.isEmpty()) {
-	        return 1;
-        }
-		Iterator<String> iterator = fileNames.iterator();
-		int duplicateCountStringIndex = fileNames.get(0).indexOf("("+ DUPLICATE_SUFFIX_STRING) + DUPLICATE_SUFFIX_STRING.length() + 2;
-		int suffixNumber = 1;
+		Set<String> fileNameSet = new HashSet<>(fileNames);
+		if(fileNames.isEmpty()) {
+			return 1;
+		}
 
-		while(iterator.hasNext()) {
-			String name = iterator.next();
-			String numberString = name.substring(duplicateCountStringIndex, name.indexOf(")"));
-			int currentFileSuffixNumber = Integer.valueOf(numberString);
-			if(suffixNumber != currentFileSuffixNumber) break;
+		String fileNameWithoutExtension = getOriginalFileName(fileNames.get(0));
+		String extension = getFileExtension(fileNames.get(0));
+		String fileNameFormat = fileNameWithoutExtension + DUPLICATE_SUFFIX_STRING_PATTERN + extension;
+		int suffixNumber = 1;
+		while(fileNameSet.contains(String.format(fileNameFormat, suffixNumber))) {
 			suffixNumber++;
 		}
 
 		return suffixNumber;
 	}
 
-    // -----------------------------------------------------------------
+	private String getFileExtension(String fileName) {
+		return fileName.substring(fileName.lastIndexOf('.'));
+	}
 
 	private DirectoryItem getParent(Integer parentId) {
 		if (parentId == null) {

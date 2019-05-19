@@ -16,7 +16,7 @@ public final class Constants {
 
 	public static final String DUPLICATE_SUFFIX_STRING = "Copy";
 
-    public static final String DUPLICATE_SUFFIX_STRING_PATTERN = " (" + DUPLICATE_SUFFIX_STRING + " %o)";
+    public static final String DUPLICATE_SUFFIX_STRING_PATTERN = " (" + DUPLICATE_SUFFIX_STRING + " %d)";
 
     private Constants() {
 	}
