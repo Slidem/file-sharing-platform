@@ -1,6 +1,7 @@
 package com.file.sharing.back.app.config;
 
-import com.file.sharing.core.caching.CachedContextProvider;
+import com.file.sharing.core.caching.impl.StorageInfoCache;
+import com.file.sharing.core.caching.impl.UserInfoCache;
 import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.StorageService;
 import com.file.sharing.core.service.UserService;
@@ -23,13 +24,15 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 	
 	private UserService userService;
 	private StorageService storageService;
-	private CachedContextProvider cachedContextProvider;
+	private StorageInfoCache storageInfoCache;
+	private UserInfoCache userInfoCache;
 
 	@Autowired
-	public PrincipalContextConfigurer(UserService userService, StorageService storageService, CachedContextProvider cachedContextProvider) {
+	public PrincipalContextConfigurer(UserService userService, StorageService storageService, StorageInfoCache storageInfoCache, UserInfoCache userInfoCache) {
 		this.userService = userService;
 		this.storageService = storageService;
-		this.cachedContextProvider = cachedContextProvider;
+		this.storageInfoCache = storageInfoCache;
+		this.userInfoCache = userInfoCache;
 	}
 
 	@Override
@@ -41,11 +44,11 @@ public class PrincipalContextConfigurer implements ContextConfigurer {
 		String email = (String) principal;
 		builder.setUserEmail(email);
 
-		UserInfo userInfo = cachedContextProvider.getUserInfo(email);
+		UserInfo userInfo = userInfoCache.get(email);
 
 		builder.setUserId(userInfo.getUserId());
 		builder.setUserSubscription(userInfo.getAccStatsInfo().getSubscription());
-		builder.setUserStorageInfo(cachedContextProvider.getStorageInfo(userInfo.getUserId()));
+		builder.setUserStorageInfo(storageInfoCache.get(userInfo.getUserId()));
 	}
 
 }

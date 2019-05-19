@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import com.file.sharing.jms.commons.converter.JmsMessageConverter;
-import com.file.sharing.jms.commons.object.JmsItemActionInfo;
+import com.file.sharing.jms.commons.object.ItemActionTransactionInfo;
 
 /**
  * @author Alexandru Mihai
@@ -32,7 +32,7 @@ public class ItemActionJmsSender {
 		this.destination = destination;
 	}
 
-	public void sendItemActionMessage(JmsItemActionInfo itemActionInfo) {
+	public void sendItemActionMessage(ItemActionTransactionInfo itemActionInfo) {
 		String itemActionInfoMessage = jmsMessageConverter.toString(itemActionInfo);
 		jmsSender.send(destination, itemActionInfoMessage);
 

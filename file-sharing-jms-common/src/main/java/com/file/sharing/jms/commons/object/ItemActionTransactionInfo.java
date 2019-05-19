@@ -6,7 +6,7 @@ import java.time.Instant;
  * @author Alexandru Mihai
  * @created Nov 18, 2017
  */
-public class JmsItemActionInfo {
+public class ItemActionTransactionInfo {
 
 	private final int userId;
 
@@ -20,7 +20,7 @@ public class JmsItemActionInfo {
 
 	private final Instant actionTime;
 
-	private JmsItemActionInfo(Builder builder) {
+	private ItemActionTransactionInfo(Builder builder) {
 		this.userId = builder.userId;
 		this.itemName = builder.itemName;
 		this.itemAction = builder.itemAction;
@@ -72,8 +72,8 @@ public class JmsItemActionInfo {
 			return this;
 		}
 
-		public JmsItemActionInfo build() {
-			return new JmsItemActionInfo(this);
+		public ItemActionTransactionInfo build() {
+			return new ItemActionTransactionInfo(this);
 		}
 
 	}
@@ -104,7 +104,7 @@ public class JmsItemActionInfo {
 
 	@Override
 	public String toString() {
-		return "JmsItemActionInfo [userId=" + userId + ", itemName=" + itemName + ", itemPath=" + itemPath
+		return "ItemActionTransactionInfo [userId=" + userId + ", itemName=" + itemName + ", itemPath=" + itemPath
 				+ ", itemAction=" + itemAction + ", status=" + status + ", actionTime=" + actionTime + "]";
 	}
 

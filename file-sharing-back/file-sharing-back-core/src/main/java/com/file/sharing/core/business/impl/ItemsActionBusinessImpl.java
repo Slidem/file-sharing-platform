@@ -140,7 +140,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 
 	// -----------------------------------------------------------------
 
-	String getOriginalFileName(String name) {
+	private String getOriginalFileName(String name) {
 		return name.substring(0, name.lastIndexOf(" ("+ DUPLICATE_SUFFIX_STRING));
 	}
 

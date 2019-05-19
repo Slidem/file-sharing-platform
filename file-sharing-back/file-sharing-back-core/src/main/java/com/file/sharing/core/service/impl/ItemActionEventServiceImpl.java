@@ -20,6 +20,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,11 +44,14 @@ public class ItemActionEventServiceImpl implements ItemActionEventService {
 
 	private final ItemActionJmsSender itemActionJmsSender;
 
+	private final ApplicationEventPublisher applicationEventPublisher;
+
 	@Autowired
 	public ItemActionEventServiceImpl(ItemsActionBusiness itemsActionBusiness,
-			ItemActionJmsSender itemActionJmsSender) {
+			ItemActionJmsSender itemActionJmsSender, ApplicationEventPublisher applicationEventPublisher) {
 		this.itemsActionBusiness = itemsActionBusiness;
 		this.itemActionJmsSender = itemActionJmsSender;
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public class ItemActionEventServiceImpl implements ItemActionEventService {
 
 	private void registerTransactionSynchronization(ItemAction action, ItemActionType itemActionType) {
 		registerSynchronization(new ItemActionEventSynchronization(action.getUserId(),
-				action.getItemName(), itemActionType, itemActionJmsSender));
+				action.getItemName(), itemActionType, itemActionJmsSender, applicationEventPublisher));
 	}
 
 }
