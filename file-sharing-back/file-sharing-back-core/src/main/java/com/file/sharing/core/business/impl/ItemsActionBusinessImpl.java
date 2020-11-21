@@ -8,6 +8,7 @@ import com.file.sharing.core.dao.*;
 import com.file.sharing.core.entity.*;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.file.ItemActionType;
+import com.file.sharing.core.utils.FileNameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.util.*;
 
 import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING;
 import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING_PATTERN;
+import static com.file.sharing.core.utils.FileNameUtils.*;
 
 /**
  * @author Alexandru Mihai
@@ -127,6 +129,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		fileItem.setUser(usersDao.find(uploadAction.getUserId()).orElse(null));
 		fileItem.setSize(uploadAction.getSize());
 
+		// TODO: make look better
 		if(fileItemDao.exists(fileItem)) {
 			List<String> fileItems = fileItemDao.getSimilarFileItemsFromSameDirectory(fileItem);
 			fileItem.setName(getDuplicateNameWithSuffix(fileItem.getName(), getNextAvailableSuffix(fileItems)));
@@ -136,42 +139,6 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		fileItemDao.flush();
 
 		return fileItem;
-	}
-
-	// -----------------------------------------------------------------
-
-	private String getOriginalFileName(String name) {
-		return name.substring(0, name.lastIndexOf(" ("+ DUPLICATE_SUFFIX_STRING));
-	}
-
-	String getDuplicateNameWithSuffix(String fileName, String suffix) {
-		return new StringBuilder(fileName).insert(fileName.lastIndexOf('.'), suffix).toString();
-	}
-
-	private String getNextAvailableSuffix(List<String> fileNames) {
-		int suffixNumber = getNextAvailableSuffixNumber(fileNames);
-		return String.format(DUPLICATE_SUFFIX_STRING_PATTERN, suffixNumber);
-	}
-
-	int getNextAvailableSuffixNumber(List<String> fileNames) {
-		Set<String> fileNameSet = new HashSet<>(fileNames);
-		if(fileNames.isEmpty()) {
-			return 1;
-		}
-
-		String fileNameWithoutExtension = getOriginalFileName(fileNames.get(0));
-		String extension = getFileExtension(fileNames.get(0));
-		String fileNameFormat = fileNameWithoutExtension + DUPLICATE_SUFFIX_STRING_PATTERN + extension;
-		int suffixNumber = 1;
-		while(fileNameSet.contains(String.format(fileNameFormat, suffixNumber))) {
-			suffixNumber++;
-		}
-
-		return suffixNumber;
-	}
-
-	private String getFileExtension(String fileName) {
-		return fileName.substring(fileName.lastIndexOf('.'));
 	}
 
 	private DirectoryItem getParent(Integer parentId) {

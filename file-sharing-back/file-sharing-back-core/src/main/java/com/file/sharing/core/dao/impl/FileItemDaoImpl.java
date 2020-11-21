@@ -10,9 +10,6 @@ import com.file.sharing.core.search.ItemSearch;
 import com.file.sharing.core.search.ItemSearchOrder;
 import com.file.sharing.core.search.OrderValue;
 import com.file.sharing.core.search.PageSearch;
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Query;
@@ -31,158 +28,159 @@ import static com.file.sharing.core.search.ItemSearchOrder.BY_ULOAD_DATE;
 @Repository
 public class FileItemDaoImpl extends AbstractDaoImpl<FileItem> implements FileItemDao {
 
-	private static final String CATEGORY = "category";
+    private static final String CATEGORY = "category";
 
-	private static final String DUPLICATE_FILE_REGEX = "\\s(\\(\\w*Copy\\w*)\\s(\\d+)\\)\\..*";
+    private static final String DUPLICATE_FILE_REGEX = "\\s(\\(\\w*Copy\\w*)\\s(\\d+)\\)\\..*";
 
-	@Override
-	public PageResult<FileItem> getItemsBasedOnCriteria(ItemSearch itemSearch) {
-		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-		CriteriaQuery<FileItem> query = cb.createQuery(FileItem.class);
-		Root<FileItem> root = query.from(FileItem.class);
-		Join<FileItem, FileItemCategory> itemCategoryJoin = root.join(CATEGORY, JoinType.LEFT);
-		
-		List<Predicate> criterias = getCriterias(itemSearch, cb, root, itemCategoryJoin);
-		List<Order> orders = getOrders(itemSearch, cb, root);
-		
-		PageSearch pageSearch = itemSearch.getPageSearch();
+    @Override
+    public PageResult<FileItem> getItemsBasedOnCriteria(ItemSearch itemSearch) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<FileItem> query = cb.createQuery(FileItem.class);
+        Root<FileItem> root = query.from(FileItem.class);
+        Join<FileItem, FileItemCategory> itemCategoryJoin = root.join(CATEGORY, JoinType.LEFT);
 
-		//@formatter:off
-		TypedQuery<FileItem> typeQuery = entityManager.createQuery(
-														   query
-				                                          .select(root)
-												          .where(getListAsArray(criterias, Predicate.class))
-												          .orderBy(orders));
-		//@formatter:on
-		int pageSize = pageSearch.getPageSize();
-		int pageNumber = pageSearch.getPageNumber();
+        List<Predicate> criterias = getCriterias(itemSearch, cb, root, itemCategoryJoin);
+        List<Order> orders = getOrders(itemSearch, cb, root);
 
-		typeQuery.setFirstResult((pageNumber - 1) * pageSize);
-		typeQuery.setMaxResults(pageNumber * pageSize + 1);
+        PageSearch pageSearch = itemSearch.getPageSearch();
 
-		List<FileItem> result = typeQuery.getResultList();
-		if (result.isEmpty()) {
-			return PageResultImpl.emptyResult();
-		}
-		long totalRecordCount = getMaxRowCount(cb, itemSearch);
-		long totalPageCount = getTotalPageCount(totalRecordCount, itemSearch);
-		return PageResultImpl.of(result, totalPageCount, pageSize);
-	}
+        //@formatter:off
+        TypedQuery<FileItem> typeQuery = entityManager.createQuery(
+                query
+                        .select(root)
+                        .where(getListAsArray(criterias, Predicate.class))
+                        .orderBy(orders));
+        //@formatter:on
+        int pageSize = pageSearch.getPageSize();
+        int pageNumber = pageSearch.getPageNumber();
 
-	@Override
-	public Optional<Long> sumOfAllUserFiles(Integer userId) {
-		final Query query = entityManager.createQuery("select SUM(f.size) from FileItem f where f.user.id=:userId");
-		query.setParameter("userId", userId);
-		Long result = (Long) query.getSingleResult();
-		return Optional.ofNullable(result);
-	}
+        typeQuery.setFirstResult((pageNumber - 1) * pageSize);
+        typeQuery.setMaxResults(pageNumber * pageSize + 1);
+
+        List<FileItem> result = typeQuery.getResultList();
+        if (result.isEmpty()) {
+            return PageResultImpl.emptyResult();
+        }
+        long totalRecordCount = getMaxRowCount(cb, itemSearch);
+        long totalPageCount = getTotalPageCount(totalRecordCount, itemSearch);
+        return PageResultImpl.of(result, totalPageCount, pageSize);
+    }
+
+    @Override
+    public Optional<Long> sumOfAllUserFiles(Integer userId) {
+        final Query query = entityManager.createQuery("select SUM(f.size) from FileItem f where f.user.id=:userId");
+        query.setParameter("userId", userId);
+        Long result = (Long) query.getSingleResult();
+        return Optional.ofNullable(result);
+    }
 
     /**
      * Used for duplicate checking
-     *
+     * <p>
      * Pattern: \s(\(\w*Copy\w*)\s(\d+)\)\..* only matches:  [$filename Copy $copyNumber] format
+     *
      * @param fileItem
      * @return
      */
-	@Override
-	@SuppressWarnings("unchecked")
-	public List<String> getSimilarFileItemsFromSameDirectory(FileItem fileItem) {
-		final Query query = entityManager.createNativeQuery("select f.name from file f " +
-				"where f.parent_id=:parentId and f.size=:size" +
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<String> getSimilarFileItemsFromSameDirectory(FileItem fileItem) {
+        final Query query = entityManager.createNativeQuery("select f.name from file f " +
+                "where f.parent_id=:parentId and f.size=:size" +
                 " and f.name ~ :regex");
-		query.setParameter("regex", getDuplicateFileRegex(fileItem.getName()));
-		query.setParameter("parentId", fileItem.getParent().getId());
-		query.setParameter("size", fileItem.getSize());
-		return query.getResultList();
-	}
+        query.setParameter("regex", getDuplicateFileRegex(fileItem.getName()));
+        query.setParameter("parentId", fileItem.getParent().getId());
+        query.setParameter("size", fileItem.getSize());
+        return query.getResultList();
+    }
 
-	@Override
-	public boolean exists(FileItem fileItem) {
-		final TypedQuery<FileItem> query = entityManager.createQuery("select f from FileItem f " +
-				"where f.parent.id=:parentId and f.size=:size" +
-				" and f.name like :fileName", FileItem.class);
-		query.setParameter("fileName", fileItem.getName());
-		query.setParameter("parentId", fileItem.getParent().getId());
-		query.setParameter("size", fileItem.getSize());
-		return !query.getResultList().isEmpty();
-	}
+    @Override
+    public boolean exists(FileItem fileItem) {
+        final TypedQuery<FileItem> query = entityManager.createQuery("select f from FileItem f " +
+                "where f.parent.id=:parentId and f.size=:size" +
+                " and f.name like :fileName", FileItem.class);
+        query.setParameter("fileName", fileItem.getName());
+        query.setParameter("parentId", fileItem.getParent().getId());
+        query.setParameter("size", fileItem.getSize());
+        return !query.getResultList().isEmpty();
+    }
 
     // --------------------------------------------------------------------------
 
-	private long getMaxRowCount(CriteriaBuilder cb, ItemSearch itemSearch) {
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<FileItem> fileItem = cq.from(FileItem.class);
-		Join<FileItem, FileItemCategory> itemCategoryJoin = fileItem.join(CATEGORY, JoinType.LEFT);
-		
-		List<Predicate> criterias = getCriterias(itemSearch, cb, fileItem, itemCategoryJoin);
-		
-		cq.select(cb.count(fileItem)).where(getListAsArray(criterias, Predicate.class));
+    private long getMaxRowCount(CriteriaBuilder cb, ItemSearch itemSearch) {
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<FileItem> fileItem = cq.from(FileItem.class);
+        Join<FileItem, FileItemCategory> itemCategoryJoin = fileItem.join(CATEGORY, JoinType.LEFT);
 
-		return entityManager.createQuery(cq).getSingleResult();
-	}
+        List<Predicate> criterias = getCriterias(itemSearch, cb, fileItem, itemCategoryJoin);
 
-	private List<Predicate> getCriterias(ItemSearch itemSearch, CriteriaBuilder cb,
-			Root<FileItem> root, Join<FileItem, FileItemCategory> itemCategoryJoin) {
-		List<Predicate> predicates = new ArrayList<>();
+        cq.select(cb.count(fileItem)).where(getListAsArray(criterias, Predicate.class));
 
-		// @formatter:off
-		itemSearch.getItemName().ifPresent(itemName -> 
-			predicates.add(cb.like(root.get("name"), "%" + itemName + "%"))
-		);
-		
-		itemSearch.getExtension().ifPresent(extension -> 
-			predicates.add(cb.equal(itemCategoryJoin.get("extension"), extension))
-		);
-		
-		itemSearch.getCategories().ifPresent(categories -> 
-			predicates.add(itemCategoryJoin.get(CATEGORY).in(categories))
-		);
-		// @formatter:on
-		return predicates;
-	}
+        return entityManager.createQuery(cq).getSingleResult();
+    }
 
-	private List<Order> getOrders(ItemSearch itemSearch, CriteriaBuilder cb, Root<FileItem> root) {
-		List<Order> orders = new ArrayList<>();
-		Map<ItemSearchOrder, OrderValue> orderMap = itemSearch.getOrderCriteriaMap();
+    private List<Predicate> getCriterias(ItemSearch itemSearch, CriteriaBuilder cb,
+                                         Root<FileItem> root, Join<FileItem, FileItemCategory> itemCategoryJoin) {
+        List<Predicate> predicates = new ArrayList<>();
 
-		if (orderMap.containsKey(BY_NAME)) {
-			addOrder(cb, root, orders, orderMap, "name", BY_NAME);
-		}
+        // @formatter:off
+        itemSearch.getItemName().ifPresent(itemName ->
+                predicates.add(cb.like(root.get("name"), "%" + itemName + "%"))
+        );
 
-		if (orderMap.containsKey(BY_ULOAD_DATE)) {
-			addOrder(cb, root, orders, orderMap, "uploadTime", BY_ULOAD_DATE);
-		}
-		return orders;
-	}
+        itemSearch.getExtension().ifPresent(extension ->
+                predicates.add(cb.equal(itemCategoryJoin.get("extension"), extension))
+        );
 
-	private void addOrder(CriteriaBuilder cb, Root<FileItem> root, List<Order> orders,
-			Map<ItemSearchOrder, OrderValue> orderMap, String itemElementName, ItemSearchOrder searchOrder) {
+        itemSearch.getCategories().ifPresent(categories ->
+                predicates.add(itemCategoryJoin.get(CATEGORY).in(categories))
+        );
+        // @formatter:on
+        return predicates;
+    }
 
-		Path<Set<String>> itemNamePath = root.get(itemElementName);
-		OrderValue orderValue = orderMap.get(searchOrder);
-		Order order = OrderValue.ASC == orderValue ? cb.asc(itemNamePath) : cb.desc(itemNamePath);
-		orders.add(order);
+    private List<Order> getOrders(ItemSearch itemSearch, CriteriaBuilder cb, Root<FileItem> root) {
+        List<Order> orders = new ArrayList<>();
+        Map<ItemSearchOrder, OrderValue> orderMap = itemSearch.getOrderCriteriaMap();
 
-	}
+        if (orderMap.containsKey(BY_NAME)) {
+            addOrder(cb, root, orders, orderMap, "name", BY_NAME);
+        }
 
-	private <T> T[] getListAsArray(List<T> list, Class<T> type) {
-		@SuppressWarnings("unchecked")
-		T[] newArray = (T[]) Array.newInstance(type, list.size());
+        if (orderMap.containsKey(BY_ULOAD_DATE)) {
+            addOrder(cb, root, orders, orderMap, "uploadTime", BY_ULOAD_DATE);
+        }
+        return orders;
+    }
 
-		return list.toArray(newArray);
-	}
+    private void addOrder(CriteriaBuilder cb, Root<FileItem> root, List<Order> orders,
+                          Map<ItemSearchOrder, OrderValue> orderMap, String itemElementName, ItemSearchOrder searchOrder) {
 
-	private long getTotalPageCount(long totalRecordCount, ItemSearch itemSearch) {
-		long pageSize = itemSearch.getPageSearch().getPageSize();
+        Path<Set<String>> itemNamePath = root.get(itemElementName);
+        OrderValue orderValue = orderMap.get(searchOrder);
+        Order order = OrderValue.ASC == orderValue ? cb.asc(itemNamePath) : cb.desc(itemNamePath);
+        orders.add(order);
 
-		long totalPageCount = totalRecordCount / pageSize;
+    }
 
-		if (totalRecordCount % pageSize != 0) {
-			totalPageCount++;
-		}
+    private <T> T[] getListAsArray(List<T> list, Class<T> type) {
+        @SuppressWarnings("unchecked")
+        T[] newArray = (T[]) Array.newInstance(type, list.size());
 
-		return totalPageCount;
-	}
+        return list.toArray(newArray);
+    }
+
+    private long getTotalPageCount(long totalRecordCount, ItemSearch itemSearch) {
+        long pageSize = itemSearch.getPageSearch().getPageSize();
+
+        long totalPageCount = totalRecordCount / pageSize;
+
+        if (totalRecordCount % pageSize != 0) {
+            totalPageCount++;
+        }
+
+        return totalPageCount;
+    }
 
     private String getDuplicateFileRegex(String fileName) {
         return fileName.substring(0, fileName.lastIndexOf('.')) + DUPLICATE_FILE_REGEX;

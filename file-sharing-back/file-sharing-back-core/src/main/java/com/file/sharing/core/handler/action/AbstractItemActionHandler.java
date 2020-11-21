@@ -39,6 +39,7 @@ public abstract class AbstractItemActionHandler<T extends ItemAction> implements
 		applicationEventPublisher.publishEvent(itemActionEvent);
 	}
 
+
 	private ItemActionEvent<T> getItemActionEvent(T action, ItemActionStatus status, long duration) {
 		return new ItemActionEventImpl.Builder<T>()
 				.withDuration(duration)
