@@ -50,3 +50,6 @@
 /file-sharing-auth/file-sharing-auth-app/file-sharing-auth-app.iml
 /.recommenders/
 /clean-install-all.bat
+/.settings/
+/.idea/
+/file-sharing-jms-common/file-sharing-jms-common.iml
