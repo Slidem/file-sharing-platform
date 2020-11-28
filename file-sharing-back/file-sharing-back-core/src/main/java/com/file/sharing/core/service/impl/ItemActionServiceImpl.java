@@ -152,7 +152,7 @@ public class ItemActionServiceImpl implements ItemActionService {
 
 		UploadFileAction uploadFileAction = new UploadFileAction.UploadFileActionBuilder()
 				.withUserId(context.getGetUserId()).withParentId(parentId).withItemName(fileData.getFileName())
-				.withPath(directoryPath).withBytes(fileData.getBytes()).build();
+				.withPath(directoryPath).withSize(fileData.getSize()).withBytes(fileData.getBytes()).build();
 
 		eventHandlerRegistry.getHandler(UploadFileAction.class).handle(uploadFileAction);
 

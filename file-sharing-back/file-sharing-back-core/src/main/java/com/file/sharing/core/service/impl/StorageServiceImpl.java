@@ -6,7 +6,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
+import com.file.sharing.core.dao.FileItemDao;
+import com.file.sharing.core.dao.UserStorageDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +25,13 @@ import com.file.sharing.core.service.StorageService;
 public class StorageServiceImpl implements StorageService {
 	
 	private String storagePath;
+
+	private FileItemDao fileItemDao;
 	
 	@Autowired
-	public StorageServiceImpl(Environment env) {
+	public StorageServiceImpl(Environment env, FileItemDao fileItemDao) {
 		storagePath = env.getProperty("storage.path");
+		this.fileItemDao = fileItemDao;
 	}
 
 	@Override
@@ -35,9 +41,16 @@ public class StorageServiceImpl implements StorageService {
 		}
 		return storagePath + userId;
 	}
+
+	@Override
+	public StorageInfo getUserStorageInfoFromDb(Integer userId) {
+		String location = getUserStoragePath(userId);
+		Long sizeUsed = fileItemDao.sumOfAllUserFiles(userId).orElse(0L);
+		return new StorageInfo(location, sizeUsed);
+	}
 	
 	@Override
-	public StorageInfo getUserStorageInfo(Integer userId) {
+	public StorageInfo getUserStorageInfoFromDisk(Integer userId) {
 		String location = getUserStoragePath(userId);
 		Path rootFolder = Paths.get(location);
 		BasicFileAttributes basicFileAttr;

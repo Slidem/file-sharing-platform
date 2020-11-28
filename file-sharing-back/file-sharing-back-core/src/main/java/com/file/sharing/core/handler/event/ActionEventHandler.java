@@ -10,6 +10,7 @@ import static com.file.sharing.core.objects.file.ItemActionType.RENAME_FILE;
 import static com.file.sharing.core.objects.file.ItemActionType.UPLOAD_FILE;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +28,7 @@ import com.file.sharing.core.jms.ItemActionJmsSender;
 import com.file.sharing.core.objects.file.ItemActionStatus;
 import com.file.sharing.core.objects.file.ItemActionType;
 import com.file.sharing.core.service.ItemActionEventService;
-import com.file.sharing.jms.commons.object.JmsItemActionInfo;
+import com.file.sharing.jms.commons.object.ItemActionTransactionInfo;
 
 /**
  * @author Alexandru Mihai
@@ -40,11 +41,14 @@ public class ActionEventHandler {
 
 	private ItemActionJmsSender itemActionJmsSender;
 
+    private ApplicationEventPublisher applicationEventPublisher;
+
 	@Autowired
 	public ActionEventHandler(ItemActionEventService itemsActionEventService,
-			ItemActionJmsSender itemActionJmsSender) {
+			ItemActionJmsSender itemActionJmsSender, ApplicationEventPublisher applicationEventPublisher) {
 		this.itemsActionEventService = itemsActionEventService;
 		this.itemActionJmsSender = itemActionJmsSender;
+		this.applicationEventPublisher = applicationEventPublisher;
 	}
 
 	@EventListener
@@ -95,6 +99,7 @@ public class ActionEventHandler {
 		}
 
 		itemsActionEventService.fileUploaded(uploadFileActionEvent.itemAction());
+        applicationEventPublisher.publishEvent(getItemActionTransactionInfo(uploadFileActionEvent, UPLOAD_FILE));
 	}
 
 	@EventListener
@@ -128,18 +133,22 @@ public class ActionEventHandler {
 	// -------------------------------------------------------------------------------------------------
 
 	private void sendMessage(ItemActionEvent<? extends ItemAction> itemActionEvent, ItemActionType type) {
-		ItemAction itemAction = itemActionEvent.itemAction();
-		
-		JmsItemActionInfo itemInfo = new JmsItemActionInfo.Builder()
-				.withItemAction(type.name())
-				.withItemName(itemAction.getItemName())
-				.withItemPath(itemAction.getPath())
-				.withActionTime(itemAction.getActionTime())
-				.withStatus(itemActionEvent.status().name())
-				.withUserId(itemAction.getUserId())
-				.build();
-		
-		itemActionJmsSender.sendItemActionMessage(itemInfo);
+		itemActionJmsSender.sendItemActionMessage(getItemActionTransactionInfo(itemActionEvent, type));
 	}
+
+	private ItemActionTransactionInfo getItemActionTransactionInfo(ItemActionEvent<? extends ItemAction> itemActionEvent, ItemActionType type) {
+        ItemAction itemAction = itemActionEvent.itemAction();
+
+        ItemActionTransactionInfo itemInfo = new ItemActionTransactionInfo.Builder()
+                .withItemAction(type.name())
+                .withItemName(itemAction.getItemName())
+                .withItemPath(itemAction.getPath())
+                .withActionTime(itemAction.getActionTime())
+                .withStatus(itemActionEvent.status().name())
+                .withUserId(itemAction.getUserId())
+                .build();
+
+        return itemInfo;
+    }
 
 }

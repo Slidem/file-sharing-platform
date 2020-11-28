@@ -24,6 +24,13 @@ public interface StorageService {
 	 * 				Cannot be null.
 	 * @return StorageInfo object containing context info about storage.
 	 */
-	public StorageInfo getUserStorageInfo(Integer userId);
+	public StorageInfo getUserStorageInfoFromDisk(Integer userId);
+
+	/**
+	 * @param userId
+	 * 				Cannot be null.
+	 * @return StorageInfo object containing context info about storage.
+	 */
+	public StorageInfo getUserStorageInfoFromDb(Integer userId);
 
 }

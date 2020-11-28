@@ -15,4 +15,5 @@
   <include file="changelog/10-insert-subscriptions.xml" relativeToChangelogFile="true"/>
   <include file="changelog/11-alter-acc-stats-table.xml" relativeToChangelogFile="true"/>
   <include file="changelog/12-create-table-user-storage.xml" relativeToChangelogFile="true"/>
+  <include file="changelog/13-alter-file-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

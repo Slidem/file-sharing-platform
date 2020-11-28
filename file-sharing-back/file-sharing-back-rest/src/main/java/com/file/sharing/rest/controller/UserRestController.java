@@ -11,6 +11,8 @@ import com.file.sharing.core.objects.UserInfo;
 import com.file.sharing.core.service.UserService;
 import com.file.sharing.rest.factory.UserDtoFactory;
 
+import java.util.Map;
+
 /***
  * 
  * @author Alexandru
@@ -42,9 +44,9 @@ public class UserRestController {
 
 	//TODO
 	@GetMapping("/space/available")
-	public Long getUserAvailableSpace() {
-		// acc type -> make class that returns size of acct by acc type (from filesystem)
-		return userService.getUserSubscription(context.getGetUserId()).getStorageSize();
+	public Map<Long, Long> getUserAvailableAndTotalSpace() {
+
+		return context.getUserUsedAndTotalSpace();
 	}
 
 	@GetMapping("/subscription")

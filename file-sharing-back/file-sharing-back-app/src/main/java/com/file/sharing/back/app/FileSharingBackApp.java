@@ -13,10 +13,12 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 import com.file.sharing.back.app.config.FileSharingBackPropertiesConfig;
+import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication(scanBasePackageClasses = { FileSharingBackPropertiesConfig.class }, exclude = {
 		HibernateJpaAutoConfiguration.class })
 @EnableConfigurationProperties
+@EnableCaching
 public class FileSharingBackApp {
 	public static void main(String[] args) {
 

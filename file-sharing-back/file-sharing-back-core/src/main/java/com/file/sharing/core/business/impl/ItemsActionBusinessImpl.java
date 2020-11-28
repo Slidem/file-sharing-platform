@@ -1,29 +1,25 @@
 package com.file.sharing.core.business.impl;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.file.sharing.core.actions.directory.CreateDirectoryAction;
 import com.file.sharing.core.actions.file.UploadFileAction;
 import com.file.sharing.core.business.FileItemCategoryBusiness;
 import com.file.sharing.core.business.ItemsActionBusiness;
-import com.file.sharing.core.dao.DirectoryItemDao;
-import com.file.sharing.core.dao.FileItemDao;
-import com.file.sharing.core.dao.ItemActionDao;
-import com.file.sharing.core.dao.ItemDao;
-import com.file.sharing.core.dao.UsersDao;
-import com.file.sharing.core.entity.DirectoryItem;
-import com.file.sharing.core.entity.FileItem;
-import com.file.sharing.core.entity.FileItemCategory;
-import com.file.sharing.core.entity.Item;
-import com.file.sharing.core.entity.ItemActionEntity;
-import com.file.sharing.core.entity.User;
+import com.file.sharing.core.dao.*;
+import com.file.sharing.core.entity.*;
 import com.file.sharing.core.exception.UserNotFoundException;
 import com.file.sharing.core.objects.file.ItemActionType;
+import com.file.sharing.core.utils.FileNameUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.*;
+
+import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING;
+import static com.file.sharing.core.objects.Constants.DUPLICATE_SUFFIX_STRING_PATTERN;
+import static com.file.sharing.core.utils.FileNameUtils.*;
 
 /**
  * @author Alexandru Mihai
@@ -47,7 +43,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 
 	@Autowired
 	public ItemsActionBusinessImpl(DirectoryItemDao directoryItemDao, ItemActionDao itemActionDao, ItemDao itemDao,
-			UsersDao usersDao, FileItemCategoryBusiness fileItemCategoryBusiness, FileItemDao fileItemDao) {
+								   UsersDao usersDao, FileItemCategoryBusiness fileItemCategoryBusiness, FileItemDao fileItemDao) {
 		this.directoryItemDao = directoryItemDao;
 		this.itemActionDao = itemActionDao;
 		this.itemDao = itemDao;
@@ -106,6 +102,7 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
+	@Transactional
 	public void saveFileItemAction(Integer itemId, ItemActionType actionType) {
 		ItemActionEntity itemAction = new ItemActionEntity();
 		itemAction.setActionTime(Timestamp.from(Instant.now()));
@@ -116,26 +113,33 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 	}
 
 	@Override
+	@Transactional
 	public FileItem saveFileItem(UploadFileAction uploadAction) {
 		String fileName = uploadAction.getItemName();
 
 		FileItem fileItem = new FileItem();
-		
+
 		FileItemCategory fileItemCategory = fileItemCategoryBusiness.getFileItemCategoryFromItemName(fileName);
-		
+
 		fileItem.setCategory(fileItemCategory);
 		fileItem.setName(uploadAction.getItemName());
 		fileItem.setParent(getParent(uploadAction.getParentId()));
 		fileItem.setPath(uploadAction.getPath());
 		fileItem.setUploadTime(Timestamp.from(Instant.now()));
 		fileItem.setUser(usersDao.find(uploadAction.getUserId()).orElse(null));
-		
+		fileItem.setSize(uploadAction.getSize());
+
+		// TODO: make look better
+		if(fileItemDao.exists(fileItem)) {
+			List<String> fileItems = fileItemDao.getSimilarFileItemsFromSameDirectory(fileItem);
+			fileItem.setName(getDuplicateNameWithSuffix(fileItem.getName(), getNextAvailableSuffix(fileItems)));
+		}
+
 		fileItemDao.save(fileItem);
 		fileItemDao.flush();
+
 		return fileItem;
 	}
-
-	// -----------------------------------------------------------------
 
 	private DirectoryItem getParent(Integer parentId) {
 		if (parentId == null) {
@@ -143,7 +147,5 @@ public class ItemsActionBusinessImpl implements ItemsActionBusiness {
 		}
 		return directoryItemDao.find(parentId).orElse(null);
 	}
-
-
 
 }

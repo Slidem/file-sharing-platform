@@ -52,7 +52,7 @@ public class FilesController {
 	@Autowired
 	private ItemService itemService;
 
-	@PostMapping(value = "/files", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/files", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ResponseStatus(HttpStatus.ACCEPTED)
 	public ItemActionResponseDTO uploadFile(@RequestParam(value = "file", required = true) MultipartFile file,
 			@RequestParam(value = "directoryId", required = false) Integer directoryId) throws IOException {
@@ -62,6 +62,7 @@ public class FilesController {
 		FileData fileData = new FileData.Builder()
 				.withFileName(fileName)
 				.withExtension(FileCategoryUtil.getExtensionFromFileName(fileName))
+				.withSize(file.getSize())
 				.withBytes(file.getBytes())
 				.build();
 		

@@ -15,10 +15,13 @@ public class UploadFileAction extends AbstractItemAction {
 
 	private final Integer parentId;
 
+	private final Long size;
+
 	protected UploadFileAction(UploadFileActionBuilder builder) {
 		super(builder);
 		this.bytes = builder.bytes;
 		this.parentId = builder.parentId;
+		this.size = builder.size;
 	}
 
 	public byte[] getBytes() {
@@ -29,16 +32,22 @@ public class UploadFileAction extends AbstractItemAction {
 		return parentId;
 	}
 
+	public Long getSize() {
+		return size;
+	}
+
 	/**
 	 * @author Alexandru Mihai
 	 * @created Nov 30, 2017
-	 * 
+	 *
 	 */
 	public static class UploadFileActionBuilder extends AbstractBuilder<UploadFileAction, UploadFileActionBuilder> {
 
 		private byte[] bytes;
 
 		private Integer parentId;
+
+		private Long size;
 
 		public UploadFileActionBuilder withBytes(byte[] bytes) {
 			this.bytes = Arrays.copyOf(bytes, bytes.length);
@@ -47,6 +56,11 @@ public class UploadFileAction extends AbstractItemAction {
 
 		public UploadFileActionBuilder withParentId(Integer parentId) {
 			this.parentId = parentId;
+			return getThis();
+		}
+
+		public UploadFileActionBuilder withSize(Long size) {
+			this.size = size;
 			return getThis();
 		}
 

@@ -4,6 +4,9 @@ import com.file.sharing.core.entity.Subscription;
 import com.file.sharing.core.objects.Context;
 import com.file.sharing.core.objects.StorageInfo;
 
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * @author Alexandru Mihai
  * @created Oct 29, 2017
@@ -43,6 +46,11 @@ public final class ContextImpl implements Context {
 	@Override
 	public StorageInfo getUserStorageInfo() {
 		return userStorageInfo;
+	}
+
+	@Override
+	public Map<Long, Long> getUserUsedAndTotalSpace() {
+		return Collections.singletonMap(userStorageInfo.getUsedSize(), userSubscription.getStorageSize());
 	}
 
 	/**
