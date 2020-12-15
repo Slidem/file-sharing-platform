@@ -1,2 +1,2 @@
 # file-sharing-platform
-File sharing project aimed for raspberry pi.
+File manager project aimed for raspberry pi.
